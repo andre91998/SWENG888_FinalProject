@@ -1,15 +1,15 @@
-SWENG888 - Final Project: Scope Zeroing App
+# SWENG888 - Final Project: Scope Zeroing App
 
-Authors:
+## Authors:
 
     - Andrew Young
     - Roberto Luna
     - André Medeiros
 
-Dependencies:
+## Dependencies:
 
     - Java 17
 
-Build Process:
+## Build Process:
 
     - gradlew assembleDebug
