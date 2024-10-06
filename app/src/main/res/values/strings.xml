@@ -35,4 +35,5 @@
     <string name="home_text">Home Text</string>
     <string name="slideshow_text">Slideshow Text</string>
     <string name="gallery_text">Gallery Text</string>
+    <string name="exit_login">Exit</string>
 </resources>

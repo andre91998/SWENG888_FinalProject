@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:padding="16dp"
     android:background="@color/light_gray"
     tools:context=".LoginActivity">
@@ -47,6 +48,7 @@
 
         <CheckBox
             android:id="@+id/checkBoxRememberMe"
+            android:layout_gravity="center"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/remember_me"
@@ -55,23 +57,34 @@
 
         <Button
             android:id="@+id/buttonLogin"
-            android:layout_width="match_parent"
+            android:layout_gravity="center"
+            android:layout_width="354dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
             android:backgroundTint="#00C853"
-            android:textColor="@android:color/white"
             android:text="@string/login"
+            android:textColor="@color/white"
+            tools:ignore="VisualLintButtonSize" />
+
+        <Button
+            android:id="@+id/buttonExit"
+            android:layout_gravity="center"
+            android:layout_width="354dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:backgroundTint="#D50000"
+            android:text="@string/exit_login"
+            android:textColor="@color/white"
             tools:ignore="VisualLintButtonSize" />
 
         <TextView
             android:id="@+id/textViewSignup"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="55dp"
             android:paddingTop="16dp"
             android:text="@string/don_t_have_an_account_sign_up"
             android:textColor="#0000FF"
             android:textSize="16sp" />
-
     </LinearLayout>
 </ScrollView>
