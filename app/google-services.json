@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "24942251370",
+    "project_id": "sweng888finalproject",
+    "storage_bucket": "sweng888finalproject.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:24942251370:android:b7e85afb01b39c09ae6913",
+        "android_client_info": {
+          "package_name": "com.sweng.scopehud"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDIS_wFwEnr7IGuGi4X7jvUR1ghHvrG5t8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

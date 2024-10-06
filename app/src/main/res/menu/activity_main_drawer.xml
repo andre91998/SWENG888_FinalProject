@@ -6,15 +6,43 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_home"
-            android:icon="@drawable/ic_menu_camera"
-            android:title="@string/menu_home" />
+            android:icon="@drawable/ic_home"
+            android:title="@string/menu_home"
+            android:orderInCategory="1" />
         <item
             android:id="@+id/nav_gallery"
-            android:icon="@drawable/ic_menu_gallery"
-            android:title="@string/menu_gallery" />
+            android:icon="@drawable/ic_gallery"
+            android:title="@string/menu_gallery"
+            android:orderInCategory="2" />
         <item
             android:id="@+id/nav_slideshow"
             android:icon="@drawable/ic_menu_slideshow"
-            android:title="@string/menu_slideshow" />
+            android:title="@string/menu_slideshow"
+            android:orderInCategory="3" />
     </group>
+
+    <group android:checkableBehavior="none">
+        <item
+            android:id="@+id/nav_settings"
+            android:icon="@drawable/ic_settings"
+            android:title="@string/menu_settings"
+            android:orderInCategory="4" />
+        <item
+            android:id="@+id/nav_about"
+            android:icon="@drawable/ic_info"
+            android:title="@string/menu_about"
+            android:orderInCategory="5" />
+    </group>
+
+    <item
+        android:id="@+id/nav_logout"
+        android:icon="@drawable/ic_logout"
+        android:title="@string/menu_logout"
+        android:orderInCategory="6" />
+
+    <item
+        android:id="@+id/nav_exit"
+        android:icon="@drawable/ic_exit"
+        android:title="@string/menu_exit"
+        android:orderInCategory="7" />
 </menu>

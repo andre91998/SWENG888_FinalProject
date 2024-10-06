@@ -7,4 +7,15 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="background_color">#FF000000</color>
+    <color name="button_color">#FF3700B3</color>
+    <color name="link_color">#FF3700B3</color>
+    <color name="nav_item_color">#554678</color>
+    <color name="nav_icon_color">#FF9800</color>
+    <color name="button_cancel_color">#F44336</color>
+    <color name="splash_background">#009688</color>
+    <color name="fab_background_color">#4CAF50</color>
+    <color name="light_gray">#FFCCCCCC</color>">
+    <color name="dark_gray">#FFCCCCCC</color>">
+    <color name="input_field_background">#FFCCCCCC</color>">
 </resources>

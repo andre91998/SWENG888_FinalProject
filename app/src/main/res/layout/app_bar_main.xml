@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
+    <!-- AppBar Layout with Toolbar -->
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -16,19 +17,26 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/colorPrimary"
-            app:popupTheme="@style/Theme.ScopeHUD.PopupOverlay" />
+            app:popupTheme="@style/Theme.ScopeHUD.PopupOverlay"
+            app:titleTextColor="@android:color/white"
+            app:subtitle="@string/app_subtitle"
+            app:subtitleTextColor="@android:color/white" />
 
     </com.google.android.material.appbar.AppBarLayout>
 
+    <!-- Main Content Layout -->
     <include layout="@layout/content_main" />
 
+    <!-- Floating Action Button -->
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
-        android:layout_marginEnd="@dimen/fab_margin"
+        android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"
-        app:srcCompat="@android:drawable/ic_dialog_email" />
+        app:backgroundTint="@color/fab_background_color"
+        app:srcCompat="@drawable/ic_add"
+        android:contentDescription="@string/add_item" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
