@@ -17,5 +17,7 @@
     <color name="fab_background_color">#4CAF50</color>
     <color name="light_gray">#FFCCCCCC</color>">
     <color name="dark_gray">#FFCCCCCC</color>">
-    <color name="input_field_background">#FFCCCCCC</color>">
+    <color name="input_field_background">#FFCCCCCC</color>
+    <color name="orange_hue">#D94F27</color>
+    <color name="olive_drab">#797228</color>
 </resources>

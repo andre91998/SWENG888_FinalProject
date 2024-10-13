@@ -18,7 +18,7 @@ import com.google.firebase.auth.FirebaseAuth;
 public class LoginActivity extends AppCompatActivity {
 
     private EditText editTextEmail, editTextPassword; // Input fields for email and password
-    private Button buttonLogin, buttonExit; // Buttons to log in and exit
+    private Button buttonLogin; // Buttons to log in
     private TextView textViewSignup; // TextView to navigate to signup
     private CheckBox checkBoxRememberMe; // Checkbox for remembering user credentials
     private FirebaseAuth mAuth; // Firebase Authentication instance
@@ -40,7 +40,6 @@ public class LoginActivity extends AppCompatActivity {
         editTextEmail = findViewById(R.id.editTextEmail);
         editTextPassword = findViewById(R.id.editTextPassword);
         buttonLogin = findViewById(R.id.buttonLogin);
-        buttonExit = findViewById(R.id.buttonExit);
         textViewSignup = findViewById(R.id.textViewSignup);
         checkBoxRememberMe = findViewById(R.id.checkBoxRememberMe);
 
@@ -56,8 +55,6 @@ public class LoginActivity extends AppCompatActivity {
         // Set click listener for signup text
         textViewSignup.setOnClickListener(v -> openSignupActivity());
 
-        // Set click listener for exit button
-        buttonExit.setOnClickListener(v -> showExitConfirmationDialog());
     }
 
     private void loadSavedCredentials() {
