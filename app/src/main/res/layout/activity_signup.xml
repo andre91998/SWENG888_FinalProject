@@ -4,7 +4,7 @@
     android:id="@+id/scrollView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/dark_gray"
+    android:background="#0E1A22"
     tools:context=".SignupActivity">
 
     <LinearLayout
@@ -18,10 +18,11 @@
         <ImageView
             android:id="@+id/logoImageView"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_launcher_foreground"
+            android:layout_height="150dp"
+            android:layout_gravity="center"
+            android:layout_marginBottom="24dp"
             android:contentDescription="@string/app_logo"
-            android:layout_marginBottom="24dp" />
+            android:src="@drawable/dialed_in_logo" />
 
         <!-- Display Name Field -->
         <EditText
@@ -30,21 +31,23 @@
             android:layout_height="wrap_content"
             android:hint="@string/display_name"
             android:inputType="textPersonName"
-            android:drawableStart="@drawable/ic_person"
             android:paddingStart="12dp"
             android:padding="12dp"
             android:paddingEnd="12dp"
             android:layout_marginBottom="16dp"
-            tools:ignore="Autofill,VisualLintTextFieldSize" />
+            tools:ignore="Autofill,VisualLintTextFieldSize"
+            android:background="@drawable/edit_text_border"
+            android:textColorHint="@color/input_field_background"/>
 
         <!-- Email Field -->
         <EditText
             android:id="@+id/editTextEmail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@drawable/edit_text_border"
+            android:textColorHint="@color/input_field_background"
             android:hint="@string/email_signup"
             android:inputType="textEmailAddress"
-            android:drawableStart="@drawable/ic_email"
             android:paddingStart="12dp"
             android:paddingEnd="12dp"
             android:padding="12dp"
@@ -57,14 +60,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="24dp"
-            android:drawableStart="@drawable/ic_custom_password"
             android:hint="@string/passwordsignup"
             android:inputType="textPassword"
             android:padding="12dp"
             android:paddingStart="12dp"
             android:paddingEnd="12dp"
-            android:textColorHint="@color/black"
-            tools:ignore="Autofill,VisualLintTextFieldSize" />
+            tools:ignore="Autofill,VisualLintTextFieldSize"
+            android:background="@drawable/edit_text_border"
+            android:textColorHint="@color/input_field_background"/>
 
         <!-- Sign-Up Button -->
         <Button
@@ -72,8 +75,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
-            android:backgroundTint="#00C853"
-            android:textColor="@android:color/white"
+            android:backgroundTint="@color/olive_drab"
+            android:textColor="@color/white"
             android:text="@string/sign_up"
             tools:ignore="VisualLintButtonSize" />
 
@@ -83,9 +86,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:backgroundTint="#00C853"
             android:text="@string/cancel"
-            android:textColor="@android:color/white"
+            android:backgroundTint="@color/olive_drab"
+            android:textColor="@color/white"
             tools:ignore="VisualLintButtonSize" />
 
     </LinearLayout>

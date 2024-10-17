@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- res/drawable/edit_text_border.xml -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Define the border -->
+    <stroke
+        android:width="2dp"
+        android:color="@color/orange_hue" /> <!-- Use any color you want for the border -->
+
+    <!-- Optional: Define corner radius if you want rounded corners -->
+    <corners android:radius="4dp" />
+
+    <!-- Optional: Define the padding inside the border -->
+    <padding
+        android:left="10dp"
+        android:top="10dp"
+        android:right="10dp"
+        android:bottom="10dp" />
+</shape>
