@@ -44,7 +44,11 @@ public class ScopeRecyclerViewAdapter extends RecyclerView.Adapter<ScopeRecycler
 
     @Override
     public int getItemCount() {
-        return mScopeList.size();
+        if(mScopeList == null || mScopeList.isEmpty()) {
+            return 0;
+        } else {
+            return mScopeList.size();
+        }
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
