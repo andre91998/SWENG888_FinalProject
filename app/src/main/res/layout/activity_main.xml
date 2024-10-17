@@ -35,12 +35,19 @@
             tools:ignore="VisualLintBounds" />
 
         <!-- Fragment Container -->
+
         <FrameLayout
             android:id="@+id/fragment_container"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:layout_marginTop="16dp" />
+            android:layout_marginTop="16dp" >
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:layout_height="515dp" />
+        </FrameLayout>
+
     </LinearLayout>
 
     <!-- Navigation Drawer -->
@@ -54,5 +61,7 @@
         app:menu="@menu/activity_main_drawer"
         app:itemTextColor="@color/black"
         app:itemIconTint="@color/black"
-        tools:ignore="VisualLintBounds" /> <!-- Your navigation menu -->
+        tools:ignore="VisualLintBounds" >
+
+    </com.google.android.material.navigation.NavigationView> <!-- Your navigation menu -->
 </androidx.drawerlayout.widget.DrawerLayout>
