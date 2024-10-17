@@ -13,9 +13,16 @@ import androidx.appcompat.app.AppCompatActivity; // Base class for activities
 import androidx.appcompat.widget.Toolbar; // For using Toolbar as an ActionBar
 import androidx.core.view.GravityCompat; // For managing navigation drawer states
 import androidx.drawerlayout.widget.DrawerLayout; // For creating the navigation drawer
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.google.android.material.navigation.NavigationView; // For navigation drawer
 import com.google.firebase.auth.FirebaseAuth; // For Firebase authentication
 import com.google.firebase.auth.FirebaseUser; // For Firebase user details
+import com.sweng.scopehud.util.Scope;
+import com.sweng.scopehud.util.ScopeRecyclerViewAdapter;
+
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -23,6 +30,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private TextView textViewUserName, textViewUserEmail; // TextViews for user information
     private FirebaseAuth mAuth; // Firebase Authentication instance
     private Toolbar toolbar; // Toolbar for the action bar
+    private List<Scope> mScopeList; //list of scopes populated from database
+    private RecyclerView mScopeListView; //list of scopes
+    private RecyclerView.Adapter mAdapter; //used to populate scope list
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +70,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         // Set the initial title for the activity
         updateTitle(); // Set the initial title
+
+        //Setup Recycler List View of Scopes
+        mScopeListView = (RecyclerView) findViewById(R.id.scopeListView);
+        //TODO: populate mScopeList with Database Query
+        //mScopeList = DATABASEQUERY;
+        mAdapter = new ScopeRecyclerViewAdapter(mScopeList);
+        mScopeListView.setAdapter(mAdapter);
+        mScopeListView.setLayoutManager(new LinearLayoutManager(this));
     }
 
     @Override
