@@ -97,8 +97,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         if (id == R.id.nav_logout) {
             showLogoutConfirmation();
-        } else if (id == R.id.nav_exit) {
-            showExitConfirmation();
+//        } else if (id == R.id.nav_exit) {
+//            showExitConfirmation();
         } else if (id == R.id.nav_home) {
             // Handle home action
             Toast.makeText(this, "Home selected", Toast.LENGTH_SHORT).show();

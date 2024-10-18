@@ -20,4 +20,6 @@
     <color name="input_field_background">#FFCCCCCC</color>
     <color name="orange_hue">#D94F27</color>
     <color name="olive_drab">#797228</color>
+    <color name="pale_beige">#F9F6D4</color>
+    <color name="dark_slate">#303B3C</color>
 </resources>
