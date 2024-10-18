@@ -37,7 +37,8 @@
             android:layout_marginBottom="16dp"
             tools:ignore="Autofill,VisualLintTextFieldSize"
             android:background="@drawable/edit_text_border"
-            android:textColorHint="@color/input_field_background"/>
+            android:textColorHint="@color/input_field_background"
+            android:textColor="@color/input_field_background"/>
 
         <!-- Email Field -->
         <EditText
@@ -52,6 +53,7 @@
             android:paddingEnd="12dp"
             android:padding="12dp"
             android:layout_marginBottom="16dp"
+            android:textColor="@color/input_field_background"
             tools:ignore="Autofill,VisualLintTextFieldSize" />
 
         <!-- Password Field -->
@@ -67,6 +69,7 @@
             android:paddingEnd="12dp"
             tools:ignore="Autofill,VisualLintTextFieldSize"
             android:background="@drawable/edit_text_border"
+            android:textColor="@color/input_field_background"
             android:textColorHint="@color/input_field_background"/>
 
         <!-- Sign-Up Button -->

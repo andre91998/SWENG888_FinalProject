@@ -32,6 +32,7 @@
             android:minHeight="48dp"
             android:padding="12dp"
             android:textColorHint="@color/input_field_background"
+            android:textColor="@color/input_field_background"
             tools:ignore="Autofill,VisualLintTextFieldSize"
             tools:layout_margin="15dp" />
 
@@ -46,6 +47,7 @@
             android:minHeight="48dp"
             android:padding="12dp"
             android:textColorHint="@color/light_gray"
+            android:textColor="@color/input_field_background"
             tools:ignore="Autofill,VisualLintTextFieldSize" />
         <CheckBox
             android:id="@+id/checkBoxRememberMe"
