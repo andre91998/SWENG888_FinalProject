@@ -9,10 +9,10 @@ import androidx.annotation.NonNull;
 import java.util.Date;
 
 public class ScopeZero implements Parcelable {
-    private int distance;
-    private float windage;
-    private float elevation;
-    private Date date;
+    private int distance; // distance at which the scope was zeroed
+    private float windage; // windage adjustment in MIL
+    private float elevation; // elevation adjustment in MIL
+    private Date date; // Date on which the scope was zeroed
 
     public ScopeZero(int distance, float windage, float elevation, Date date) {
         this.distance = distance;
