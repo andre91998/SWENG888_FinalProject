@@ -32,9 +32,9 @@
 - [ ] The application should have a responsive UI and be able to adapt to different screen sizes and orientations.
 - [x] The application should use Firebase Authentication to handle user login and registration.
 - [ ] The application should use a database to store the user data. Firebase Realtime Database or other databases such as SQLite or Room can be used.
-- [ ] The application should use Shared Preferences to store user preferences and settings.
+- [x] The application should use Shared Preferences to store user preferences and settings.
 - [ ] The application should incorporate the Google Maps API to display the location of items on a map.
-- [ ] The application should use a RecyclerView to display the list of items.
+- [x] The application should use a RecyclerView to display the list of items.
 
 ## Stretch Goals:
 

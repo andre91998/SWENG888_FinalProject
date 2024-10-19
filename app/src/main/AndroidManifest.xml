@@ -3,6 +3,11 @@
 
     <!-- Required permissions for accessing media content -->
     <uses-permission android:name="android.permission.INTERNET" />
+    <!-- Required for Maps API functionality -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <!-- Deprecated for Android 13+ -->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
         android:icon="@mipmap/ic_launcher"
@@ -13,6 +18,21 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.ScopeHUD">
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="${MAPS_API_KEY}" />
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+
+        <!-- If you are using com.google.android.gms:play-services-maps:16.0.0 or below and your app
+         is targeting API level 28 (Android 9.0) or above, you must include the following
+         declaration within the <application> element of AndroidManifest.xml. Otherwise,
+         skip this declaration. -->
+        <uses-library
+            android:name="org.apache.http.legacy"
+            android:required="false" />
 
         <activity
             android:name=".SplashActivity"
