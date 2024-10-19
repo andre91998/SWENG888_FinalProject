@@ -198,7 +198,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     private void initDB() {
-        getApplicationContext().deleteDatabase("practice3DB"); //to have fresh database every demo run
+        getApplicationContext().deleteDatabase("scopeDB"); //to have fresh database every demo run
         dbHandler = new DBHandler(getApplicationContext());
         dbHandler.addNewScope("RAZOR HD GEN III", "Vortex",
                 36f, true, 100,

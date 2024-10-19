@@ -53,7 +53,7 @@ public class DBHandler extends SQLiteOpenHelper implements Serializable {
                 + DISTANCE_COL + " INTEGER,"
                 + WINDAGE_COL + " REAL,"
                 + ELEVATION_COL + " REAL,"
-                + DATE_COL + "INTEGER)"; //DATE IS STORED IN UNIX TIME (seconds since  1970-01-01 00:00:00 UTC)
+                + DATE_COL + " INTEGER)"; //DATE IS STORED IN UNIX TIME (seconds since  1970-01-01 00:00:00 UTC)
 
         // execute query
         db.execSQL(query);
