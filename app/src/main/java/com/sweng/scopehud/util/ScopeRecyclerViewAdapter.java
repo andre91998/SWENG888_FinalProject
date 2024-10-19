@@ -1,10 +1,12 @@
 package com.sweng.scopehud.util;
 
 import android.graphics.Color;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -37,7 +39,10 @@ public class ScopeRecyclerViewAdapter extends RecyclerView.Adapter<ScopeRecycler
         holder.textView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //TODO: click on scope behavior
+                //click on scope behavior, for now, it's a toast
+                Toast toast = new Toast(view.getContext());
+                toast.setText(mScopeList.get(holder.getAdapterPosition()).toString());
+                toast.show();
             }
         });
     }

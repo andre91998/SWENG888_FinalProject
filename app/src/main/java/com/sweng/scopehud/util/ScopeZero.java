@@ -14,6 +14,22 @@ public class ScopeZero implements Parcelable {
     private float elevation; // elevation adjustment in MIL
     private Date date; // Date on which the scope was zeroed
 
+    public int getDistance() {
+        return distance;
+    }
+
+    public float getWindage() {
+        return windage;
+    }
+
+    public float getElevation() {
+        return elevation;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
     public ScopeZero(int distance, float windage, float elevation, Date date) {
         this.distance = distance;
         this.windage = windage;

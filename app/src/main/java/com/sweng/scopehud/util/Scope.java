@@ -67,4 +67,14 @@ public class Scope implements Parcelable {
         parcel.writeByte((byte) (variableMagnification ? 1 : 0));
         parcel.writeParcelable(scopeZero, i);
     }
+
+    @NonNull
+    @Override
+    public String toString() {
+        return "Scope Name: " + name + "\nScope Brand: " + brand +
+                "\n Max Magnification: " + maxMagnification + "\nHas Variable Magnification: "
+                + (variableMagnification ? "yes" : "no") + "\nZero Distance: " +
+                scopeZero.getDistance() + "\nSet Windage: " + scopeZero.getWindage() +
+                "\nSet Elevation: " + scopeZero.getElevation() + "\nZeroed on: " + scopeZero.getDate().toString();
+    }
 }
