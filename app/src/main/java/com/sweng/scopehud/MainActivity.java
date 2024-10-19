@@ -19,9 +19,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.navigation.NavigationView; // For navigation drawer
 import com.google.firebase.auth.FirebaseAuth; // For Firebase authentication
 import com.google.firebase.auth.FirebaseUser; // For Firebase user details
+import com.sweng.scopehud.database.DBHandler;
 import com.sweng.scopehud.util.Scope;
 import com.sweng.scopehud.util.ScopeRecyclerViewAdapter;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -33,6 +36,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private List<Scope> mScopeList; //list of scopes populated from database
     private RecyclerView mScopeListView; //list of scopes
     private RecyclerView.Adapter mAdapter; //used to populate scope list
+    private DBHandler dbHandler; //for database initialization
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,10 +75,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         // Set the initial title for the activity
         updateTitle(); // Set the initial title
 
+        //configure database and insert our product entries
+        initDB();
         //Setup Recycler List View of Scopes
         mScopeListView = (RecyclerView) findViewById(R.id.scopeListView);
-        //TODO: populate mScopeList with Database Query
-        //mScopeList = DATABASEQUERY;
+        mScopeList = dbHandler.queryAllScopes();
         mAdapter = new ScopeRecyclerViewAdapter(mScopeList);
         mScopeListView.setAdapter(mAdapter);
         mScopeListView.setLayoutManager(new LinearLayoutManager(this));
@@ -97,8 +102,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         if (id == R.id.nav_logout) {
             showLogoutConfirmation();
-//        } else if (id == R.id.nav_exit) {
-//            showExitConfirmation();
+        } else if (id == R.id.nav_exit) {
+            showExitConfirmation();
         } else if (id == R.id.nav_home) {
             // Handle home action
             Toast.makeText(this, "Home selected", Toast.LENGTH_SHORT).show();
@@ -190,5 +195,19 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 .setNegativeButton(android.R.string.no, null) // Cancel action
                 .setIcon(android.R.drawable.ic_dialog_alert) // Set alert icon
                 .show(); // Show the dialog
+    }
+
+    private void initDB() {
+        getApplicationContext().deleteDatabase("scopeDB"); //to have fresh database every demo run
+        dbHandler = new DBHandler(getApplicationContext());
+        dbHandler.addNewScope("RAZOR HD GEN III", "Vortex",
+                36f, true, 100,
+                2f, 1f, Calendar.getInstance().getTime());
+        dbHandler.addNewScope("GOLDEN EAGLE HD", "Vortex",
+                60f, true, 100,
+                1.3f, 0.5f, Calendar.getInstance().getTime());
+        dbHandler.addNewScope("HWS EXPS2", "EOTECH",
+                1f, false, 50,
+                0.5f, 2f, Calendar.getInstance().getTime());
     }
 }
