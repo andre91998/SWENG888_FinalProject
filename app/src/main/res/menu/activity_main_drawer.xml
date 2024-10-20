@@ -22,7 +22,8 @@
         <item
             android:id="@+id/nav_find_range"
             android:icon="@drawable/ic_location_searching"
-            android:title="Find Shooting Range Near Me" />
+            android:title="@string/find_shooting_range_near_me"
+            android:orderInCategory="4" />
     </group>
 
     <group android:checkableBehavior="none">
@@ -30,23 +31,23 @@
             android:id="@+id/nav_settings"
             android:icon="@drawable/ic_settings"
             android:title="@string/menu_settings"
-            android:orderInCategory="4" />
+            android:orderInCategory="5" />
         <item
             android:id="@+id/nav_about"
             android:icon="@drawable/ic_info"
             android:title="@string/menu_about"
-            android:orderInCategory="5" />
+            android:orderInCategory="6" />
     </group>
 
     <item
         android:id="@+id/nav_logout"
         android:icon="@drawable/ic_logout"
         android:title="@string/menu_logout"
-        android:orderInCategory="6" />
+        android:orderInCategory="7" />
 
 <!--    <item
         android:id="@+id/nav_exit"
         android:icon="@drawable/ic_exit"
         android:title="@string/menu_exit"
-        android:orderInCategory="7" />-->
+        android:orderInCategory="8" />-->
 </menu>

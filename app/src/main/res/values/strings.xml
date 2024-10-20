@@ -40,4 +40,5 @@
         <string name="exit_login">Exit</string>-->
 
     <string name="google_maps_key">AIzaSyBcA4lmH3hbZy8v20-QZVwh72kovT7YJN8</string>
+    <string name="find_shooting_range_near_me">Find Shooting Range Near Me</string>
 </resources>
