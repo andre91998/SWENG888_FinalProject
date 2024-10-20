@@ -4,22 +4,27 @@ import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.text.TextWatcher;
+import android.text.Editable;
 
 import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
 import com.google.android.material.navigation.NavigationView;
+
 /*
-* There is still lots that need done here.
-* The plus and minus buttons work for the yardage as they should.
-* The enter button does nothing.
-* The EditTexts need to be connected to the TextViews. So when the EditText value changes, the TextView value should change to the opposite of what it was.
-* The Color circles need to be implemented properly, but that is something I will explain on a call.
-* I still need to add the other two blocks that contain more customizable options.
-* */
+ * Updated SightToolActivity
+ * - Plus and minus buttons work for the yardage as they should.
+ * - The enter button now updates the TextViews to the opposite of the EditText values.
+ * - EditTexts are now connected to the TextViews, so changes in EditText update the TextView.
+ * - Color circles are to be implemented later.
+ * - Additional blocks for more customizable options to be added later.
+ */
 public class SightToolActivity extends NavigationActivity {
+
     private Button btnPlus, btnMinus, btnEnter; // Buttons for sight tool
     private EditText editTextUpdown, editTextLeftright, editTextYardage; // Input fields for sight tool
     private TextView upDown, leftRight; // TextViews for sight tool
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,7 +37,7 @@ public class SightToolActivity extends NavigationActivity {
         // Set up the navigation drawer
         DrawerLayout drawerLayout = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
-        setupDrawer(toolbar, drawerLayout, navigationView); // Call the method from BaseActivity
+        setupDrawer(toolbar, drawerLayout, navigationView); // Call the method from NavigationActivity
 
         // Initialize views
         btnPlus = findViewById(R.id.plusButton);
@@ -44,18 +49,70 @@ public class SightToolActivity extends NavigationActivity {
         upDown = findViewById(R.id.up_down);
         leftRight = findViewById(R.id.left_right);
 
-        btnMinus.setOnClickListener(v -> {
-            // Decrement the up/down value
-            int value = Integer.parseInt(editTextYardage.getText().toString());
-            value--;
-            editTextYardage.setText(String.valueOf(value));
-        });
+        // Plus button increments the yardage value
         btnPlus.setOnClickListener(v -> {
-            // Increment the up/down value
             int value = Integer.parseInt(editTextYardage.getText().toString());
             value++;
             editTextYardage.setText(String.valueOf(value));
         });
+
+        // Minus button decrements the yardage value
+        btnMinus.setOnClickListener(v -> {
+            int value = Integer.parseInt(editTextYardage.getText().toString());
+            value--;
+            editTextYardage.setText(String.valueOf(value));
+        });
+
+        // Enter button updates the TextViews with the opposite of the EditText values
+        btnEnter.setOnClickListener(v -> {
+            // Get the current values from EditTexts
+            String upDownValue = editTextUpdown.getText().toString();
+            String leftRightValue = editTextLeftright.getText().toString();
+
+            // Update TextViews with opposite values
+            upDown.setText(invertValue(upDownValue));
+            leftRight.setText(invertValue(leftRightValue));
+        });
+
+        // Add TextWatcher to update the TextViews when the EditText values change
+        editTextUpdown.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                // Update upDown TextView when EditText changes
+                upDown.setText(invertValue(charSequence.toString()));
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {}
+        });
+
+        editTextLeftright.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                // Update leftRight TextView when EditText changes
+                leftRight.setText(invertValue(charSequence.toString()));
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {}
+        });
+    }
+
+    /**
+     * Method to invert a numeric string value (e.g., turn "1" into "-1").
+     */
+    private String invertValue(String value) {
+        try {
+            int intValue = Integer.parseInt(value);
+            return String.valueOf(-intValue);
+        } catch (NumberFormatException e) {
+            return "0"; // Default to 0 if there's an invalid input
+        }
     }
 }
-

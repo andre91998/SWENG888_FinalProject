@@ -95,6 +95,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         if (id == R.id.nav_logout) {
             showLogoutConfirmation(); // Handle logout action
+        } else if (id == R.id.nav_sight_tool) {
+            // Navigate to SightToolActivity
+            startActivity(new Intent(this, SightToolActivity.class));
+        } else if (id == R.id.nav_find_range) {
+            // Navigate to find range feature (you can implement this activity or logic)
+            Toast.makeText(this, "Find Range selected", Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(this, "Unknown menu item selected", Toast.LENGTH_SHORT).show();
         }
 
         drawer.closeDrawer(GravityCompat.START); // Close the navigation drawer after item click
@@ -154,19 +162,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     Toast.makeText(MainActivity.this, "Logged out successfully.", Toast.LENGTH_SHORT).show();
                     redirectToLogin(); // Redirect to login after sign out
                 })
-                .setNegativeButton(android.R.string.no, null)
-                .setIcon(android.R.drawable.ic_dialog_alert)
-                .show(); // Show the dialog
-    }
-
-    /**
-     * Show a confirmation dialog for exiting the application.
-     */
-    private void showExitConfirmation() {
-        new AlertDialog.Builder(this)
-                .setTitle("Exit App")
-                .setMessage("Are you sure you want to exit the application?")
-                .setPositiveButton(android.R.string.yes, (dialog, which) -> finishAffinity()) // Close all app activities
                 .setNegativeButton(android.R.string.no, null)
                 .setIcon(android.R.drawable.ic_dialog_alert)
                 .show(); // Show the dialog

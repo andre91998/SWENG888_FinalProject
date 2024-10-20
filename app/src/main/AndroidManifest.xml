@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <!-- Required permissions for accessing media content -->
+    <!-- Required permissions for accessing internet and location -->
     <uses-permission android:name="android.permission.INTERNET" />
     <!-- Required for Maps API functionality -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
-    <!-- Deprecated for Android 13+ -->
+    <!-- For older Android versions (deprecated in Android 13+) -->
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
@@ -19,21 +19,20 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ScopeHUD">
 
+        <!-- Google Maps API Key (replace with your actual API key) -->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="google_maps_key" />
+            android:value="@string/google_maps_key" />
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
 
-        <!-- If you are using com.google.android.gms:play-services-maps:16.0.0 or below and your app
-         is targeting API level 28 (Android 9.0) or above, you must include the following
-         declaration within the <application> element of AndroidManifest.xml. Otherwise,
-         skip this declaration. -->
+        <!-- For backward compatibility with older Apache HTTP libraries -->
         <uses-library
             android:name="org.apache.http.legacy"
             android:required="false" />
 
+        <!-- Splash Activity (Main Launcher) -->
         <activity
             android:name=".SplashActivity"
             android:exported="true"
@@ -44,26 +43,31 @@
             </intent-filter>
         </activity>
 
+        <!-- Login Activity -->
         <activity
             android:name=".LoginActivity"
             android:exported="false"
             android:theme="@style/Theme.ScopeHUD.NoActionBar" />
 
+        <!-- Signup Activity -->
         <activity
             android:name=".SignupActivity"
             android:exported="false"
             android:theme="@style/Theme.ScopeHUD.NoActionBar" />
 
+        <!-- Main Activity (Home Screen) -->
         <activity
             android:name=".MainActivity"
             android:exported="false"
             android:label="@string/title_activity_main"
             android:theme="@style/Theme.ScopeHUD.NoActionBar" />
 
-        <activity android:name=".SightToolActivity"
+        <!-- Sight Tool Activity -->
+        <activity
+            android:name=".SightToolActivity"
             android:exported="false"
             android:label="@string/title_activity_sight_tool"
-            android:theme="@style/Theme.ScopeHUD.NoActionBar"/>
+            android:theme="@style/Theme.ScopeHUD.NoActionBar" />
     </application>
 
 </manifest>
