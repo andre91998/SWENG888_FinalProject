@@ -10,6 +10,7 @@ import android.text.Editable;
 import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.auth.FirebaseUser;
 
 /*
  * Updated SightToolActivity
@@ -37,7 +38,8 @@ public class SightToolActivity extends NavigationActivity {
         // Set up the navigation drawer
         DrawerLayout drawerLayout = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
-        setupDrawer(toolbar, drawerLayout, navigationView); // Call the method from NavigationActivity
+        setupDrawer(toolbar, drawerLayout, navigationView, (FirebaseUser) getIntent()
+                .getExtras().get("currentUser")); // Call the method from NavigationActivity
 
         // Initialize views
         btnPlus = findViewById(R.id.plusButton);
