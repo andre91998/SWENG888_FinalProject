@@ -38,4 +38,6 @@
         <string name="slideshow_text">Slideshow Text</string>
         <string name="gallery_text">Gallery Text</string>
         <string name="exit_login">Exit</string>-->
+
+    <string name="google_maps_key">AIzaSyBcA4lmH3hbZy8v20-QZVwh72kovT7YJN8</string>
 </resources>
