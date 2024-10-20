@@ -32,7 +32,7 @@
         android:paddingTop="8dp"
         android:text="@string/user_name"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-        android:textColor="@android:color/white"
+        android:textColor="@color/orange_hue"
         android:textStyle="bold" />
 
     <!-- User Email -->
@@ -42,6 +42,6 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:text="@string/user_example_com"
-        android:textColor="@android:color/white"
+        android:textColor="@color/orange_hue"
         android:textAppearance="@style/TextAppearance.AppCompat.Caption" />
 </LinearLayout>

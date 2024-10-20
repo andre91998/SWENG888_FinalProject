@@ -5,19 +5,19 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_home"
-            android:icon="@drawable/ic_home"
-            android:title="@string/menu_home"
+            android:id="@+id/nav_scopes"
+            android:icon="@drawable/crosshair"
+            android:title="@string/menu_scopes"
             android:orderInCategory="1" />
         <item
-            android:id="@+id/nav_gallery"
-            android:icon="@drawable/ic_gallery"
-            android:title="@string/menu_gallery"
+            android:id="@+id/nav_weather_tool"
+            android:icon="@drawable/baseline_cloud_queue_24"
+            android:title="@string/menu_weather"
             android:orderInCategory="2" />
         <item
-            android:id="@+id/nav_slideshow"
-            android:icon="@drawable/ic_menu_slideshow"
-            android:title="@string/menu_slideshow"
+            android:id="@+id/nav_sight_tool"
+            android:icon="@drawable/icon_calculator"
+            android:title="@string/menu_calculator"
             android:orderInCategory="3" />
     </group>
 
@@ -40,9 +40,9 @@
         android:title="@string/menu_logout"
         android:orderInCategory="6" />
 
-    <item
+<!--    <item
         android:id="@+id/nav_exit"
         android:icon="@drawable/ic_exit"
         android:title="@string/menu_exit"
-        android:orderInCategory="7" />
+        android:orderInCategory="7" />-->
 </menu>

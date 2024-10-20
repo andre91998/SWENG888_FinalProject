@@ -3,8 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="1dp"
-    android:background="#FFF"
+    android:layout_marginBottom="10dp"
+    android:background="@color/white"
     android:clickable="true"
     android:orientation="vertical">
 
@@ -13,6 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="10dp"
+        android:textColor="@color/orange_hue"
         tools:text="TextView" />
 
 </LinearLayout>
