@@ -3,22 +3,22 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/nav_home">
+    app:startDestination="@+id/nav_scopes">
 
     <fragment
-        android:id="@+id/nav_home"
+        android:id="@+id/nav_scopes"
         android:name="com.sweng.scopehud.ui.home.HomeFragment"
-        android:label="@string/menu_home"
+        android:label="@string/menu_scopes"
         tools:layout="@layout/fragment_home" />
 
     <fragment
-        android:id="@+id/nav_gallery"
+        android:id="@+id/nav_weather_tool"
         android:name="com.sweng.scopehud.ui.gallery.GalleryFragment"
         android:label="@string/menu_weather"
         tools:layout="@layout/fragment_gallery" />
 
     <fragment
-        android:id="@+id/nav_slideshow"
+        android:id="@+id/nav_sight_tool"
         android:name="com.sweng.scopehud.ui.slideshow.SlideshowFragment"
         android:label="@string/menu_calculator"
         tools:layout="@layout/fragment_slideshow" />

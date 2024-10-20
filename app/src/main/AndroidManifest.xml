@@ -59,6 +59,11 @@
             android:exported="false"
             android:label="@string/title_activity_main"
             android:theme="@style/Theme.ScopeHUD.NoActionBar" />
+
+        <activity android:name=".SightToolActivity"
+            android:exported="false"
+            android:label="@string/title_activity_sight_tool"
+            android:theme="@style/Theme.ScopeHUD.NoActionBar"/>
     </application>
 
 </manifest>
