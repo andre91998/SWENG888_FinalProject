@@ -28,6 +28,12 @@ public class SignupActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private static final String TAG = "SignupActivity";
 
+    /**
+     * This method is called when the activity is first created.
+     * It initializes Firebase, the authentication instance, and UI components.
+     *
+     * @param savedInstanceState If the activity is being re-initialized after being previously shut down, this Bundle contains the data it most recently supplied. Otherwise, it is null.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,10 +52,10 @@ public class SignupActivity extends AppCompatActivity {
             return;
         }
 
-        // Initialize Firebase Auth
+        // Initialize Firebase Auth instance
         mAuth = FirebaseAuth.getInstance();
 
-        // Initialize views for user input
+        // Initialize UI elements for user input
         editTextDisplayName = findViewById(R.id.editTextDisplayName);
         editTextEmail = findViewById(R.id.editTextEmail);
         editTextPassword = findViewById(R.id.editTextPassword);
@@ -59,15 +65,21 @@ public class SignupActivity extends AppCompatActivity {
         // Set click listener for the sign-up button
         buttonSignup.setOnClickListener(v -> signupUser());
 
-        // Set click listener for the cancel button
+        // Set click listener for the cancel button to close the activity
         buttonCancel.setOnClickListener(v -> finish());
     }
 
+    /**
+     * This method is responsible for signing up the user.
+     * It validates the user input, shows a loading dialog, and creates the user with Firebase Authentication.
+     */
     private void signupUser() {
+        // Retrieve user input
         String displayName = editTextDisplayName.getText().toString().trim();
         String email = editTextEmail.getText().toString().trim();
         String password = editTextPassword.getText().toString().trim();
 
+        // Validate user input
         if (!validateInput(displayName, email, password)) {
             return;
         }
@@ -83,15 +95,17 @@ public class SignupActivity extends AppCompatActivity {
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
-                        progressDialog.dismiss();
+                        progressDialog.dismiss();  // Dismiss the loading dialog
+
                         if (task.isSuccessful()) {
                             // Sign-up success
                             FirebaseUser user = mAuth.getCurrentUser();
                             if (user != null) {
+                                // Set display name for the user
                                 setDisplayName(user, displayName);
                             }
                         } else {
-                            // If sign-up fails, display an error message to the user.
+                            // If sign-up fails, display an error message to the user
                             String errorMessage = getErrorMessage(task);
                             Log.e(TAG, "Signup failed: " + errorMessage);
                             Toast.makeText(SignupActivity.this, "Signup failed: " + errorMessage, Toast.LENGTH_LONG).show();
@@ -100,6 +114,14 @@ public class SignupActivity extends AppCompatActivity {
                 });
     }
 
+    /**
+     * Validates the user input fields for sign-up.
+     *
+     * @param displayName The display name entered by the user.
+     * @param email The email entered by the user.
+     * @param password The password entered by the user.
+     * @return true if all input fields are valid, false otherwise.
+     */
     private boolean validateInput(String displayName, String email, String password) {
         if (TextUtils.isEmpty(displayName)) {
             editTextDisplayName.setError("Display name is required.");
@@ -134,6 +156,12 @@ public class SignupActivity extends AppCompatActivity {
         return true;
     }
 
+    /**
+     * Sets the display name for the newly created user.
+     *
+     * @param user The FirebaseUser object representing the current user.
+     * @param displayName The display name to be set for the user.
+     */
     private void setDisplayName(FirebaseUser user, String displayName) {
         UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
                 .setDisplayName(displayName)
@@ -144,9 +172,12 @@ public class SignupActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<Void> profileTask) {
                         if (profileTask.isSuccessful()) {
+                            // Notify the user that the sign-up was successful
                             Toast.makeText(SignupActivity.this, "Signup successful", Toast.LENGTH_SHORT).show();
+                            // Redirect to the login activity
                             redirectToLoginActivity(user.getEmail(), displayName);
                         } else {
+                            // Handle error in setting the display name
                             String error = profileTask.getException() != null ? profileTask.getException().getMessage() : "Unknown error";
                             Log.e(TAG, "Failed to set display name: " + error);
                             Toast.makeText(SignupActivity.this, "Failed to set display name. Please try again.", Toast.LENGTH_LONG).show();
@@ -155,6 +186,12 @@ public class SignupActivity extends AppCompatActivity {
                 });
     }
 
+    /**
+     * Redirects the user to the login activity after successful sign-up.
+     *
+     * @param email The user's email to be passed to the login activity.
+     * @param displayName The user's display name to be passed to the login activity.
+     */
     private void redirectToLoginActivity(String email, String displayName) {
         Intent intent = new Intent(SignupActivity.this, LoginActivity.class);
         intent.putExtra("USER_NAME", displayName);
@@ -163,6 +200,12 @@ public class SignupActivity extends AppCompatActivity {
         finish();
     }
 
+    /**
+     * Retrieves the error message from a Firebase task if available.
+     *
+     * @param task The task result from Firebase.
+     * @return The error message or "Unknown error occurred" if no specific error message is available.
+     */
     private String getErrorMessage(@NonNull Task<AuthResult> task) {
         return task.getException() != null ? task.getException().getMessage() : "Unknown error occurred.";
     }

@@ -33,12 +33,18 @@
     <string name="app_subtitle">App Subtitle</string>
     <string name="reset_password">Reset Password</string>
     <string name="sight_tool_screen">Sight Tool Screen</string>
-    <!--    <string name="menu_exit">Exit</string>
-        <string name="home_text">Home Text</string>
-        <string name="slideshow_text">Slideshow Text</string>
-        <string name="gallery_text">Gallery Text</string>
-        <string name="exit_login">Exit</string>-->
 
+    <!-- API Keys -->
     <string name="google_maps_key">AIzaSyBcA4lmH3hbZy8v20-QZVwh72kovT7YJN8</string>
+    <string name="open_weather_key">3c30b7176101fb45daa059c644805929</string>
+    <!-- Navigation Drawer Titles -->
     <string name="find_shooting_range_near_me">Find Shooting Range Near Me</string>
+    <string name="title_activity_settings">Settings</string>
+    <string name="title_activity_about">About</string>
+    <string name="version">Version:</string>
+    <string name="developers">Developers:</string>
+    <string name="license">License:</string>
+    <string name="description">Description:</string>
+    <string name="title_activity_weather">Weather</string>
+    <string name="title_activity_maps">Maps</string>
 </resources>
