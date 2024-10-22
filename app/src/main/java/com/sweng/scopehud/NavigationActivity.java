@@ -86,29 +86,35 @@ public abstract class NavigationActivity extends AppCompatActivity implements Na
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
         Intent intent;
-        // Handle each item based on the ID using if-else structure
+
         if (id == R.id.nav_logout) {
             showLogoutConfirmation(); // Handle logout action
         } else if (id == R.id.nav_sight_tool) {
-            // Navigate to SightToolActivity
             intent = new Intent(this, SightToolActivity.class);
             intent.putExtra("currentUser", currentUser);
             startActivity(intent);
         } else if (id == R.id.nav_scopes) {
-            // Navigate to MainActivity
             intent = new Intent(this, MainActivity.class);
             intent.putExtra("currentUser", currentUser);
             startActivity(intent);
         } else if (id == R.id.nav_weather_tool) {
-            Toast.makeText(this, "Weather Tool selected", Toast.LENGTH_SHORT).show();
+            // Navigate to the WeatherActivity
+            intent = new Intent(this, WeatherActivity.class);
+            startActivity(intent);
         } else if (id == R.id.nav_find_range) {
-            // Find nearby shooting ranges
-            findShootingRangeNearby();
+            // Navigate to the MapsActivity for finding shooting ranges
+            intent = new Intent(this, MapsActivity.class);
+            startActivity(intent);
+        } else if (id == R.id.nav_about) {  // Handle About section navigation
+            intent = new Intent(this, AboutActivity.class);
+            startActivity(intent);
+        } else if (id == R.id.nav_settings) {  // Handle Settings section navigation
+            intent = new Intent(this, SettingsActivity.class);
+            startActivity(intent);
         } else {
             Toast.makeText(this, "Unknown navigation option selected", Toast.LENGTH_SHORT).show();
         }
 
-        // Close the drawer after an item is clicked
         if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
             drawerLayout.closeDrawer(GravityCompat.START);
         }
