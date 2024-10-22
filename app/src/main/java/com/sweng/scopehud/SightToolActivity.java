@@ -32,7 +32,7 @@ public class SightToolActivity extends NavigationActivity {
         // Set up the navigation drawer
         DrawerLayout drawerLayout = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
-        setupDrawer(toolbar, drawerLayout, navigationView); // Call the method from BaseActivity
+        setupDrawer(toolbar, drawerLayout, navigationView, currentUser); // Call the method from BaseActivity
 
         // Initialize views
         btnPlus = findViewById(R.id.plusButton);

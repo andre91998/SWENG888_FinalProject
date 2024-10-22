@@ -1,7 +1,6 @@
 package com.sweng.scopehud;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -12,13 +11,13 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.app.AlertDialog;
+
 import com.google.firebase.auth.FirebaseAuth;
 
 public class LoginActivity extends AppCompatActivity {
 
     private EditText editTextEmail, editTextPassword; // Input fields for email and password
-    private Button buttonLogin; // Buttons to log in
+    private Button buttonLogin; // Button to log in
     private TextView textViewSignup; // TextView to navigate to signup
     private CheckBox checkBoxRememberMe; // Checkbox for remembering user credentials
     private FirebaseAuth mAuth; // Firebase Authentication instance
@@ -54,11 +53,12 @@ public class LoginActivity extends AppCompatActivity {
 
         // Set click listener for signup text
         textViewSignup.setOnClickListener(v -> openSignupActivity());
-
     }
 
+    /**
+     * Load saved email and password from SharedPreferences if Remember Me is checked.
+     */
     private void loadSavedCredentials() {
-        // Load saved email and password from SharedPreferences
         String email = sharedPreferences.getString(KEY_EMAIL, "");
         String password = sharedPreferences.getString(KEY_PASSWORD, "");
         boolean rememberMe = sharedPreferences.getBoolean(KEY_REMEMBER_ME, false);
@@ -70,12 +70,14 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Perform the login using Firebase Authentication.
+     */
     private void loginUser() {
-        // Retrieve email and password from input fields
         String email = editTextEmail.getText().toString().trim();
         String password = editTextPassword.getText().toString().trim();
 
-        // Validate input
+        // Validate input fields
         if (TextUtils.isEmpty(email)) {
             editTextEmail.setError("Email is required.");
             editTextEmail.requestFocus();
@@ -91,7 +93,7 @@ public class LoginActivity extends AppCompatActivity {
         mAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, task -> {
                     if (task.isSuccessful()) {
-                        // Login success
+                        // Login successful
                         Toast.makeText(LoginActivity.this, "Login successful", Toast.LENGTH_SHORT).show();
 
                         // Save credentials if Remember Me is checked
@@ -103,14 +105,17 @@ public class LoginActivity extends AppCompatActivity {
 
                         redirectToMainActivity();
                     } else {
-                        // Login failed
-                        Toast.makeText(LoginActivity.this, "Login failed: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                        // Login failed, display error message
+                        String errorMessage = task.getException() != null ? task.getException().getMessage() : "Login failed.";
+                        Toast.makeText(LoginActivity.this, "Login failed: " + errorMessage, Toast.LENGTH_SHORT).show();
                     }
                 });
     }
 
+    /**
+     * Save email and password to SharedPreferences when Remember Me is checked.
+     */
     private void saveCredentials(String email, String password) {
-        // Save email and password to SharedPreferences
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString(KEY_EMAIL, email);
         editor.putString(KEY_PASSWORD, password);
@@ -118,8 +123,10 @@ public class LoginActivity extends AppCompatActivity {
         editor.apply();
     }
 
+    /**
+     * Clear saved email and password from SharedPreferences when Remember Me is unchecked.
+     */
     private void clearSavedCredentials() {
-        // Clear saved email and password from SharedPreferences
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.remove(KEY_EMAIL);
         editor.remove(KEY_PASSWORD);
@@ -127,24 +134,20 @@ public class LoginActivity extends AppCompatActivity {
         editor.apply();
     }
 
+    /**
+     * Open the SignupActivity when the signup TextView is clicked.
+     */
     private void openSignupActivity() {
         Intent intent = new Intent(LoginActivity.this, SignupActivity.class);
         startActivity(intent);
     }
 
+    /**
+     * Redirect the user to the MainActivity after a successful login.
+     */
     private void redirectToMainActivity() {
         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
         startActivity(intent);
         finish();
-    }
-
-    private void showExitConfirmationDialog() {
-        // Show a confirmation dialog to exit the app
-        new AlertDialog.Builder(this)
-                .setTitle("Exit App")
-                .setMessage("Are you sure you want to exit the app?")
-                .setPositiveButton("Yes", (dialog, which) -> finish())
-                .setNegativeButton("No", null)
-                .show();
     }
 }
