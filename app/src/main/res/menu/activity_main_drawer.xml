@@ -8,14 +8,20 @@
             android:id="@+id/nav_scopes"
             android:icon="@drawable/crosshair"
             android:title="@string/menu_scopes" />
+
+        <!-- Weather Tool Menu Item -->
         <item
             android:id="@+id/nav_weather_tool"
             android:icon="@drawable/baseline_cloud_queue_24"
             android:title="@string/menu_weather" />
+
+        <!-- Sight Tool (Calculator) -->
         <item
             android:id="@+id/nav_sight_tool"
             android:icon="@drawable/icon_calculator"
             android:title="@string/menu_calculator" />
+
+        <!-- Find Shooting Range -->
         <item
             android:id="@+id/nav_find_range"
             android:icon="@drawable/ic_location_searching"
@@ -23,16 +29,20 @@
     </group>
 
     <group android:checkableBehavior="none">
+        <!-- Settings -->
         <item
             android:id="@+id/nav_settings"
             android:icon="@drawable/ic_settings"
             android:title="@string/menu_settings" />
+
+        <!-- About -->
         <item
             android:id="@+id/nav_about"
             android:icon="@drawable/ic_info"
             android:title="@string/menu_about" />
     </group>
 
+    <!-- Logout -->
     <item
         android:id="@+id/nav_logout"
         android:icon="@drawable/ic_logout"

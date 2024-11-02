@@ -41,23 +41,32 @@ android {
 }
 
 dependencies {
+    // Google Play Services Maps
+    implementation 'com.google.android.gms:play-services-maps:18.0.2'
 
+    // Google Play Services Location
+    implementation 'com.google.android.gms:play-services-location:21.0.1'
+
+        // Google Places API
+    implementation 'com.google.android.libraries.places:places:3.1.0'
+
+        // Firebase (if you're using Firebase in your project)
     implementation platform('com.google.firebase:firebase-bom:32.0.0')
     implementation 'com.google.firebase:firebase-auth'
     implementation 'com.google.firebase:firebase-firestore'
-    // Maps SDK for Android
-    implementation "com.google.android.gms:play-services-maps:19.0.0"
+    implementation 'com.google.firebase:firebase-storage'
 
-    // Add the dependencies for any other desired Firebase products
-    // https://firebase.google.com/docs/android/setup#available-libraries
-
-    implementation libs.appcompat
+    // Other dependencies you need
+    implementation 'androidx.core:core-ktx:1.10.1'
+    implementation 'androidx.appcompat:appcompat:1.6.1'
+    implementation 'com.google.android.material:material:1.9.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     implementation libs.material
-    implementation libs.constraintlayout
     implementation libs.lifecycle.livedata.ktx
     implementation libs.lifecycle.viewmodel.ktx
     implementation libs.navigation.fragment
     implementation libs.navigation.ui
+    implementation libs.volley
     testImplementation libs.junit
     androidTestImplementation libs.ext.junit
     androidTestImplementation libs.espresso.core

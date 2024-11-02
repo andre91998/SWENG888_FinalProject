@@ -1,7 +1,6 @@
 package com.sweng.scopehud;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -11,10 +10,7 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-
 import com.google.firebase.auth.FirebaseAuth;
 
 public class LoginActivity extends AppCompatActivity {
@@ -62,6 +58,7 @@ public class LoginActivity extends AppCompatActivity {
      * Load saved email and password from SharedPreferences if Remember Me is checked.
      */
     private void loadSavedCredentials() {
+        // Load saved email and password from SharedPreferences
         String email = sharedPreferences.getString(KEY_EMAIL, "");
         String password = sharedPreferences.getString(KEY_PASSWORD, "");
         boolean rememberMe = sharedPreferences.getBoolean(KEY_REMEMBER_ME, false);
@@ -77,6 +74,7 @@ public class LoginActivity extends AppCompatActivity {
      * Perform the login using Firebase Authentication.
      */
     private void loginUser() {
+        // Retrieve email and password from input fields
         String email = editTextEmail.getText().toString().trim();
         String password = editTextPassword.getText().toString().trim();
 
@@ -119,6 +117,7 @@ public class LoginActivity extends AppCompatActivity {
      * Save email and password to SharedPreferences when Remember Me is checked.
      */
     private void saveCredentials(String email, String password) {
+        // Save email and password to SharedPreferences
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString(KEY_EMAIL, email);
         editor.putString(KEY_PASSWORD, password);
@@ -130,6 +129,7 @@ public class LoginActivity extends AppCompatActivity {
      * Clear saved email and password from SharedPreferences when Remember Me is unchecked.
      */
     private void clearSavedCredentials() {
+        // Clear saved email and password from SharedPreferences
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.remove(KEY_EMAIL);
         editor.remove(KEY_PASSWORD);
@@ -152,26 +152,5 @@ public class LoginActivity extends AppCompatActivity {
         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
         startActivity(intent);
         finish();
-    }
-
-    /**
-     * Show a confirmation dialog to exit the app when the back button is pressed.
-     */
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        showExitConfirmationDialog();
-    }
-
-    /**
-     * Show a confirmation dialog to exit the app.
-     */
-    private void showExitConfirmationDialog() {
-        new AlertDialog.Builder(this)
-                .setTitle("Exit App")
-                .setMessage("Are you sure you want to exit the app?")
-                .setPositiveButton("Yes", (dialog, which) -> finish())
-                .setNegativeButton("No", null)
-                .show();
     }
 }

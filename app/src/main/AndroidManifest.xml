@@ -27,6 +27,11 @@
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
 
+        <!-- OpenWeatherMap API Key (replace with your actual API key) -->
+        <meta-data
+            android:name="com.openweathermap.API_KEY"
+            android:value="@string/open_weather_key" />
+
         <!-- For backward compatibility with older Apache HTTP libraries -->
         <uses-library
             android:name="org.apache.http.legacy"
@@ -55,6 +60,13 @@
             android:exported="false"
             android:theme="@style/Theme.ScopeHUD.NoActionBar" />
 
+        <!-- Sight Tool Activity -->
+        <activity
+            android:name=".SightToolActivity"
+            android:exported="false"
+            android:label="@string/title_activity_sight_tool"
+            android:theme="@style/Theme.ScopeHUD.NoActionBar" />
+
         <!-- Main Activity (Home Screen) -->
         <activity
             android:name=".MainActivity"
@@ -62,12 +74,34 @@
             android:label="@string/title_activity_main"
             android:theme="@style/Theme.ScopeHUD.NoActionBar" />
 
-        <!-- Sight Tool Activity -->
+        <!-- Settings Activity -->
         <activity
-            android:name=".SightToolActivity"
+            android:name=".SettingsActivity"
             android:exported="false"
-            android:label="@string/title_activity_sight_tool"
+            android:label="@string/title_activity_settings"
             android:theme="@style/Theme.ScopeHUD.NoActionBar" />
+
+        <!-- About Activity -->
+        <activity
+            android:name=".AboutActivity"
+            android:exported="false"
+            android:label="@string/title_activity_about"
+            android:theme="@style/Theme.ScopeHUD.NoActionBar" />
+
+        <!-- Weather Activity -->
+        <activity
+            android:name=".WeatherActivity"
+            android:exported="false"
+            android:label="@string/title_activity_weather"
+            android:theme="@style/Theme.ScopeHUD.NoActionBar" />
+
+        <!-- Maps Activity -->
+        <activity
+            android:name=".MapsActivity"
+            android:exported="false"
+            android:label="@string/title_activity_maps"
+            android:theme="@style/Theme.ScopeHUD.NoActionBar" />
+
     </application>
 
 </manifest>
