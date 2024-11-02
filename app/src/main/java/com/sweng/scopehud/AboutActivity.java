@@ -2,9 +2,17 @@ package com.sweng.scopehud;
 
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.drawerlayout.widget.DrawerLayout;
+
 import android.widget.TextView;
 
-public class AboutActivity extends AppCompatActivity {
+import com.google.android.material.navigation.NavigationView;
+
+public class AboutActivity extends NavigationActivity {
+
+    // UI components
+    private Toolbar toolbar;
 
     /**
      * This method is called when the activity is first created.
@@ -39,5 +47,15 @@ public class AboutActivity extends AppCompatActivity {
                 "The app allows users to make precise adjustments to their scope’s windage (left/right) and elevation (up/down) controls to ensure the crosshairs align with the point of impact. " +
                 "These adjustments are typically measured in MOA (Minute of Angle) or MRAD (Milliradian), but for this app, we will be using milliradians (MRAD). Once the user inputs their adjustments " +
                 "and the scope is fully zeroed, the app can save this data to the user’s profile for future reference, ensuring they always have access to their zeroing details for different scopes.");
+
+        // Setup Toolbar
+        toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar); // Set toolbar as ActionBar
+
+        // Initialize DrawerLayout and NavigationView
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
+        NavigationView navigationView = findViewById(R.id.nav_view);
+
+        setupDrawer(toolbar, drawer, navigationView, currentUser);
     }
 }

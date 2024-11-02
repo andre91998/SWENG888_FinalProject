@@ -10,7 +10,10 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.drawerlayout.widget.DrawerLayout;
 
+import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
@@ -21,10 +24,12 @@ import com.google.firebase.storage.StorageReference;
 import java.util.HashMap;
 import java.util.Map;
 
-public class SettingsActivity extends AppCompatActivity {
+public class SettingsActivity extends NavigationActivity {
 
     private static final int PICK_IMAGE_REQUEST = 1;
 
+    // UI components
+    private Toolbar toolbar;
     private ImageView profileImageView;
     private EditText usernameEditText, addressEditText, cityEditText, stateEditText, countryEditText;
     private Button updateProfileButton, deleteAccountButton, uploadProfileButton;
@@ -70,6 +75,16 @@ public class SettingsActivity extends AppCompatActivity {
         updateProfileButton.setOnClickListener(v -> updateUserProfile());
         deleteAccountButton.setOnClickListener(v -> deleteAccount());
         uploadProfileButton.setOnClickListener(v -> openFileChooser());
+
+        // Setup Toolbar
+        toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar); // Set toolbar as ActionBar
+
+        // Initialize DrawerLayout and NavigationView
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
+        NavigationView navigationView = findViewById(R.id.nav_view);
+
+        setupDrawer(toolbar, drawer, navigationView, currentUser);
     }
 
     /**
