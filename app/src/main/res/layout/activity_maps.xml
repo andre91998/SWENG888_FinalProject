@@ -1,41 +1,29 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    tools:context=".MapsActivity">
 
-    <!-- Google Map Fragment -->
-    <fragment
-        android:id="@+id/map"
-        android:name="com.google.android.gms.maps.SupportMapFragment"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="5" /> <!-- Set the weight for map to occupy most of the screen -->
-
-    <!-- Search bar for city/zip code -->
-    <LinearLayout
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/autocompleteFragment"
+        android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:padding="10dp">
+        android:layout_alignParentTop="true"
+        android:background="@android:color/white" />
 
-        <EditText
-            android:id="@+id/searchBar"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:hint="Enter city or zip code" />
+    <com.google.android.gms.maps.MapView
+        android:id="@+id/mapContainer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/autocompleteFragment"
+        android:contentDescription="@string/map_view_showing_locations_and_current_position" />
 
-        <Button
-            android:id="@+id/searchButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Search" />
-    </LinearLayout>
-
-    <!-- RecyclerView for shooting ranges -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rangesRecyclerView"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:scrollbars="vertical" />
-</LinearLayout>
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_below="@id/mapContainer"
+        android:background="@android:color/white" />
+</RelativeLayout>

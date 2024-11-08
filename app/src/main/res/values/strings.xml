@@ -35,7 +35,7 @@
     <string name="sight_tool_screen">Sight Tool Screen</string>
 
     <!-- API Keys -->
-    <string name="google_maps_key">AIzaSyBcA4lmH3hbZy8v20-QZVwh72kovT7YJN8</string>
+    <string name="google_maps_key">AIzaSyDAS_rSFKp1a_9ilOhaFELNrXIvvf0p6nw</string>
     <string name="open_weather_key">3c30b7176101fb45daa059c644805929</string>
     <!-- Navigation Drawer Titles -->
     <string name="find_shooting_range_near_me">Find Shooting Range Near Me</string>
@@ -47,4 +47,6 @@
     <string name="description">Description:</string>
     <string name="title_activity_weather">Weather</string>
     <string name="title_activity_maps">Maps</string>
+    <string name="navigate_to_location">Navigate to Location</string>
+    <string name="map_view_showing_locations_and_current_position">Map view showing locations and current position</string>
 </resources>

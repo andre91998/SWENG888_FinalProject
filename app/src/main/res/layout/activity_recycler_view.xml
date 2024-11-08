@@ -2,9 +2,21 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <!-- MapView to display the Google Map -->
+    <com.google.android.gms.maps.MapView
+        android:id="@+id/mapContainer"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_alignParentTop="true" />
+
+    <!-- RecyclerView to display markers below the MapView -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="wrap_content"
+        android:layout_below="@id/mapContainer"
+        android:layout_alignParentBottom="true"
+        android:background="@android:color/white" />
 
 </RelativeLayout>
