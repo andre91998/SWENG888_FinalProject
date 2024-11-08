@@ -3,19 +3,15 @@ package com.sweng.scopehud;
 import java.util.Objects;
 
 public class Range {
-    private String name;
+    private String id;
     private double latitude;
     private double longitude;
+    private String name; // Optional if needed
+    private double distance; // Optional if needed
 
-    /**
-     * Constructor for creating a Range object.
-     *
-     * @param name      The name of the range.
-     * @param latitude  The latitude coordinate of the range.
-     * @param longitude The longitude coordinate of the range.
-     */
-    public Range(String name, double latitude, double longitude) {
-        this.name = name;
+    // Constructor with latitude and longitude
+    public Range(String id, double latitude, double longitude) {
+        this.id = id;
         this.latitude = latitude;
         this.longitude = longitude;
     }

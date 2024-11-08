@@ -8,15 +8,17 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:layout_alignParentTop="true" />
+        android:layout_alignParentTop="true"
+        android:layout_above="@id/recyclerView"
+        android:contentDescription="@string/map_view_showing_locations_and_current_position" />
 
     <!-- RecyclerView to display markers below the MapView -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/mapContainer"
+        android:layout_height="150dp"
         android:layout_alignParentBottom="true"
-        android:background="@android:color/white" />
+        android:background="@android:color/white"
+        android:padding="8dp" />
 
 </RelativeLayout>

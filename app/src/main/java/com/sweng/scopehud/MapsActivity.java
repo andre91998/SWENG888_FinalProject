@@ -81,8 +81,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                                 .title(place.getName())
                                 .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE))); // Optional customization
 
-                        // Launch driving directions from current location to the selected place
-                        openGoogleMapsDirections(selectedLocation);
+                        // Call the method correctly
+                        addRangeToRecyclerView(place.getId(), place.getLatLng(), place.getName());
                     }
                 }
 
@@ -119,15 +119,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         startLocationUpdates();
 
         // Allow user to add markers by long-pressing on the map
-        mMap.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
-            @Override
-            public void onMapLongClick(LatLng latLng) {
-                Marker marker = mMap.addMarker(new MarkerOptions()
-                        .position(latLng)
-                        .title("Custom Marker")
-                        .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
+        mMap.setOnMapLongClickListener(latLng -> {
+            Marker marker = mMap.addMarker(new MarkerOptions()
+                    .position(latLng)
+                    .title("Custom Marker")
+                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
 
-                // Save the marker to Firestore
+            if (marker != null) {
+                double distanceToNearest = calculateDistanceToNearestLocation(latLng);
+                addRangeToRecyclerView(marker.getId(), latLng, "Custom Marker", distanceToNearest);
                 saveMarkerToDatabase(latLng);
                 Toast.makeText(MapsActivity.this, "Marker added and saved to database", Toast.LENGTH_SHORT).show();
             }
@@ -145,6 +145,35 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         Toast.makeText(MapsActivity.this, "Marker saved successfully", Toast.LENGTH_SHORT).show())
                 .addOnFailureListener(e ->
                         Toast.makeText(MapsActivity.this, "Failed to save marker: " + e.getMessage(), Toast.LENGTH_SHORT).show());
+    }
+
+    private void addRangeToRecyclerView(String id, LatLng latLng, String name, double distance) {
+        // Create a Range object using the existing constructor
+        Range newRange = new Range(id, latLng.latitude, latLng.longitude);
+
+        // Optionally, add logic to handle `name` and `distance` if needed
+        selectedRangesList.add(newRange);
+        rangeAdapter.notifyDataSetChanged();
+    }
+
+    // Overloaded method for convenience
+    private void addRangeToRecyclerView(String id, LatLng latLng, String name) {
+        double distance = calculateDistanceToNearestLocation(latLng);
+        addRangeToRecyclerView(id, latLng, name, distance);
+    }
+
+    private double calculateDistanceToNearestLocation(LatLng latLng) {
+        float[] result = new float[1];
+        double minDistance = Double.MAX_VALUE;
+
+        for (Range range : selectedRangesList) {
+            // Replace `getLatLng()` with `getLatitude()` and `getLongitude()`
+            Location.distanceBetween(latLng.latitude, latLng.longitude, range.getLatitude(), range.getLongitude(), result);
+            if (result[0] < minDistance) {
+                minDistance = result[0];
+            }
+        }
+        return minDistance != Double.MAX_VALUE ? minDistance : 0;
     }
 
     private void getLocationPermission() {
@@ -189,53 +218,5 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 .title("Your Location")
                 .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
-    }
-
-    private void openGoogleMapsDirections(LatLng destination) {
-        if (destination != null) {
-            Uri gmmIntentUri = Uri.parse("google.navigation:q=" + destination.latitude + "," + destination.longitude + "&mode=d");
-            Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
-            mapIntent.setPackage("com.google.android.apps.maps");
-            if (mapIntent.resolveActivity(getPackageManager()) != null) {
-                startActivity(mapIntent);
-            } else {
-                Toast.makeText(this, "Google Maps is not installed", Toast.LENGTH_SHORT).show();
-            }
-        }
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        if (fusedLocationProviderClient != null) {
-            fusedLocationProviderClient.removeLocationUpdates(locationCallback);
-        }
-        if (mapView != null) {
-            mapView.onDestroy();
-        }
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        if (mapView != null) {
-            mapView.onResume();
-        }
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        if (mapView != null) {
-            mapView.onPause();
-        }
-    }
-
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        if (mapView != null) {
-            mapView.onSaveInstanceState(outState);
-        }
     }
 }

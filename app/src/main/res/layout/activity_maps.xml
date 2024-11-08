@@ -15,15 +15,17 @@
     <com.google.android.gms.maps.MapView
         android:id="@+id/mapContainer"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
         android:layout_below="@id/autocompleteFragment"
+        android:layout_above="@id/rangesRecyclerView"
+        android:layout_weight="1"
         android:contentDescription="@string/map_view_showing_locations_and_current_position" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rangesRecyclerView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="150dp"
         android:layout_alignParentBottom="true"
-        android:layout_below="@id/mapContainer"
-        android:background="@android:color/white" />
+        android:background="@android:color/white"
+        android:padding="8dp" />
 </RelativeLayout>
