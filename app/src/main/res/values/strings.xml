@@ -47,6 +47,4 @@
     <string name="description">Description:</string>
     <string name="title_activity_weather">Weather</string>
     <string name="title_activity_maps">Maps</string>
-    <string name="navigate_to_location">Navigate to Location</string>
-    <string name="map_view_showing_locations_and_current_position">Map view showing locations and current position</string>
 </resources>

@@ -5,8 +5,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
-
 public class MapsActivity extends NavigationActivity {
 
     @Override
