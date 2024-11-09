@@ -27,26 +27,34 @@
             android:id="@+id/versionTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/version" />
+            android:text="@string/version"
+            android:textColor="@android:color/white"
+            android:textSize="18sp" />
 
         <TextView
             android:id="@+id/developerTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/developers" />
+            android:text="@string/developers"
+            android:textColor="@android:color/white"
+            android:textSize="18sp" />
 
         <TextView
             android:id="@+id/licenseTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/license" />
+            android:text="@string/license"
+            android:textColor="@android:color/white"
+            android:textSize="18sp" />
 
         <TextView
             android:id="@+id/descriptionTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingTop="16dp"
-            android:text="@string/description" />
+            android:text="@string/description"
+            android:textColor="@android:color/white"
+            android:textSize="18sp" />
     </LinearLayout>
 
     <com.google.android.material.navigation.NavigationView
