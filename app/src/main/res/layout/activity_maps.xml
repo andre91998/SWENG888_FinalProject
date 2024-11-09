@@ -11,39 +11,23 @@
 
         <!-- Toolbar -->
         <androidx.appcompat.widget.Toolbar
-            android:id="@+id/tool_bar"
+            android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/colorPrimary"
             android:elevation="4dp"
             android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
 
-        <!-- MapView to display the map -->
-        <com.google.android.gms.maps.MapView
-            android:id="@+id/mapContainer"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_below="@id/tool_bar"
-            android:layout_above="@id/rangesRecyclerView"
-            android:contentDescription="@string/map_view_showing_locations_and_current_position" />
-
-        <!-- RecyclerView to display markers -->
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rangesRecyclerView"
-            android:layout_width="match_parent"
-            android:layout_height="150dp"
-            android:layout_alignParentBottom="true"
-            android:background="@android:color/white"
-            android:padding="8dp" />
     </RelativeLayout>
 
     <!-- NavigationView for the drawer menu -->
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/nav_view"
-        android:layout_width="wrap_content"
+        android:layout_width="280dp"
         android:layout_height="match_parent"
         android:layout_gravity="start"
         android:fitsSystemWindows="true"
-        app:menu="@menu/activity_main_drawer" />
+        app:menu="@menu/activity_main_drawer"
+        app:headerLayout="@layout/nav_header_main" />
 
 </androidx.drawerlayout.widget.DrawerLayout>

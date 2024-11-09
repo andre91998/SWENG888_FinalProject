@@ -1,53 +1,56 @@
 package com.sweng.scopehud;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.MenuItem;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.MapView;
-import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-public class MapsActivity extends NavigationActivity implements OnMapReadyCallback {
-    private GoogleMap mMap;
-    private MapView mapView;
+public class MapsActivity extends NavigationActivity {
+
     private FirebaseUser currentUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_maps);
 
-        // Initialize the toolbar
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-
-        // Initialize MapView
-        mapView = findViewById(R.id.mapContainer);
-        if (mapView != null) {
-            mapView.onCreate(savedInstanceState);
-            mapView.getMapAsync(this);
+        // Launch Google Maps intent with "shooting ranges near me" query
+        Uri gmmIntentUri = Uri.parse("geo:0,0?q=shooting ranges near me");
+        Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+        mapIntent.setPackage("com.google.android.apps.maps");
+        if (mapIntent.resolveActivity(getPackageManager()) != null) {
+            startActivity(mapIntent);
+            finish(); // Close MapsActivity after launching the intent
+        } else {
+            Toast.makeText(this, "Google Maps is not installed", Toast.LENGTH_SHORT).show();
+            finish(); // Close MapsActivity if the intent fails
         }
-
-        // Get the current user from FirebaseAuth
-        currentUser = FirebaseAuth.getInstance().getCurrentUser();
-
-        // Set up the navigation drawer
-        DrawerLayout drawerLayout = findViewById(R.id.drawer_layout);
-        NavigationView navigationView = findViewById(R.id.nav_view);
-        setupDrawer(toolbar, drawerLayout, navigationView, currentUser);
     }
 
     @Override
-    public void onMapReady(@NonNull GoogleMap googleMap) {
-        mMap = googleMap;
-        mMap.getUiSettings().setZoomControlsEnabled(true);
-        mMap.getUiSettings().setMyLocationButtonEnabled(true);
-        mMap.getUiSettings().setMapToolbarEnabled(true);
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        int id = item.getItemId();
 
-        // Additional map setup logic can go here if needed
+        if (id == R.id.nav_find_range) {
+            // This code block is no longer necessary as it is already handled in `onCreate`
+        } else {
+            // Call the parent method to handle other items
+            return super.onNavigationItemSelected(item);
+        }
+
+        // Close the drawer after an item is selected
+        if (drawerLayout != null && drawerLayout.isDrawerOpen(GravityCompat.START)) {
+            drawerLayout.closeDrawer(GravityCompat.START);
+        }
+        return true;
     }
 }
