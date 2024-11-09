@@ -1,31 +1,49 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".MapsActivity">
+    android:layout_height="match_parent">
 
-    <androidx.fragment.app.FragmentContainerView
-        android:id="@+id/autocompleteFragment"
-        android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment"
+    <!-- Main content layout -->
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:background="@android:color/white" />
+        android:layout_height="match_parent">
 
-    <com.google.android.gms.maps.MapView
-        android:id="@+id/mapContainer"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_below="@id/autocompleteFragment"
-        android:layout_above="@id/rangesRecyclerView"
-        android:layout_weight="1"
-        android:contentDescription="@string/map_view_showing_locations_and_current_position" />
+        <!-- Toolbar -->
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/tool_bar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            android:elevation="4dp"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rangesRecyclerView"
-        android:layout_width="match_parent"
-        android:layout_height="150dp"
-        android:layout_alignParentBottom="true"
-        android:background="@android:color/white"
-        android:padding="8dp" />
-</RelativeLayout>
+        <!-- MapView to display the map -->
+        <com.google.android.gms.maps.MapView
+            android:id="@+id/mapContainer"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/tool_bar"
+            android:layout_above="@id/rangesRecyclerView"
+            android:contentDescription="@string/map_view_showing_locations_and_current_position" />
+
+        <!-- RecyclerView to display markers -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rangesRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:layout_alignParentBottom="true"
+            android:background="@android:color/white"
+            android:padding="8dp" />
+    </RelativeLayout>
+
+    <!-- NavigationView for the drawer menu -->
+    <com.google.android.material.navigation.NavigationView
+        android:id="@+id/nav_view"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:fitsSystemWindows="true"
+        app:menu="@menu/activity_main_drawer" />
+
+</androidx.drawerlayout.widget.DrawerLayout>
