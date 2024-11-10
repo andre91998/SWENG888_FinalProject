@@ -5,24 +5,18 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-
 import com.sweng.scopehud.util.Scope;
 import com.sweng.scopehud.util.ScopeZero;
-
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.stream.Collectors;
 
-public class DBHandler extends SQLiteOpenHelper implements Serializable {
+public class DBHandler extends SQLiteOpenHelper {
 
-    // Database Name
+    // Database constants
     private static final String DB_NAME = "scopeDB";
+    private static final int DB_VERSION = 2;
 
-    // Database version
-    private static final int DB_VERSION = 1;
-
-    //Column Names
+    // Table and column names for Scopes
     private static final String SCOPE_TABLE_NAME = "scopes";
     private static final String ID_COL = "id";
     private static final String NAME_COL = "name";
@@ -34,79 +28,136 @@ public class DBHandler extends SQLiteOpenHelper implements Serializable {
     private static final String ELEVATION_COL = "zeroelevation";
     private static final String DATE_COL = "zerodate";
 
-    // creating a constructor for our database handler.
+    // Table and column names for User Settings
+    private static final String USER_SETTINGS_TABLE_NAME = "user_settings";
+    private static final String USER_ID_COL = "user_id";
+    private static final String USERNAME_COL = "username";
+    private static final String ADDRESS_COL = "address";
+    private static final String CITY_COL = "city";
+    private static final String STATE_COL = "state";
+    private static final String COUNTRY_COL = "country";
+    private static final String PROFILE_IMAGE_URI_COL = "profile_image_uri";
+
     public DBHandler(Context context) {
         super(context, DB_NAME, null, DB_VERSION);
     }
 
-    // below method is for creating a database by running a sqlite query
     @Override
     public void onCreate(SQLiteDatabase db) {
-        // SQLITE query to set column names
-        // along with their data types.
-        String query = "CREATE TABLE " + SCOPE_TABLE_NAME + " ("
+        // Create Scopes table
+        String createScopesTable = "CREATE TABLE " + SCOPE_TABLE_NAME + " ("
                 + ID_COL + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-                + NAME_COL + " TEXT,"
-                + BRAND_COL + " TEXT,"
-                + MAXMAG_COL + " REAL,"
-                + VARMAG_COL + " INTEGER,"
-                + DISTANCE_COL + " INTEGER,"
-                + WINDAGE_COL + " REAL,"
-                + ELEVATION_COL + " REAL,"
-                + DATE_COL + " INTEGER)"; //DATE IS STORED IN UNIX TIME (seconds since  1970-01-01 00:00:00 UTC)
+                + NAME_COL + " TEXT, "
+                + BRAND_COL + " TEXT, "
+                + MAXMAG_COL + " REAL, "
+                + VARMAG_COL + " INTEGER, "
+                + DISTANCE_COL + " INTEGER, "
+                + WINDAGE_COL + " REAL, "
+                + ELEVATION_COL + " REAL, "
+                + DATE_COL + " INTEGER)";
+        db.execSQL(createScopesTable);
 
-        // execute query
-        db.execSQL(query);
-    }
-
-    // this method is use to add new product table entry
-    public void addNewScope(String scopeName, String scopeBrand, float scopeMaxMagnification,
-                            boolean scopeHasVariableMagnification, int zeroDistance,
-                            float zeroWindage, float zeroElevation, Date zeroDate) {
-
-        SQLiteDatabase db = this.getWritableDatabase();
-
-        ContentValues values = new ContentValues();
-
-        values.put(NAME_COL, scopeName);
-        values.put(BRAND_COL, scopeBrand);
-        values.put(MAXMAG_COL, scopeMaxMagnification);
-        values.put(VARMAG_COL, scopeHasVariableMagnification ? 1 : 0);
-        values.put(DISTANCE_COL, zeroDistance);
-        values.put(WINDAGE_COL, zeroWindage);
-        values.put(ELEVATION_COL, zeroElevation);
-        values.put(DATE_COL, zeroDate.getTime());
-
-        db.insert(SCOPE_TABLE_NAME, null, values);
-
-        db.close();
-    }
-
-    public ArrayList<Scope> queryAllScopes() {
-        SQLiteDatabase db = this.getReadableDatabase();
-
-        Cursor cursorScopes = db.rawQuery("SELECT * FROM " + SCOPE_TABLE_NAME, null);
-
-        ArrayList<Scope>  scopeList = new ArrayList<Scope>();
-
-        if (cursorScopes.moveToFirst()) {
-            do {
-                scopeList.add(new Scope(cursorScopes.getInt(0),
-                        cursorScopes.getString(1), cursorScopes.getString(2),
-                        cursorScopes.getFloat(3), cursorScopes.getInt(4) == 1,
-                        new ScopeZero(cursorScopes.getInt(5), cursorScopes.getFloat(6),
-                                cursorScopes.getFloat(7), new Date(cursorScopes.getLong(7)))));
-            } while(cursorScopes.moveToNext());
-        }
-
-        cursorScopes.close();
-        return scopeList;
+        // Create User Settings table
+        String createUserSettingsTable = "CREATE TABLE " + USER_SETTINGS_TABLE_NAME + " ("
+                + USER_ID_COL + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+                + USERNAME_COL + " TEXT, "
+                + ADDRESS_COL + " TEXT, "
+                + CITY_COL + " TEXT, "
+                + STATE_COL + " TEXT, "
+                + COUNTRY_COL + " TEXT, "
+                + PROFILE_IMAGE_URI_COL + " TEXT)";
+        db.execSQL(createUserSettingsTable);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        // this method is called to check if the table exists already.
         db.execSQL("DROP TABLE IF EXISTS " + SCOPE_TABLE_NAME);
+        db.execSQL("DROP TABLE IF EXISTS " + USER_SETTINGS_TABLE_NAME);
         onCreate(db);
+    }
+
+    // Method to insert or update user settings
+    public void upsertUserSettings(int userId, String username, String address, String city, String state, String country, String profileImageUri) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(USERNAME_COL, username);
+        values.put(ADDRESS_COL, address);
+        values.put(CITY_COL, city);
+        values.put(STATE_COL, state);
+        values.put(COUNTRY_COL, country);
+        values.put(PROFILE_IMAGE_URI_COL, profileImageUri);
+
+        // Check if user settings exist
+        Cursor cursor = db.query(USER_SETTINGS_TABLE_NAME, null, USER_ID_COL + "=?", new String[]{String.valueOf(userId)}, null, null, null);
+        if (cursor != null && cursor.moveToFirst()) {
+            // Update existing record
+            db.update(USER_SETTINGS_TABLE_NAME, values, USER_ID_COL + "=?", new String[]{String.valueOf(userId)});
+        } else {
+            // Insert new record
+            values.put(USER_ID_COL, userId); // Ensure the user ID is included for a new record
+            db.insert(USER_SETTINGS_TABLE_NAME, null, values);
+        }
+        if (cursor != null) {
+            cursor.close();
+        }
+        db.close();
+    }
+
+    // Method to get user settings
+    public Cursor getUserSettings(int userId) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        return db.query(USER_SETTINGS_TABLE_NAME, null, USER_ID_COL + "=?",
+                new String[]{String.valueOf(userId)}, null, null, null);
+    }
+
+    // Method to update user settings
+    public void updateUserSettings(int userId, String username, String address, String city, String state, String country, String profileImageUri) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(USERNAME_COL, username);
+        values.put(ADDRESS_COL, address);
+        values.put(CITY_COL, city);
+        values.put(STATE_COL, state);
+        values.put(COUNTRY_COL, country);
+        values.put(PROFILE_IMAGE_URI_COL, profileImageUri);
+
+        db.update(USER_SETTINGS_TABLE_NAME, values, USER_ID_COL + "=?", new String[]{String.valueOf(userId)});
+        db.close();
+    }
+
+    // Method to query all scopes from the database
+    public ArrayList<Scope> queryAllScopes() {
+        ArrayList<Scope> scopeList = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM " + SCOPE_TABLE_NAME, null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                Scope scope = new Scope(
+                        cursor.getInt(cursor.getColumnIndexOrThrow(ID_COL)),
+                        cursor.getString(cursor.getColumnIndexOrThrow(NAME_COL)),
+                        cursor.getString(cursor.getColumnIndexOrThrow(BRAND_COL)),
+                        cursor.getFloat(cursor.getColumnIndexOrThrow(MAXMAG_COL)),
+                        cursor.getInt(cursor.getColumnIndexOrThrow(VARMAG_COL)) == 1,
+                        new ScopeZero(
+                                cursor.getInt(cursor.getColumnIndexOrThrow(DISTANCE_COL)),
+                                cursor.getFloat(cursor.getColumnIndexOrThrow(WINDAGE_COL)),
+                                cursor.getFloat(cursor.getColumnIndexOrThrow(ELEVATION_COL)),
+                                new Date(cursor.getLong(cursor.getColumnIndexOrThrow(DATE_COL)))
+                        )
+                );
+                scopeList.add(scope);
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        db.close();
+        return scopeList;
+    }
+
+    // Additional method for deleting user settings if needed
+    public void deleteUserSettings(int userId) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete(USER_SETTINGS_TABLE_NAME, USER_ID_COL + "=?", new String[]{String.valueOf(userId)});
+        db.close();
     }
 }
