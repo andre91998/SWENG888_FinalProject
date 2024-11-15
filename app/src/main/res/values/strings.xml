@@ -35,7 +35,7 @@
     <string name="sight_tool_screen">Sight Tool Screen</string>
 
     <!-- API Keys -->
-    <string name="google_maps_key">AIzaSyBcA4lmH3hbZy8v20-QZVwh72kovT7YJN8</string>
+    <string name="google_maps_key">AIzaSyDAS_rSFKp1a_9ilOhaFELNrXIvvf0p6nw</string>
     <string name="open_weather_key">3c30b7176101fb45daa059c644805929</string>
     <!-- Navigation Drawer Titles -->
     <string name="find_shooting_range_near_me">Find Shooting Range Near Me</string>
@@ -47,4 +47,22 @@
     <string name="description">Description:</string>
     <string name="title_activity_weather">Weather</string>
     <string name="title_activity_maps">Maps</string>
+    <string name="profile_image">Profile Image</string>
+    <string name="upload_profile_image">Upload Profile Image</string>
+    <string name="username">Username</string>
+    <string name="address">Address</string>
+    <string name="city">City</string>
+    <string name="state">State</string>
+    <string name="country">Country</string>
+    <string name="update_profile">Update Profile</string>
+    <string name="delete_account">Delete Account</string>
+    <string name="enter_city_name_or_zip_code">Enter city name or zip code</string>
+    <string name="get_weather">Get Weather</string>
+    <string name="use_current_location">Use Current Location</string>
+    <string name="location">Location</string>
+    <string name="temperature">Temperature:</string>
+    <string name="wind_speed">Wind Speed:</string>
+    <string name="wind_direction">Wind Direction:</string>
+    <string name="humidity">Humidity:</string>
+    <string name="conditions">Conditions:</string>
 </resources>

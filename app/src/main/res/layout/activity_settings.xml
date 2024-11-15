@@ -8,7 +8,7 @@
     tools:context=".MainActivity"
     android:background="#0E1A22">
 
-    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:padding="16dp">
@@ -34,9 +34,9 @@
                 android:layout_height="150dp"
                 android:layout_gravity="center"
                 android:src="@drawable/ic_profile_placeholder"
-                android:contentDescription="Profile Image"
+                android:contentDescription="@string/profile_image"
                 android:scaleType="centerCrop"
-                android:layout_marginBottom="16dp"/>
+                android:layout_marginBottom="16dp" />
 
             <!-- Button to Select Profile Image -->
             <Button
@@ -44,7 +44,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:text="Upload Profile Image"
+                android:text="@string/upload_profile_image"
+                android:textColor="@android:color/white"
+                android:padding="8dp"
                 android:layout_marginBottom="24dp" />
 
             <!-- Username Input -->
@@ -52,59 +54,77 @@
                 android:id="@+id/usernameEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Username"
+                android:layout_marginBottom="16dp"
+                android:hint="@string/username"
                 android:inputType="textPersonName"
-                android:layout_marginBottom="16dp" />
+                android:minHeight="48dp"
+                android:textColor="@android:color/white"
+                android:textColorHint="#BBBBBB" />
 
             <!-- Address Input Fields -->
             <EditText
                 android:id="@+id/addressEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Address"
+                android:layout_marginBottom="16dp"
+                android:hint="@string/address"
                 android:inputType="textPostalAddress"
-                android:layout_marginBottom="16dp" />
+                android:minHeight="48dp"
+                android:textColor="@android:color/white"
+                android:textColorHint="#BBBBBB" />
 
             <EditText
                 android:id="@+id/cityEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="City"
+                android:layout_marginBottom="16dp"
+                android:hint="@string/city"
                 android:inputType="textPostalAddress"
-                android:layout_marginBottom="16dp" />
+                android:minHeight="48dp"
+                android:textColor="@android:color/white"
+                android:textColorHint="#BBBBBB" />
 
             <EditText
                 android:id="@+id/stateEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="State"
+                android:layout_marginBottom="16dp"
+                android:hint="@string/state"
                 android:inputType="textPostalAddress"
-                android:layout_marginBottom="16dp" />
+                android:minHeight="48dp"
+                android:textColor="@android:color/white"
+                android:textColorHint="#BBBBBB" />
 
             <EditText
                 android:id="@+id/countryEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Country"
+                android:layout_marginBottom="24dp"
+                android:hint="@string/country"
                 android:inputType="textPostalAddress"
-                android:layout_marginBottom="24dp" />
+                android:minHeight="48dp"
+                android:textColor="@android:color/white"
+                android:textColorHint="#BBBBBB" />
 
             <!-- Update Profile Button -->
             <Button
                 android:id="@+id/updateProfileButton"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Update Profile"
+                android:text="@string/update_profile"
+                android:textColor="@android:color/white"
+                android:padding="8dp"
                 android:layout_marginBottom="16dp" />
 
             <!-- Delete Account Button -->
             <Button
                 android:id="@+id/deleteAccountButton"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Delete Account"
-                android:textColor="#FF0000"
-                android:backgroundTint="#FFCDD2"
+                android:text="@string/delete_account"
+                android:textColor="@android:color/white"
+                android:backgroundTint="#FF5555"
+                android:padding="8dp"
                 android:layout_marginBottom="16dp" />
 
         </LinearLayout>
