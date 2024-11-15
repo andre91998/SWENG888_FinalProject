@@ -12,14 +12,18 @@ import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.material.navigation.NavigationView;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -28,7 +32,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
 
-public class WeatherActivity extends AppCompatActivity {
+public class WeatherActivity extends NavigationActivity {
 
     private static final String TAG = "WeatherActivity";
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
@@ -51,6 +55,15 @@ public class WeatherActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_weather);
+
+        // Set up the toolbar
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        // Set up the drawer layout and navigation view
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
+        NavigationView navigationView = findViewById(R.id.nav_view);
+        setupDrawer(toolbar, drawer, navigationView, currentUser);
 
         // Initialize UI elements
         temperatureTextView = findViewById(R.id.temperatureTextView);
