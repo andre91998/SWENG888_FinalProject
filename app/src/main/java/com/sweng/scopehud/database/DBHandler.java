@@ -101,6 +101,10 @@ public class DBHandler extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        if (oldVersion < 2) {
+            db.execSQL("ALTER TABLE " + SCOPE_TABLE_NAME + " ADD COLUMN " + LOCATION_LAT_COL + " REAL");
+            db.execSQL("ALTER TABLE " + SCOPE_TABLE_NAME + " ADD COLUMN " + LOCATION_LONG_COL + " REAL");
+        }
         db.execSQL("DROP TABLE IF EXISTS " + SCOPE_TABLE_NAME);
         db.execSQL("DROP TABLE IF EXISTS " + USER_SETTINGS_TABLE_NAME);
         onCreate(db);
