@@ -22,7 +22,7 @@ import com.google.firebase.auth.FirebaseUser;
  */
 public class SightToolActivity extends NavigationActivity {
 
-    private Button btnPlus, btnMinus, btnEnter; // Buttons for sight tool
+    private Button btnEnter; // Buttons for sight tool
     private EditText editTextUpdown, editTextLeftright, editTextYardage; // Input fields for sight tool
     private TextView upDown, leftRight; // TextViews for sight tool
 
@@ -38,12 +38,11 @@ public class SightToolActivity extends NavigationActivity {
         // Set up the navigation drawer
         DrawerLayout drawerLayout = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
-        setupDrawer(toolbar, drawerLayout, navigationView, (FirebaseUser) getIntent()
-                .getExtras().get("currentUser")); // Call the method from NavigationActivity
+        setupDrawer(toolbar, drawerLayout, navigationView, currentUser); // Call the method from NavigationActivity
 
         // Initialize views
-        btnPlus = findViewById(R.id.plusButton);
-        btnMinus = findViewById(R.id.minusButton);
+        Button btnPlus = findViewById(R.id.plusButton);
+        Button btnMinus = findViewById(R.id.minusButton);
         btnEnter = findViewById(R.id.enterRangeButton);
         editTextUpdown = findViewById(R.id.up_down_value);
         editTextLeftright = findViewById(R.id.left_right_value);

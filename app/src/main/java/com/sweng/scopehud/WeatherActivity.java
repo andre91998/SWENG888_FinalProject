@@ -11,15 +11,19 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.auth.FirebaseUser;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -28,7 +32,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
 
-public class WeatherActivity extends AppCompatActivity {
+public class WeatherActivity extends NavigationActivity {
 
     private static final String TAG = "WeatherActivity";
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
@@ -51,7 +55,6 @@ public class WeatherActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_weather);
-
         // Initialize UI elements
         temperatureTextView = findViewById(R.id.temperatureTextView);
         windSpeedTextView = findViewById(R.id.windSpeedTextView);
@@ -78,6 +81,14 @@ public class WeatherActivity extends AppCompatActivity {
         });
 
         locationButton.setOnClickListener(v -> getCurrentLocationWeather()); // Fetch weather data based on current location
+        // Set up the toolbar
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        // Set up the navigation drawer
+        DrawerLayout drawerLayout = findViewById(R.id.drawer_layout);
+        NavigationView navigationView = findViewById(R.id.nav_view);
+        setupDrawer(toolbar, drawerLayout, navigationView, currentUser);
     }
 
     /**
@@ -117,11 +128,11 @@ public class WeatherActivity extends AppCompatActivity {
                         String conditions = response.getJSONArray("weather").getJSONObject(0).getString("description");
 
                         // Update the UI with weather data
-                        temperatureTextView.setText(String.format("Temperature: %.2f°F", tempFahrenheit));
-                        windSpeedTextView.setText(String.format("Wind Speed: %.2f meters per second", windSpeed));
-                        windDirectionTextView.setText(String.format("Wind Direction: %d degrees", windDeg));
-                        humidityTextView.setText(String.format("Humidity: %d%%", humidity));
-                        conditionsTextView.setText("Conditions: " + conditions);
+                        temperatureTextView.setText(String.format("%.2f°F", tempFahrenheit));
+                        windSpeedTextView.setText(String.format("%.2f m/s", windSpeed));
+                        windDirectionTextView.setText(String.format("%d degrees", windDeg));
+                        humidityTextView.setText(String.format("%d%%", humidity));
+                        conditionsTextView.setText(conditions);
 
                         // Get the location name using latitude and longitude from the response
                         double latitude = response.getJSONObject("coord").getDouble("lat");
@@ -191,11 +202,11 @@ public class WeatherActivity extends AppCompatActivity {
                         String conditions = response.getJSONArray("weather").getJSONObject(0).getString("description");
 
                         // Update the UI with weather data
-                        temperatureTextView.setText(String.format("Temperature: %.2f°F", tempFahrenheit));
-                        windSpeedTextView.setText(String.format("Wind Speed: %.2f meters per second", windSpeed));
-                        windDirectionTextView.setText(String.format("Wind Direction: %d degrees", windDeg));
-                        humidityTextView.setText(String.format("Humidity: %d%%", humidity));
-                        conditionsTextView.setText("Conditions: " + conditions);
+                        temperatureTextView.setText(String.format("%.2f°F", tempFahrenheit));
+                        windSpeedTextView.setText(String.format("%.2f m/s", windSpeed));
+                        windDirectionTextView.setText(String.format("%d degrees", windDeg));
+                        humidityTextView.setText(String.format("%d%%", humidity));
+                        conditionsTextView.setText(conditions);
 
                     } catch (JSONException e) {
                         e.printStackTrace();
