@@ -33,13 +33,13 @@
             android:textColorHint="@color/input_field_background"
             android:textColor="@color/input_field_background"
             tools:ignore="Autofill,VisualLintTextFieldSize"
-            tools:layout_margin="15dp" />
+            android:layout_marginBottom="15dp"
+            />
 
         <EditText
             android:id="@+id/editTextPassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="15dp"
             android:background="@drawable/edit_text_border"
             android:hint="@string/password"
             android:inputType="textPassword"

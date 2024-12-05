@@ -132,7 +132,7 @@ public class SightToolActivity extends NavigationActivity {
             btnCancel.setOnClickListener(view -> dialog.dismiss());
 
             btnSave.setOnClickListener(view -> {
-                // Retrieve input values
+                // Retrieve input values from Dialog
                 String name = etName.getText().toString();
                 String brand = etBrand.getText().toString();
                 String maxMag = etMaxMag.getText().toString();
@@ -142,6 +142,10 @@ public class SightToolActivity extends NavigationActivity {
                 String zeroElevation = etZeroElevation.getText().toString();
                 String zeroDate = etZeroDate.getText().toString();
                 Snackbar.make(view, "Scope saved", Snackbar.LENGTH_SHORT).show();
+                /*
+                * You also need to get the values from the Sight tool and save them to the database.
+                */
+
                 // Save the values to the database or perform desired action
                 //saveScopeToDatabase(name, brand, maxMag, varMag, zeroDistance, zeroWindage, zeroElevation, zeroDate);
 
