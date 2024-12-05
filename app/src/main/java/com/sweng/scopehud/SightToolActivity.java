@@ -1,16 +1,39 @@
 package com.sweng.scopehud;
 
+import static android.content.ContentValues.TAG;
+
+import android.Manifest;
+import android.app.AlertDialog;
+import android.content.pm.PackageManager;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.text.TextWatcher;
 import android.text.Editable;
+import android.widget.Toast;
 
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseUser;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /*
  * Updated SightToolActivity
@@ -22,10 +45,12 @@ import com.google.firebase.auth.FirebaseUser;
  */
 public class SightToolActivity extends NavigationActivity {
 
+    private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
     private Button btnEnter; // Buttons for sight tool
     private EditText editTextUpdown, editTextLeftright, editTextYardage; // Input fields for sight tool
-    private TextView upDown, leftRight; // TextViews for sight tool
-
+    private TextView upDown, leftRight, windDir; // TextViews for sight tool
+    private FusedLocationProviderClient fusedLocationClient;
+    private RequestQueue requestQueue;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,13 +68,18 @@ public class SightToolActivity extends NavigationActivity {
         // Initialize views
         Button btnPlus = findViewById(R.id.plusButton);
         Button btnMinus = findViewById(R.id.minusButton);
+        FloatingActionButton fab = findViewById(R.id.add_scope);
         btnEnter = findViewById(R.id.enterRangeButton);
         editTextUpdown = findViewById(R.id.up_down_value);
         editTextLeftright = findViewById(R.id.left_right_value);
         editTextYardage = findViewById(R.id.yd_value);
         upDown = findViewById(R.id.up_down);
         leftRight = findViewById(R.id.left_right);
+        windDir = findViewById(R.id.windDir);
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+        requestQueue = Volley.newRequestQueue(this);
 
+        getCurrentLocationWeather(); // Fetch weather data based on current location
         // Plus button increments the yardage value
         btnPlus.setOnClickListener(v -> {
             int value = Integer.parseInt(editTextYardage.getText().toString());
@@ -74,7 +104,51 @@ public class SightToolActivity extends NavigationActivity {
             upDown.setText(invertValue(upDownValue));
             leftRight.setText(invertValue(leftRightValue));
         });
+        fab.setOnClickListener(v -> {
+            // Inflate the custom layout for the dialog
+            View dialogView = getLayoutInflater().inflate(R.layout.dialog_add_scope, null);
 
+            // Create the AlertDialog
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setView(dialogView);
+
+            AlertDialog dialog = builder.create();
+            dialog.show();
+
+            // Get references to the dialog's input fields
+            EditText etName = dialogView.findViewById(R.id.et_name);
+            EditText etBrand = dialogView.findViewById(R.id.et_brand);
+            EditText etMaxMag = dialogView.findViewById(R.id.et_max_magnification);
+            EditText etVarMag = dialogView.findViewById(R.id.et_variable_magnification);
+            EditText etZeroDistance = dialogView.findViewById(R.id.et_zero_distance);
+            EditText etZeroWindage = dialogView.findViewById(R.id.et_zero_windage);
+            EditText etZeroElevation = dialogView.findViewById(R.id.et_zero_elevation);
+            EditText etZeroDate = dialogView.findViewById(R.id.et_zero_date);
+
+            // Handle Save and Cancel buttons
+            Button btnCancel = dialogView.findViewById(R.id.btn_cancel);
+            Button btnSave = dialogView.findViewById(R.id.btn_save);
+
+            btnCancel.setOnClickListener(view -> dialog.dismiss());
+
+            btnSave.setOnClickListener(view -> {
+                // Retrieve input values
+                String name = etName.getText().toString();
+                String brand = etBrand.getText().toString();
+                String maxMag = etMaxMag.getText().toString();
+                String varMag = etVarMag.getText().toString();
+                String zeroDistance = etZeroDistance.getText().toString();
+                String zeroWindage = etZeroWindage.getText().toString();
+                String zeroElevation = etZeroElevation.getText().toString();
+                String zeroDate = etZeroDate.getText().toString();
+                Snackbar.make(view, "Scope saved", Snackbar.LENGTH_SHORT).show();
+                // Save the values to the database or perform desired action
+                //saveScopeToDatabase(name, brand, maxMag, varMag, zeroDistance, zeroWindage, zeroElevation, zeroDate);
+
+                // Dismiss the dialog
+                dialog.dismiss();
+            });
+        });
         // Add TextWatcher to update the TextViews when the EditText values change
         editTextUpdown.addTextChangedListener(new TextWatcher() {
             @Override
@@ -104,10 +178,117 @@ public class SightToolActivity extends NavigationActivity {
             public void afterTextChanged(Editable editable) {}
         });
     }
+    public void  onDirectionClick(View v) {
+            if (v.getId() == R.id.up_down) {
+                if (upDown.getText().toString().equals("D")) {
+                    upDown.setText("U");
+                } else {
+                    upDown.setText("D");
+                }
+            } else if (v.getId() == R.id.left_right) {
+                if(leftRight.getText().toString().equals("R")) {
+                    leftRight.setText("L");
+                } else {
+                    leftRight.setText("R");
+                }
+            }
+        }
+    public void onAdjustmentClick(View v) {
+        // Get references to both TextViews
+        TextView adjL = findViewById(R.id.adjL);
+        TextView adjR = findViewById(R.id.adjR);
+
+        // Swap styles based on the clicked circle
+        if (v.getId() == R.id.adjR) {
+            // Swap styles between Left and Right
+            // Save current styles of the Right circle
+            Drawable rightBackground = adjR.getBackground();
+            int rightTextColor = adjR.getCurrentTextColor();
+
+            // Apply Right's style to Left
+            adjR.setBackground(getResources().getDrawable(R.drawable.dark_circle));
+            adjR.setTextColor(getResources().getColor(R.color.orange_hue));
+
+            // Apply Left's style to Right
+            adjL.setBackground(getResources().getDrawable(R.drawable.beige_background));
+            adjL.setTextColor(getResources().getColor(R.color.black));
+        } else if (v.getId() == R.id.adjL) {
+            // If Left is clicked, swap styles in reverse
+            Drawable leftBackground = adjL.getBackground();
+            int leftTextColor = adjL.getCurrentTextColor();
+
+            // Apply Left's style to Right
+            adjL.setBackground(getResources().getDrawable(R.drawable.dark_circle));
+            adjL.setTextColor(getResources().getColor(R.color.orange_hue));
+
+            // Apply Right's style to Left
+            adjR.setBackground(getResources().getDrawable(R.drawable.beige_background));
+            adjR.setTextColor(getResources().getColor(android.R.color.black));
+        }
+        else{
+            // If neither is clicked, reset both styles
+            adjL.setBackground(getResources().getDrawable(R.drawable.beige_background));
+            adjL.setTextColor(getResources().getColor(android.R.color.black));
+            adjR.setBackground(getResources().getDrawable(R.drawable.beige_background));
+            adjR.setTextColor(getResources().getColor(R.color.black));
+        }
+    }
 
     /**
-     * Method to invert a numeric string value (e.g., turn "1" into "-1").
+     * Fetches the weather data based on the user's current location.
+     * Checks for location permissions and retrieves the location coordinates.
      */
+    private void getCurrentLocationWeather() {
+        if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_PERMISSION_REQUEST_CODE);
+        } else {
+            // Get the last known location
+            fusedLocationClient.getLastLocation().addOnSuccessListener(this, location -> {
+                if (location != null) {
+                    double latitude = location.getLatitude();
+                    double longitude = location.getLongitude();
+                    getWeatherDataByLocation(latitude, longitude);  // Fetch weather based on location
+                } else {
+                    Toast.makeText(SightToolActivity.this, "Unable to get current location", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+    }
+    private void getWeatherDataByLocation(double latitude, double longitude) {
+        String apiKey = getString(R.string.open_weather_key);
+        String url = "https://api.openweathermap.org/data/2.5/weather?lat=" + latitude + "&lon=" + longitude + "&appid=" + apiKey + "&units=metric";
+
+        // Create a request to the OpenWeather API
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null,
+                response -> {
+                    try {
+                        // Parse the weather data from the response
+                        JSONObject wind = response.getJSONObject("wind");
+                        int windDeg = wind.getInt("deg");
+                        double windSpd = wind.getDouble("speed");
+                        double windSpds = windSpd * 2.237; // Convert m/s to mph
+                        TextView windSpeed = findViewById(R.id.windSpeed);
+                        windSpeed.setText(String.format("SPD: %.1f MPH", windSpds));
+
+                        windDir.setText(String.format("DIR: %d", windDeg));
+
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                        Toast.makeText(SightToolActivity.this, "Error parsing weather data", Toast.LENGTH_SHORT).show();
+                    }
+                },
+                error -> {
+                    Log.e(TAG, "Error fetching weather data: " + error.getMessage());
+                    Toast.makeText(SightToolActivity.this, "Error fetching weather data", Toast.LENGTH_SHORT).show();
+                });
+
+        // Add the request to the Volley request queue
+        requestQueue.add(jsonObjectRequest);
+    }
+        /**
+         * Method to invert a numeric string value (e.g., turn "1" into "-1").
+         */
     private String invertValue(String value) {
         try {
             int intValue = Integer.parseInt(value);
