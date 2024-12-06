@@ -92,14 +92,6 @@ public class WeatherActivity extends NavigationActivity {
         });
 
         locationButton.setOnClickListener(v -> getCurrentLocationWeather()); // Fetch weather data based on current location
-        // Set up the toolbar
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-
-        // Set up the navigation drawer
-        DrawerLayout drawerLayout = findViewById(R.id.drawer_layout);
-        NavigationView navigationView = findViewById(R.id.nav_view);
-        setupDrawer(toolbar, drawerLayout, navigationView, currentUser);
     }
 
     /**
