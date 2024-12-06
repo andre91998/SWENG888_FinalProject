@@ -1,93 +1,290 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.drawerlayout.widget.DrawerLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:padding="16dp"
-    android:background="@color/dark_slate"> <!-- Background color -->
+    android:layout_height="match_parent">
 
-    <!-- Input field for city name or zip code -->
-    <EditText
-        android:id="@+id/cityZipEditText"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="@string/enter_city_name_or_zip_code"
-        android:importantForAutofill="no"
-        android:inputType=""
-        android:minHeight="48dp"
-        android:textColor="@android:color/white"
-        android:textSize="18sp"
-        android:textColorHint="#B0BEC5" />
+        android:layout_height="match_parent"
+        android:background="@color/deep_midnight_blue"
+        android:orientation="vertical">
 
-    <!-- Button to search weather by city or zip -->
-    <Button
-        android:id="@+id/searchButton"
+        <!-- Toolbar -->
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/dark_slate"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+
+        <!-- Input field for city name or zip code -->
+        <EditText
+            android:id="@+id/cityZipEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/enter_city_name_or_zip_code"
+            android:importantForAutofill="no"
+            android:inputType=""
+            android:background="@drawable/edit_text_border"
+            android:minHeight="48dp"
+            android:padding="12dp"
+            android:textColorHint="@color/input_field_background"
+            android:textColor="@color/input_field_background"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:layout_marginTop="15dp"
+            android:textSize="18sp" />
+
+    <LinearLayout
+        android:id="@+id/btn_weather_layout"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent">
+        <!-- Button to search weather by city or zip -->
+        <Button
+            android:id="@+id/searchButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/get_weather"
+            android:textSize="14sp"
+            android:layout_marginStart="15dp"
+            android:backgroundTint="@color/olive_drab"
+            android:textColor="@color/white" />
+
+        <!-- Button to get weather by current location -->
+        <Button
+            android:id="@+id/locationButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/use_current_location"
+            android:textSize="14sp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="15dp"
+            android:backgroundTint="@color/olive_drab"
+            android:textColor="@color/white"/>
+    </LinearLayout>
+        <!-- TextViews to display weather information -->
+        <LinearLayout
+            android:id="@+id/location_temp_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <!-- Header with Orange Background and White Bold Text -->
+            <TextView
+                android:id="@+id/locationTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/orange_hue"
+                android:padding="8dp"
+                android:text="Location: Loading..."
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                android:textSize="18sp" />
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="15dp"
+                android:layout_gravity="center">
+                <!-- Horizontal Layout for Location and Wind Speed -->
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:background="@drawable/white_border_radius_background">
+                    <!-- Temperature Text -->
+                    <TextView
+                        android:id="@+id/temperatureTextHeader"
+                        android:layout_width="match_parent"
+                        android:layout_height="34dp"
+                        android:gravity="center"
+                        android:paddingLeft="20dp"
+                        android:paddingRight="20dp"
+                        android:text="Current Temp:"
+                        android:textColor="@color/white"
+                        android:textSize="20sp"
+                        android:textStyle="bold"
+                        android:background="@drawable/orange_border_radius_background"
+                        android:minWidth="150dp"/>
+
+                    <TextView
+                        android:id="@+id/temperatureTextView"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:text="--°F"
+                        android:textColor="@color/black"
+                        android:textSize="24sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+                <Space
+                    android:layout_width="10dp"
+                    android:layout_height="match_parent" />
+                <!-- Wind Speed Block -->
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/white_border_radius_background"
+                    android:orientation="vertical"
+                    android:layout_marginLeft="8dp">
+
+                    <TextView
+                        android:id="@+id/WindSpeedTextHeader"
+                        android:layout_width="match_parent"
+                        android:layout_height="34dp"
+                        android:gravity="center"
+                        android:paddingLeft="20dp"
+                        android:paddingRight="20dp"
+                        android:text="Wind Speed:"
+                        android:textColor="@color/white"
+                        android:textSize="20sp"
+                        android:textStyle="bold"
+                        android:background="@drawable/orange_border_radius_background"
+                        android:minWidth="150dp"/>
+
+                    <TextView
+                        android:id="@+id/windSpeedTextView"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:text="-- km/h"
+                        android:textColor="@color/black"
+                        android:textSize="24sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+            </LinearLayout>
+            <!-- Horizontal Layout for Wind Direction and Wind Speed -->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_gravity="center"
+                android:layout_marginTop="15dp">
+                <!-- Wind Direction Block -->
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:background="@drawable/white_border_radius_background">
+                        <TextView
+                            android:id="@+id/windDirectionTextHeader"
+                            android:layout_width="match_parent"
+                            android:layout_height="34dp"
+                            android:gravity="center"
+                            android:paddingLeft="20dp"
+                            android:paddingRight="20dp"
+                            android:text="Wind Direction:"
+                            android:textColor="@color/white"
+                            android:background="@drawable/orange_border_radius_background"
+                            android:textSize="20sp"
+                            android:textStyle="bold"
+                            android:minWidth="150dp"/>
+
+                        <TextView
+                            android:id="@+id/windDirectionTextView"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:text="--°"
+                            android:textColor="@color/black"
+                            android:textSize="24sp"
+                            android:textStyle="bold" />
+                </LinearLayout>
+                <Space
+                    android:layout_width="10dp"
+                    android:layout_height="match_parent" />
+                <!-- Humidity Block -->
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:background="@drawable/white_border_radius_background">
+                    <TextView
+                        android:id="@+id/humidityTextHeader"
+                        android:layout_width="match_parent"
+                        android:layout_height="34dp"
+                        android:gravity="center"
+                        android:text="Humidity:"
+                        android:background="@drawable/orange_border_radius_background"
+                        android:textColor="@color/white"
+                        android:paddingLeft="20dp"
+                        android:paddingRight="20dp"
+                        android:textSize="20sp"
+                        android:textStyle="bold"
+                        android:minWidth="150dp"/>
+
+                    <TextView
+                        android:id="@+id/humidityTextView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="--%"
+                        android:textColor="@color/black"
+                        android:textSize="24sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="15dp"
+                android:layout_gravity="center">
+                <!-- Conditions Block -->
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:background="@drawable/white_border_radius_background">
+
+                    <TextView
+                        android:id="@+id/conditionsTextHeader"
+                        android:layout_width="match_parent"
+                        android:layout_height="34dp"
+                        android:gravity="center"
+                        android:text="Conditions:"
+                        android:textColor="@color/white"
+                        android:background="@drawable/orange_border_radius_background"
+                        android:textSize="20sp"
+                        android:textStyle="bold"
+                        android:paddingLeft="20dp"
+                        android:paddingRight="20dp"/>
+
+                    <TextView
+                        android:id="@+id/conditionsTextView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="Clear"
+                        android:textColor="@color/black"
+                        android:textSize="24sp"
+                        android:textStyle="bold"
+                        android:minWidth="150dp"/>
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+    <!-- Navigation Drawer -->
+    <com.google.android.material.navigation.NavigationView
+        android:id="@+id/nav_view"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/get_weather"
-        android:textColor="@android:color/white"
-        android:textSize="18sp"
-        android:backgroundTint="@color/teal_700"
-        android:layout_marginTop="8dp" />
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:background="@color/dark_slate"
+        android:fitsSystemWindows="true"
+        app:headerLayout="@layout/nav_header_main"
+        app:itemIconTint="@color/pale_beige"
+        app:itemTextColor="@color/pale_beige"
+        app:menu="@menu/activity_main_drawer"
+        tools:ignore="VisualLintBounds" />
 
-    <!-- Button to get weather by current location -->
-    <Button
-        android:id="@+id/locationButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/use_current_location"
-        android:textColor="@android:color/white"
-        android:textSize="18sp"
-        android:backgroundTint="@color/teal_700"
-        android:layout_marginTop="8dp" />
-
-    <!-- TextViews to display weather information -->
-    <TextView
-        android:id="@+id/locationTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/location"
-        android:textColor="@android:color/white"
-        android:textSize="18sp"
-        android:layout_marginTop="12dp" />
-
-    <TextView
-        android:id="@+id/temperatureTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/temperature"
-        android:textColor="@android:color/white"
-        android:textSize="18sp" />
-
-    <TextView
-        android:id="@+id/windSpeedTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/wind_speed"
-        android:textColor="@android:color/white"
-        android:textSize="18sp" />
-
-    <TextView
-        android:id="@+id/windDirectionTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/wind_direction"
-        android:textColor="@android:color/white"
-        android:textSize="18sp" />
-
-    <TextView
-        android:id="@+id/humidityTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/humidity"
-        android:textColor="@android:color/white"
-        android:textSize="18sp" />
-
-    <TextView
-        android:id="@+id/conditionsTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/conditions"
-        android:textColor="@android:color/white"
-        android:textSize="18sp" />
-
-</LinearLayout>
+</androidx.drawerlayout.widget.DrawerLayout>
