@@ -1,13 +1,23 @@
 package com.sweng.scopehud;
+import android.content.Context;
+import android.graphics.Paint;
 
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.os.Bundle;
+
+import androidx.annotation.NonNull;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.navigation.NavigationView;
+import com.google.android.material.snackbar.Snackbar;
 import com.sweng.scopehud.database.DBHandler;
 import com.sweng.scopehud.util.Scope;
 import com.sweng.scopehud.util.ScopeRecyclerViewAdapter;
@@ -56,6 +66,92 @@ public class MainActivity extends NavigationActivity {
         ScopeRecyclerViewAdapter adapter = new ScopeRecyclerViewAdapter(scopeList);
         mScopeListView.setAdapter(adapter);
 
+        // Add swipe-to-delete functionality
+        ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
+            @Override
+            public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
+                // Do nothing for drag-and-drop
+                return false;
+            }
+
+            @Override
+            public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
+                // Get the position of the swiped item
+                int position = viewHolder.getAdapterPosition();
+
+                // Remove the item from the list
+                Scope removedScope = scopeList.get(position); // Save the removed item in case you want to undo
+                scopeList.remove(position);
+                adapter.notifyItemRemoved(position);
+
+                // Optionally show a Snackbar to undo the delete
+                Snackbar.make(mScopeListView, "Scope deleted", Snackbar.LENGTH_LONG)
+                        .setAction("UNDO", v -> {
+                            // Add the item back if undo is clicked
+                            scopeList.add(position, removedScope);
+                            adapter.notifyItemInserted(position);
+                        }).show();
+
+                // delete from the database
+                // dbHandler.deleteScope(removedScope.getId());
+            }
+
+            @Override
+            public void onChildDraw(Canvas c, RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
+                if (actionState == ItemTouchHelper.ACTION_STATE_SWIPE) {
+                    // Translate the item only during swipe
+                    viewHolder.itemView.setTranslationX(dX);
+                } else {
+                    // Reset the translation when no swipe action is active
+                    c.drawColor(Color.TRANSPARENT);
+                    viewHolder.itemView.setTranslationX(0);
+
+                }
+                super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
+                Context context = recyclerView.getContext();
+                // Draw the red background
+                Paint paint = new Paint();
+                paint.setColor(Color.RED);
+                c.drawRect(
+                        (float) viewHolder.itemView.getLeft(),
+                        (float) viewHolder.itemView.getTop(),
+                        dX,
+                        (float) viewHolder.itemView.getBottom(),
+                        paint
+                );
+
+                // Draw the delete icon
+                Drawable deleteIcon = ContextCompat.getDrawable(context, R.drawable.ic_delete);
+                if (deleteIcon != null) {
+                    // Set custom size for the icon
+                    int iconWidth = 80; // Desired width in pixels
+                    int iconHeight = 80; // Desired height in pixels
+
+                    // Calculate icon position
+                    int itemTop = viewHolder.itemView.getTop();
+                    int itemBottom = viewHolder.itemView.getBottom();
+                    int iconLeft = viewHolder.itemView.getLeft() + 50; // Add margin from the left
+                    int iconTop = itemTop + (itemBottom - itemTop - iconHeight) / 2; // Center vertically
+                    int iconRight = iconLeft + iconWidth;
+                    int iconBottom = iconTop + iconHeight;
+
+                    // Set bounds and draw the icon
+                    deleteIcon.setBounds(iconLeft, iconTop, iconRight, iconBottom);
+                    deleteIcon.draw(c);
+                }
+            }
+            @Override
+            public void clearView(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder) {
+                super.clearView(recyclerView, viewHolder);
+
+                // Reset the view to its original position
+                viewHolder.itemView.setTranslationX(0);
+            }
+        };
+
+        // Attach the ItemTouchHelper to the RecyclerView
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleCallback);
+        itemTouchHelper.attachToRecyclerView(mScopeListView);
         // Set up the RecyclerView
         //setupRecyclerView(); uncomment this once db stuff is working
     }

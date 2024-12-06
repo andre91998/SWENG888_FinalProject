@@ -32,6 +32,21 @@ public class Scope implements Parcelable {
     public ScopeZero getScopeZero() {
         return scopeZero;
     }
+    public void setName(String name) {
+        this.name = name;
+    }
+    public void setBrand(String brand) {
+        this.brand = brand;
+    }
+    public void setMaxMagnification(float maxMagnification) {
+        this.maxMagnification = maxMagnification;
+    }
+    public void setVariableMagnification(boolean variableMagnification) {
+        this.variableMagnification = variableMagnification;
+    }
+    public void setScopeZero(ScopeZero scopeZero) {
+        this.scopeZero = scopeZero;
+    }
 
     public Scope(int id, String name, String brand, float maxMagnification,
                  boolean variableMagnification, ScopeZero scopeZero) {

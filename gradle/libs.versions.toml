@@ -16,6 +16,7 @@ playServicesMaps = "19.0.0"
 volley = "1.2.1"
 playServicesLocation = "21.3.0"
 firebaseStorage = "21.0.1"
+uiGraphicsAndroid = "1.7.5"
 
 [libraries]
 firebase-analytics = { module = "com.google.firebase:firebase-analytics" }
@@ -38,6 +39,7 @@ play-services-maps = { module = "com.google.android.gms:play-services-maps", ver
 volley = { group = "com.android.volley", name = "volley", version.ref = "volley" }
 play-services-location = { group = "com.google.android.gms", name = "play-services-location", version.ref = "playServicesLocation" }
 google-firebase-storage = { group = "com.google.firebase", name = "firebase-storage", version.ref = "firebaseStorage" }
+ui-graphics-android = { group = "androidx.compose.ui", name = "ui-graphics-android", version.ref = "uiGraphicsAndroid" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
