@@ -1,10 +1,13 @@
 package com.sweng.scopehud.util;
 
+import android.app.AlertDialog;
+import android.content.Context;
 import android.graphics.Color;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,27 +29,49 @@ public class ScopeRecyclerViewAdapter extends RecyclerView.Adapter<ScopeRecycler
     @Override
     @NonNull
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.scope_item_row,
-                parent, false);
+        View view = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.scope_item_row, parent, false);
         return new MyViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(final MyViewHolder holder, int position) {
 
-        final Scope scope = mScopeList.get(position);
-        holder.textView.setText(scope.getName());
-        holder.textView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //click on scope behavior, for now, it's a toast
-                Toast toast = new Toast(view.getContext());
-                toast.setText(mScopeList.get(holder.getAdapterPosition()).toString());
-                toast.show();
-            }
+        //final Scope scope = mScopeList.get(position);
+        Scope scope  = mScopeList.get(position); // `items` is your data list
+
+        // Set data for the views
+        holder.titleTextView.setText(scope.getName());
+        holder.companyTextView.setText(scope.getBrand());
+        // Set a click listener for the info icon
+        holder.scopeInfo.setOnClickListener(v -> {
+            // Show a dialog with additional scope stats
+            showScopeInfoDialog(v.getContext(), scope);
         });
     }
+    private void showScopeInfoDialog(Context context, Scope scope) {
+        // Create a dialog
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
 
+        // Set dialog title
+        builder.setTitle(scope.getName());
+
+        // Set dialog message (additional stats)
+        String message = "Brand: " + scope.getBrand() +
+                "\nMax Magnification: " + scope.getMaxMagnification() +
+                "\nVariable Magnification: " + (scope.isVariableMagnification() ? "Yes" : "No") +
+                "\nZero Distance: " + scope.getScopeZero().getDistance() +
+                "\nWindage: " + scope.getScopeZero().getWindage() +
+                "\nElevation: " + scope.getScopeZero().getElevation() +
+                "\nZeroed On: " + scope.getScopeZero().getDate().toString();
+        builder.setMessage(message);
+
+        // Add an "OK" button to close the dialog
+        builder.setPositiveButton("OK", (dialog, which) -> dialog.dismiss());
+
+        // Create and show the dialog
+        builder.create().show();
+    }
     @Override
     public int getItemCount() {
         if(mScopeList == null || mScopeList.isEmpty()) {
@@ -58,13 +83,16 @@ public class ScopeRecyclerViewAdapter extends RecyclerView.Adapter<ScopeRecycler
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
-        private View view;
-        private TextView textView;
+        private TextView titleTextView;
+        private TextView companyTextView;
+        private ImageView scopeInfo;
 
-        private MyViewHolder(View itemView) {
+        public MyViewHolder(View itemView) {
             super(itemView);
-            this.view = itemView;
-            this.textView = (TextView) view.findViewById(R.id.text_view);
+            // Bind the views from the layout
+            titleTextView = itemView.findViewById(R.id.title_text_view);
+            companyTextView = itemView.findViewById(R.id.company_text_view);
+            scopeInfo = itemView.findViewById(R.id.scope_info);
         }
     }
 }

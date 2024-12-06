@@ -7,6 +7,8 @@
     android:layout_height="match_parent">
 
     <!-- Main content layout -->
+
+    <!-- Navigation Drawer -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -29,21 +31,21 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginTop="16dp"
+            android:layout_marginBottom="25dp"
             android:text="@string/sight_tool_screen"
             android:textAppearance="@style/TextAppearance.AppCompat.Large"
             android:textColor="@color/light_gray"
-            android:layout_marginBottom="25dp"
             android:textSize="24sp" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="250dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
             android:background="@drawable/background_gradient_dark"
             android:gravity="center"
             android:orientation="vertical"
-            android:padding="16dp"
-            android:layout_marginLeft="15dp"
-            android:layout_marginRight="15dp">
+            android:padding="16dp">
 
             <!-- Top Row (D and L values) -->
             <LinearLayout
@@ -59,32 +61,34 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:clickable="true"
                     android:gravity="center"
+                    android:onClick="onDirectionClick"
                     android:text="D"
-                    android:textStyle="bold"
                     android:textColor="@android:color/white"
-                    android:textSize="24sp" />
+                    android:textSize="24sp"
+                    android:textStyle="bold" />
 
                 <EditText
                     android:id="@+id/up_down_value"
                     android:layout_width="0dp"
                     android:layout_height="35dp"
                     android:layout_weight="1"
-                    android:gravity="center"
-                    android:text="0.4"
-                    android:textStyle="bold"
                     android:background="@null"
+                    android:gravity="center"
+                    android:inputType="numberDecimal"
+                    android:text="0.4"
                     android:textColor="@android:color/white"
                     android:textSize="24sp"
-                    android:inputType="numberDecimal"/>
+                    android:textStyle="bold" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:text="mrad"
-                    android:textStyle="bold"
-                    android:textColor="@android:color/white" />
+                    android:textColor="@android:color/white"
+                    android:textStyle="bold" />
             </LinearLayout>
 
             <!-- Line Separator -->
@@ -107,32 +111,34 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:clickable="true"
                     android:gravity="center"
+                    android:onClick="onDirectionClick"
                     android:text="L"
-                    android:textStyle="bold"
                     android:textColor="@android:color/white"
-                    android:textSize="24sp" />
+                    android:textSize="24sp"
+                    android:textStyle="bold" />
 
                 <EditText
                     android:id="@+id/left_right_value"
                     android:layout_width="0dp"
                     android:layout_height="35dp"
                     android:layout_weight="1"
-                    android:gravity="center"
-                    android:text="2.5"
                     android:background="@null"
-                    android:textStyle="bold"
+                    android:gravity="center"
                     android:inputType="numberDecimal"
+                    android:text="2.5"
                     android:textColor="@android:color/white"
-                    android:textSize="24sp" />
+                    android:textSize="24sp"
+                    android:textStyle="bold" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:text="mrad"
-                    android:textStyle="bold"
-                    android:textColor="@android:color/white" />
+                    android:textColor="@android:color/white"
+                    android:textStyle="bold" />
             </LinearLayout>
 
             <!-- Line Separator -->
@@ -186,13 +192,13 @@
                     android:layout_width="0dp"
                     android:layout_height="35dp"
                     android:layout_weight="1"
-                    android:gravity="center"
-                    android:text="1000"
                     android:background="@null"
-                    android:textStyle="bold"
+                    android:gravity="center"
                     android:inputType="numberDecimal"
+                    android:text="1000"
                     android:textColor="@android:color/white"
-                    android:textSize="24sp" />
+                    android:textSize="24sp"
+                    android:textStyle="bold" />
 
                 <!-- YD Label -->
                 <TextView
@@ -200,8 +206,8 @@
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:text="YD"
-                    android:textStyle="bold"
-                    android:textColor="@android:color/white" />
+                    android:textColor="@android:color/white"
+                    android:textStyle="bold" />
             </LinearLayout>
 
             <!-- Bottom Section with Buttons and "Enter Range" -->
@@ -222,8 +228,8 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="-"
-                    android:textSize="36sp"
-                    android:textColor="@android:color/white" />
+                    android:textColor="@android:color/white"
+                    android:textSize="36sp" />
 
                 <!-- Enter Range Button -->
                 <Button
@@ -234,8 +240,8 @@
                     android:layout_weight="3"
                     android:backgroundTint="@color/pale_beige"
                     android:text="Enter Range"
-                    android:textStyle="bold"
-                    android:textColor="@color/olive_drab" />
+                    android:textColor="@color/olive_drab"
+                    android:textStyle="bold" />
 
                 <!-- Plus Button -->
                 <Button
@@ -245,13 +251,254 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="+"
-                    android:textSize="36sp"
-                    android:textColor="@android:color/white" />
+                    android:textColor="@android:color/white"
+                    android:textSize="36sp" />
             </LinearLayout>
         </LinearLayout>
-    </LinearLayout>
 
-    <!-- Navigation Drawer -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="250dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginRight="15dp"
+            android:background="@color/off_beige"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <!-- Top Row (Wind Direction and Speed) -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:weightSum="2">
+
+                <!-- Line Separator -->
+                <View
+                    android:layout_width="100dp"
+                    android:layout_height="4dp"
+                    android:layout_marginVertical="8dp"
+                    android:background="@color/orange_hue"
+                    android:gravity="bottom" />
+
+                <TextView
+                    android:id="@+id/windHeader"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:clickable="true"
+                    android:gravity="center"
+                    android:text="Wind"
+                    android:textColor="@color/dark_gray"
+                    android:textSize="24sp"
+                    android:textStyle="bold"/>
+                <!-- Line Separator -->
+                <View
+                    android:layout_width="100dp"
+                    android:layout_height="4dp"
+                    android:layout_marginVertical="8dp"
+                    android:background="@color/orange_hue"
+                    android:gravity="bottom" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="start"
+                android:orientation="horizontal"
+                android:weightSum="0">
+
+                <TextView
+                    android:id="@+id/windDir"
+                    android:layout_width="165dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:clickable="true"
+                    android:text="DIR:"
+                    android:textStyle="bold"
+                    android:textColor="@color/dark_gray"
+                    android:textSize="20sp"
+                    android:paddingLeft="35dp"/>
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+                        <TextView
+                            android:id="@+id/windSpeed"
+                            android:layout_weight="1"
+                            android:clickable="true"
+                            android:gravity="center"
+                            android:text="SPH: 0.0 MPG"
+                            android:textColor="@color/dark_gray"
+                            android:textSize="20sp"
+                            android:layout_height="0dp"
+                            android:textStyle="bold"
+                            android:layout_width="wrap_content"/>
+
+                </LinearLayout>
+            </LinearLayout>
+            <!-- Target Row -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:weightSum="2">
+
+                <!-- Line Separator -->
+                <View
+                    android:layout_width="100dp"
+                    android:layout_height="4dp"
+                    android:layout_marginVertical="8dp"
+                    android:background="@color/orange_hue"
+                    android:gravity="bottom" />
+
+                <TextView
+                    android:id="@+id/targetHeader"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:clickable="true"
+                    android:gravity="center"
+                    android:text="Target"
+                    android:textColor="@color/dark_gray"
+                    android:textSize="24sp"
+                    android:textStyle="bold"/>
+                <!-- Line Separator -->
+                <View
+                    android:layout_width="100dp"
+                    android:layout_height="4dp"
+                    android:layout_marginVertical="8dp"
+                    android:background="@color/orange_hue"
+                    android:gravity="bottom" />
+            </LinearLayout>
+            <!-- Adjustment Target Row -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center"
+                android:padding="4dp">
+
+                <!-- Adjustment Label -->
+                <TextView
+                    android:id="@+id/adjustment"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="ADJ:"
+                    android:textColor="@color/dark_gray"
+                    android:textSize="20sp"
+                    android:layout_marginEnd="16dp"
+                    android:textStyle="bold" />
+
+                <!-- Left Circle -->
+                <TextView
+                    android:id="@+id/adjL"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:layout_marginEnd="8dp"
+                    android:background="@drawable/dark_circle"
+                    android:text="L"
+                    android:textColor="@color/orange_hue"
+                    android:textSize="28sp"
+                    android:textStyle="bold"
+                    android:clickable="true"
+                    android:gravity="center"
+                    android:onClick="onAdjustmentClick"/>
+
+                <!-- Right Circle -->
+                <TextView
+                    android:id="@+id/adjR"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:gravity="center"
+                    android:background="@drawable/beige_background"
+                    android:clickable="true"
+                    android:text="R"
+                    android:textColor="@android:color/black"
+                    android:textSize="28sp"
+                    android:textStyle="bold"
+                    android:onClick="onAdjustmentClick"/>
+            </LinearLayout>
+            <!-- Shot Row -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:weightSum="2">
+
+                <!-- Line Separator -->
+                <View
+                    android:layout_width="100dp"
+                    android:layout_height="4dp"
+                    android:layout_marginVertical="8dp"
+                    android:background="@color/orange_hue"
+                    android:gravity="bottom" />
+
+                <TextView
+                    android:id="@+id/shotHeader"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:clickable="true"
+                    android:gravity="center"
+                    android:text="Shot"
+                    android:textColor="@color/dark_gray"
+                    android:textSize="24sp"
+                    android:textStyle="bold"/>
+                <!-- Line Separator -->
+                <View
+                    android:layout_width="100dp"
+                    android:layout_height="4dp"
+                    android:layout_marginVertical="8dp"
+                    android:background="@color/orange_hue"
+                    android:gravity="bottom" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center"
+                android:padding="8dp">
+
+                <!-- Adjustment Label -->
+                <TextView
+                    android:id="@+id/angle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="ANG:"
+                    android:textColor="@color/dark_gray"
+                    android:textSize="20sp"
+                    android:layout_marginEnd="16dp"
+                    android:textStyle="bold" />
+                <!-- YD Value -->
+                <EditText
+                    android:id="@+id/angle_value"
+                    android:layout_width="75dp"
+                    android:layout_height="50dp"
+                    android:gravity="center"
+                    android:inputType="number"
+                    android:text="0"
+                    android:textColor="@color/dark_gray"
+                    android:textSize="24sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+        </LinearLayout>
+        <!-- Floating Action Button to clear coordinates -->
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/add_scope"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_margin="16dp"
+            android:contentDescription="Clear Coordinates"
+            android:src="@drawable/ic_add_scope"
+            app:backgroundTint="@color/orange_hue"
+            app:elevation="6dp"
+            app:pressedTranslationZ="12dp" />
+    </LinearLayout>
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/nav_view"
         android:layout_width="wrap_content"

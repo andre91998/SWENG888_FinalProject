@@ -32,7 +32,7 @@
     <string name="menu_logout">Logout</string>
     <string name="app_subtitle">App Subtitle</string>
     <string name="reset_password">Reset Password</string>
-    <string name="sight_tool_screen">Sight Tool Screen</string>
+    <string name="sight_tool_screen">Sight Tool</string>
 
     <!-- API Keys -->
     <string name="google_maps_key">AIzaSyDAS_rSFKp1a_9ilOhaFELNrXIvvf0p6nw</string>

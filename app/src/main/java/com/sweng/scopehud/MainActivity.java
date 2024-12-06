@@ -10,6 +10,10 @@ import com.google.android.material.navigation.NavigationView;
 import com.sweng.scopehud.database.DBHandler;
 import com.sweng.scopehud.util.Scope;
 import com.sweng.scopehud.util.ScopeRecyclerViewAdapter;
+import com.sweng.scopehud.util.ScopeZero;
+
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class MainActivity extends NavigationActivity {
@@ -34,12 +38,25 @@ public class MainActivity extends NavigationActivity {
 
         // Initialize the database handler
         dbHandler = new DBHandler(this);
-
-        // Initialize the RecyclerView
+        /*
+        * initialize RecyclerView
+        * Add sample data to the list(this can be removed later of course
+        * set the adapter
+        */
         mScopeListView = findViewById(R.id.scopeListView);
+        mScopeListView.setLayoutManager(new LinearLayoutManager(this));
+
+        List<Scope> scopeList = new ArrayList<>();
+        scopeList.add(new Scope(1, "RAZOR HD GEN III", "Vortex Optics", 18.0f, true,
+                new ScopeZero(100, 0.1f, 0.2f, new Date())));
+        scopeList.add(new Scope(2, "STRIKE EAGLE", "Vortex Optics", 24.0f, true,
+                new ScopeZero(200, 0.0f, 0.1f, new Date())));
+
+        ScopeRecyclerViewAdapter adapter = new ScopeRecyclerViewAdapter(scopeList);
+        mScopeListView.setAdapter(adapter);
 
         // Set up the RecyclerView
-        setupRecyclerView();
+        //setupRecyclerView(); uncomment this once db stuff is working
     }
 
     /**

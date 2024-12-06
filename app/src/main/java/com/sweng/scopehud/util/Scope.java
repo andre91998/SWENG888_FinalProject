@@ -20,6 +20,18 @@ public class Scope implements Parcelable {
     public String getName() {
         return name;
     }
+    public String getBrand() {
+        return brand;
+    }
+    public float getMaxMagnification() {
+        return maxMagnification;
+    }
+    public boolean isVariableMagnification() {
+        return variableMagnification;
+    }
+    public ScopeZero getScopeZero() {
+        return scopeZero;
+    }
 
     public Scope(int id, String name, String brand, float maxMagnification,
                  boolean variableMagnification, ScopeZero scopeZero) {
