@@ -44,6 +44,7 @@
         android:id="@+id/btn_weather_layout"
         android:layout_height="wrap_content"
         android:layout_width="match_parent">
+      
         <!-- Button to search weather by city or zip -->
         <Button
             android:id="@+id/searchButton"

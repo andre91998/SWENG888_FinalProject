@@ -1,5 +1,6 @@
 package com.sweng.scopehud;
 
+import android.location.Location;
 import android.os.Bundle;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
@@ -48,9 +49,9 @@ public class MainActivity extends NavigationActivity {
 
         List<Scope> scopeList = new ArrayList<>();
         scopeList.add(new Scope(1, "RAZOR HD GEN III", "Vortex Optics", 18.0f, true,
-                new ScopeZero(100, 0.1f, 0.2f, new Date())));
+                new ScopeZero(100, 0.1f, 0.2f, new Date(), new Location(""))));
         scopeList.add(new Scope(2, "STRIKE EAGLE", "Vortex Optics", 24.0f, true,
-                new ScopeZero(200, 0.0f, 0.1f, new Date())));
+                new ScopeZero(200, 0.0f, 0.1f, new Date(), new Location(""))));
 
         ScopeRecyclerViewAdapter adapter = new ScopeRecyclerViewAdapter(scopeList);
         mScopeListView.setAdapter(adapter);

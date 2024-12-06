@@ -11,6 +11,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -55,6 +56,16 @@ public class WeatherActivity extends NavigationActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_weather);
+
+        // Set up the toolbar
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        // Set up the drawer layout and navigation view
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
+        NavigationView navigationView = findViewById(R.id.nav_view);
+        setupDrawer(toolbar, drawer, navigationView, currentUser);
+
         // Initialize UI elements
         temperatureTextView = findViewById(R.id.temperatureTextView);
         windSpeedTextView = findViewById(R.id.windSpeedTextView);
@@ -81,14 +92,6 @@ public class WeatherActivity extends NavigationActivity {
         });
 
         locationButton.setOnClickListener(v -> getCurrentLocationWeather()); // Fetch weather data based on current location
-        // Set up the toolbar
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-
-        // Set up the navigation drawer
-        DrawerLayout drawerLayout = findViewById(R.id.drawer_layout);
-        NavigationView navigationView = findViewById(R.id.nav_view);
-        setupDrawer(toolbar, drawerLayout, navigationView, currentUser);
     }
 
     /**

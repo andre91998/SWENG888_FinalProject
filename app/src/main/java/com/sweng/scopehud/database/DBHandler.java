@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.location.Location;
 import com.sweng.scopehud.util.Scope;
 import com.sweng.scopehud.util.ScopeZero;
 import java.util.ArrayList;
@@ -27,6 +28,8 @@ public class DBHandler extends SQLiteOpenHelper {
     private static final String WINDAGE_COL = "zerowindage";
     private static final String ELEVATION_COL = "zeroelevation";
     private static final String DATE_COL = "zerodate";
+    private static final String LOCATION_LAT_COL = "locationLatitude";
+    private static final String LOCATION_LONG_COL = "locationLongitude";
 
     // Table and column names for User Settings
     private static final String USER_SETTINGS_TABLE_NAME = "user_settings";
@@ -47,14 +50,16 @@ public class DBHandler extends SQLiteOpenHelper {
         // Create Scopes table
         String createScopesTable = "CREATE TABLE " + SCOPE_TABLE_NAME + " ("
                 + ID_COL + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-                + NAME_COL + " TEXT, "
-                + BRAND_COL + " TEXT, "
-                + MAXMAG_COL + " REAL, "
-                + VARMAG_COL + " INTEGER, "
-                + DISTANCE_COL + " INTEGER, "
-                + WINDAGE_COL + " REAL, "
-                + ELEVATION_COL + " REAL, "
-                + DATE_COL + " INTEGER)";
+                + NAME_COL + " TEXT,"
+                + BRAND_COL + " TEXT,"
+                + MAXMAG_COL + " REAL,"
+                + VARMAG_COL + " INTEGER,"
+                + DISTANCE_COL + " INTEGER,"
+                + WINDAGE_COL + " REAL,"
+                + ELEVATION_COL + " REAL,"
+                + DATE_COL + " INTEGER," //DATE IS STORED IN UNIX TIME (seconds since  1970-01-01 00:00:00 UTC)
+                + LOCATION_LAT_COL + " REAL,"
+                + LOCATION_LONG_COL + " REAL)";
         db.execSQL(createScopesTable);
 
         // Create User Settings table
@@ -69,8 +74,37 @@ public class DBHandler extends SQLiteOpenHelper {
         db.execSQL(createUserSettingsTable);
     }
 
+    // this method is use to add new product table entry
+    public void addNewScope(String scopeName, String scopeBrand, float scopeMaxMagnification,
+                            boolean scopeHasVariableMagnification, int zeroDistance,
+                            float zeroWindage, float zeroElevation, Date zeroDate, Location location) {
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+
+        values.put(NAME_COL, scopeName);
+        values.put(BRAND_COL, scopeBrand);
+        values.put(MAXMAG_COL, scopeMaxMagnification);
+        values.put(VARMAG_COL, scopeHasVariableMagnification ? 1 : 0);
+        values.put(DISTANCE_COL, zeroDistance);
+        values.put(WINDAGE_COL, zeroWindage);
+        values.put(ELEVATION_COL, zeroElevation);
+        values.put(DATE_COL, zeroDate.getTime());
+        values.put(LOCATION_LAT_COL, location.getLatitude());
+        values.put(LOCATION_LONG_COL, location.getLongitude());
+
+        db.insert(SCOPE_TABLE_NAME, null, values);
+
+        db.close();
+    }
+
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        if (oldVersion < 2) {
+            db.execSQL("ALTER TABLE " + SCOPE_TABLE_NAME + " ADD COLUMN " + LOCATION_LAT_COL + " REAL");
+            db.execSQL("ALTER TABLE " + SCOPE_TABLE_NAME + " ADD COLUMN " + LOCATION_LONG_COL + " REAL");
+        }
         db.execSQL("DROP TABLE IF EXISTS " + SCOPE_TABLE_NAME);
         db.execSQL("DROP TABLE IF EXISTS " + USER_SETTINGS_TABLE_NAME);
         onCreate(db);
@@ -133,6 +167,9 @@ public class DBHandler extends SQLiteOpenHelper {
 
         if (cursor.moveToFirst()) {
             do {
+                Location location = new Location("");
+                location.setLatitude(cursor.getDouble(cursor.getColumnIndexOrThrow(LOCATION_LAT_COL)));
+                location.setLongitude(cursor.getDouble(cursor.getColumnIndexOrThrow(LOCATION_LAT_COL)));
                 Scope scope = new Scope(
                         cursor.getInt(cursor.getColumnIndexOrThrow(ID_COL)),
                         cursor.getString(cursor.getColumnIndexOrThrow(NAME_COL)),
@@ -143,7 +180,8 @@ public class DBHandler extends SQLiteOpenHelper {
                                 cursor.getInt(cursor.getColumnIndexOrThrow(DISTANCE_COL)),
                                 cursor.getFloat(cursor.getColumnIndexOrThrow(WINDAGE_COL)),
                                 cursor.getFloat(cursor.getColumnIndexOrThrow(ELEVATION_COL)),
-                                new Date(cursor.getLong(cursor.getColumnIndexOrThrow(DATE_COL)))
+                                new Date(cursor.getLong(cursor.getColumnIndexOrThrow(DATE_COL))),
+                                location
                         )
                 );
                 scopeList.add(scope);

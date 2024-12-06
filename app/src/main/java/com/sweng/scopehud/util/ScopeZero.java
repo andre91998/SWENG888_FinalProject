@@ -13,6 +13,15 @@ public class ScopeZero implements Parcelable {
     private float windage; // windage adjustment in MIL
     private float elevation; // elevation adjustment in MIL
     private Date date; // Date on which the scope was zeroed
+    private Location location;
+
+    public Location getLocation() {
+        return location;
+    }
+
+    public void setLocation(Location location) {
+        this.location = location;
+    }
 
     public int getDistance() {
         return distance;
@@ -30,17 +39,19 @@ public class ScopeZero implements Parcelable {
         return date;
     }
 
-    public ScopeZero(int distance, float windage, float elevation, Date date) {
+    public ScopeZero(int distance, float windage, float elevation, Date date, Location location) {
         this.distance = distance;
         this.windage = windage;
         this.elevation = elevation;
         this.date = date;
+        this.location = location;
     }
 
     protected ScopeZero(Parcel in) {
         distance = in.readInt();
         windage = in.readInt();
         elevation = in.readInt();
+        location = in.readParcelable(Location.class.getClassLoader());
     }
 
     public static final Creator<ScopeZero> CREATOR = new Creator<ScopeZero>() {
@@ -65,5 +76,6 @@ public class ScopeZero implements Parcelable {
         parcel.writeInt(distance);
         parcel.writeFloat(windage);
         parcel.writeFloat(elevation);
+        parcel.writeParcelable(location, 0);
     }
 }
