@@ -23,6 +23,7 @@ import android.widget.Switch;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.SwitchCompat;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -89,7 +90,7 @@ public class MainActivity extends NavigationActivity {
         FloatingActionButton fabAddScope = findViewById(R.id.add_scope);
         FloatingActionButton fabMapPin = findViewById(R.id.fab_map);
         // Reference the Toggle Button and Slider
-        Switch toggleSlider = findViewById(R.id.toggle_slider);
+        SwitchCompat toggleSlider = findViewById(R.id.toggle_slider);
         Slider distanceSlider = findViewById(R.id.distance_slider);
         // Initialize the database handler
         dbHandler = new DBHandler(this);
@@ -103,12 +104,7 @@ public class MainActivity extends NavigationActivity {
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
         requestQueue = Volley.newRequestQueue(this);
         mScopeList = new ArrayList<>();
-//        mScopeList.add(new Scope(1, "RAZOR HD GEN III", "Vortex Optics", 18.0f, true,
-//                new ScopeZero(100, 0.1f, 0.2f, new Date(), new Location("")),"State College","PA"));
-//        mScopeList.add(new Scope(2, "STRIKE EAGLE", "Vortex Optics", 24.0f, true,
-//                new ScopeZero(200, 0.0f, 0.1f, new Date(), new Location("")),"Davidsville","PA"));
 
-        //ScopeRecyclerViewAdapter adapter = new ScopeRecyclerViewAdapter(scopeList)
         adapter = new ScopeRecyclerViewAdapter(mScopeList); // Initialize adapter with mScopeList
         mScopeListView.setAdapter(adapter);
 
@@ -203,9 +199,14 @@ public class MainActivity extends NavigationActivity {
 
         // Set a listener for the slider value changes
         distanceSlider.addOnChangeListener((slider, value, fromUser) -> {
-            // Handle slider value changes
-            int distance = (int) value; // Cast to int since the stepSize is 1
-            Toast.makeText(this, "Distance: " + distance + " miles", Toast.LENGTH_SHORT).show();
+            // Handle slider value changes but only if slider is enabled
+            if (distanceSlider.isActivated()) {
+                int distance = (int) value; // Cast to int since the stepSize is 1
+                Toast.makeText(this, "Distance: " + distance + " miles", Toast.LENGTH_SHORT).show();
+                updateRecyclerView(filterScopesByLocation(distance));
+            } else {
+                updateRecyclerView(mScopeList);
+            }
         });
         // Attach the ItemTouchHelper to the RecyclerView
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleCallback);
@@ -301,32 +302,7 @@ public class MainActivity extends NavigationActivity {
         fabMapPin.setOnClickListener(v ->{
             Toast.makeText(MainActivity.this, "Pin Map FAB", Toast.LENGTH_SHORT).show();
         });
-        //Spinner locationSpinner = findViewById(R.id.location_spinner);
-        List<String> uniqueLocations = getUniqueLocations(mScopeList);
 
-        //setupLocationSpinner(locationSpinner, uniqueLocations);
-
-        /*locationSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                String selectedLocation = (String) parent.getItemAtPosition(position);
-
-                if ("All Locations".equals(selectedLocation)) {
-                    // Show all scopes when "All Locations" is selected
-                    updateRecyclerView(mScopeList);
-                } else {
-                    // Filter scopes by selected location
-                    List<Scope> filteredScopes = filterScopesByLocation(selectedLocation);
-                    updateRecyclerView(filteredScopes);
-                }
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-                // Optional: Show all scopes if nothing is selected
-                updateRecyclerView(mScopeList);
-            }
-        });*/
         // Set up the RecyclerView
         setupRecyclerView();
     }
@@ -339,12 +315,7 @@ public class MainActivity extends NavigationActivity {
         }
         return new ArrayList<>(uniqueLocations);
     }
-    private void setupLocationSpinner(Spinner locationSpinner, List<String> locations) {
-        locations.add(0, "All Locations");
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, R.layout.spinner_item, locations);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item); // Default dropdown style
-        locationSpinner.setAdapter(adapter);
-    }
+
     private List<Scope> filterScopesByLocation(float radius) {
         return mScopeList.parallelStream().filter(l -> calculateDistance(l.getLatitude(), l.getLongitude(),
                 latitude, longitude) <= radius).collect(Collectors.toList());
