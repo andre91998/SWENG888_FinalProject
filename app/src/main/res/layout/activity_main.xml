@@ -35,8 +35,16 @@
             android:textColor="@color/light_gray"
             tools:ignore="VisualLintBounds" />
 
+        <Spinner
+            android:id="@+id/location_spinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:padding="8dp"
+            android:background="@drawable/edit_text_border"
+            android:popupBackground="@color/white"
+            android:spinnerMode="dropdown" />
         <!-- Fragment Container -->
-
         <FrameLayout
             android:id="@+id/fragment_container"
             android:layout_width="match_parent"
@@ -49,7 +57,17 @@
                 android:layout_width="match_parent"
                 android:layout_height="515dp" />
         </FrameLayout>
-
+        <!-- Floating Action Button to clear coordinates -->
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/add_scope"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_margin="16dp"
+            android:src="@drawable/ic_add_scope"
+            app:backgroundTint="@color/orange_hue"
+            app:elevation="6dp"
+            app:pressedTranslationZ="12dp" />
     </LinearLayout>
 
     <!-- Navigation Drawer -->

@@ -22,6 +22,7 @@ import com.sweng.scopehud.R;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -134,7 +135,10 @@ public class ScopeRecyclerViewAdapter extends RecyclerView.Adapter<ScopeRecycler
             return mScopeList.size();
         }
     }
-
+    public void updateData(List<Scope> newScopes) {
+        mScopeList = new ArrayList<>(newScopes);
+        notifyDataSetChanged();
+    }
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
         private TextView titleTextView;

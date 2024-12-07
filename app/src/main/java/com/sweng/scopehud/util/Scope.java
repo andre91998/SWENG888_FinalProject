@@ -16,7 +16,10 @@ public class Scope implements Parcelable {
     private float maxMagnification; //maximum magnification of scope (1 for non magnified scopes)
     private boolean variableMagnification; //whether the scope has variable magnification
     private ScopeZero scopeZero; //last scope zero data
+    private String town;
+    private String state;
 
+    //getters
     public String getName() {
         return name;
     }
@@ -32,6 +35,13 @@ public class Scope implements Parcelable {
     public ScopeZero getScopeZero() {
         return scopeZero;
     }
+    public String getTown(){
+        return town;
+    }
+    public String getState(){
+        return state;
+    }
+    //setters
     public void setName(String name) {
         this.name = name;
     }
@@ -47,15 +57,22 @@ public class Scope implements Parcelable {
     public void setScopeZero(ScopeZero scopeZero) {
         this.scopeZero = scopeZero;
     }
-
+    public void setTown(String town){
+        this.town = town;
+    }
+    public void setState(String state){
+        this.state = Scope.this.state;
+    }
     public Scope(int id, String name, String brand, float maxMagnification,
-                 boolean variableMagnification, ScopeZero scopeZero) {
+                 boolean variableMagnification, ScopeZero scopeZero, String town, String state ) {
         this.id = id;
         this.name = name;
         this.brand = brand;
         this.maxMagnification = maxMagnification;
         this.variableMagnification = variableMagnification;
         this.scopeZero = scopeZero;
+        this.town = town;
+        this.state = state;
     }
 
     protected Scope(Parcel in) {
@@ -65,6 +82,8 @@ public class Scope implements Parcelable {
         maxMagnification = in.readFloat();
         variableMagnification = in.readByte() != 0;
         scopeZero = in.readParcelable(ScopeZero.class.getClassLoader());
+        town = in.readString();
+        state = in.readString();
     }
 
     public static final Creator<Scope> CREATOR = new Creator<Scope>() {
@@ -93,6 +112,8 @@ public class Scope implements Parcelable {
         parcel.writeFloat(maxMagnification);
         parcel.writeByte((byte) (variableMagnification ? 1 : 0));
         parcel.writeParcelable(scopeZero, i);
+        parcel.writeString(town);
+        parcel.writeString(state);
     }
 
     @NonNull
@@ -102,6 +123,7 @@ public class Scope implements Parcelable {
                 "\n Max Magnification: " + maxMagnification + "\nHas Variable Magnification: "
                 + (variableMagnification ? "yes" : "no") + "\nZero Distance: " +
                 scopeZero.getDistance() + "\nSet Windage: " + scopeZero.getWindage() +
-                "\nSet Elevation: " + scopeZero.getElevation() + "\nZeroed on: " + scopeZero.getDate().toString();
+                "\nSet Elevation: " + scopeZero.getElevation() + "\nZeroed on: " + scopeZero.getDate().toString()
+                + "\n Town: " + town + "\n State: "+ state;
     }
 }
