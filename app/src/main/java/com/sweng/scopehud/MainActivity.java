@@ -298,7 +298,7 @@ public class MainActivity extends NavigationActivity {
             }
         });
         // Set up the RecyclerView
-        //setupRecyclerView(); uncomment this once db stuff is working
+        setupRecyclerView();
     }
     private List<String> getUniqueLocations(List<Scope> scopeList) {
         Set<String> uniqueLocations = new HashSet<>();

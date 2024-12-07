@@ -2,9 +2,12 @@ package com.sweng.scopehud;
 
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.content.res.AssetFileDescriptor;
 import android.database.Cursor;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -16,14 +19,18 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import com.google.android.material.navigation.NavigationView;
 import com.sweng.scopehud.database.DBHandler;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.Objects;
 
 public class SettingsActivity extends NavigationActivity {
 
+    private static String TAG = "SettingsActivity";
     private ImageView profileImageView;
     private EditText usernameEditText, addressEditText, cityEditText, stateEditText, countryEditText;
     private Button updateProfileButton, deleteAccountButton, uploadProfileButton;
     private DBHandler dbHandler;
+    private byte[] profileImage;
     private Uri profileImageUri;
 
     @Override
@@ -71,7 +78,22 @@ public class SettingsActivity extends NavigationActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 1 && resultCode == RESULT_OK && data != null) {
             profileImageUri = data.getData();
-            profileImageView.setImageURI(profileImageUri);
+            if (profileImageUri != null) {
+                try {
+                    AssetFileDescriptor fileDescriptor = getApplicationContext().getContentResolver()
+                            .openAssetFileDescriptor(profileImageUri , "r");
+                    long fileSize = fileDescriptor.getLength();
+                    byte[] image = new byte[(int)fileSize];
+                    getContentResolver().openInputStream(data.getData()).read(image);
+                    profileImageView.setImageBitmap(BitmapFactory.decodeByteArray(image, 0, image.length));
+                } catch (FileNotFoundException e) {
+                    Log.e(TAG, "Failed to Load Profile Image");
+                } catch (IOException e2) {
+                    Log.e(TAG, "Failed to read the Profile Image");
+                }
+            }
+
+
         }
     }
 
@@ -102,10 +124,10 @@ public class SettingsActivity extends NavigationActivity {
         String city = cityEditText.getText().toString().trim();
         String state = stateEditText.getText().toString().trim();
         String country = countryEditText.getText().toString().trim();
-        String profileImageUriString = profileImageUri != null ? profileImageUri.toString() : null;
+        byte[] profileImageArray = profileImage != null ? profileImage : null;
 
         if (!username.isEmpty()) {
-            dbHandler.upsertUserSettings(1, username, address, city, state, country, profileImageUriString);
+            dbHandler.upsertUserSettings(1, username, address, city, state, country, profileImageArray);
             Toast.makeText(this, "Profile updated successfully", Toast.LENGTH_SHORT).show();
         } else {
             Toast.makeText(this, "Username cannot be empty", Toast.LENGTH_SHORT).show();

@@ -41,7 +41,7 @@ public class DBHandler extends SQLiteOpenHelper {
     private static final String CITY_COL = "city";
     private static final String STATE_COL = "state";
     private static final String COUNTRY_COL = "country";
-    private static final String PROFILE_IMAGE_URI_COL = "profile_image_uri";
+    private static final String PROFILE_IMAGE_COL = "profile_image";
 
     public DBHandler(Context context) {
         super(context, DB_NAME, null, DB_VERSION);
@@ -74,7 +74,7 @@ public class DBHandler extends SQLiteOpenHelper {
                 + CITY_COL + " TEXT, "
                 + STATE_COL + " TEXT, "
                 + COUNTRY_COL + " TEXT, "
-                + PROFILE_IMAGE_URI_COL + " TEXT)";
+                + PROFILE_IMAGE_COL + " BLOB)";
         db.execSQL(createUserSettingsTable);
     }
 
@@ -118,7 +118,7 @@ public class DBHandler extends SQLiteOpenHelper {
     }
 
     // Method to insert or update user settings
-    public void upsertUserSettings(int userId, String username, String address, String city, String state, String country, String profileImageUri) {
+    public void upsertUserSettings(int userId, String username, String address, String city, String state, String country, byte[] profileImage) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(USERNAME_COL, username);
@@ -126,7 +126,7 @@ public class DBHandler extends SQLiteOpenHelper {
         values.put(CITY_COL, city);
         values.put(STATE_COL, state);
         values.put(COUNTRY_COL, country);
-        values.put(PROFILE_IMAGE_URI_COL, profileImageUri);
+        values.put(PROFILE_IMAGE_COL, profileImage);
 
         // Check if user settings exist
         Cursor cursor = db.query(USER_SETTINGS_TABLE_NAME, null, USER_ID_COL + "=?", new String[]{String.valueOf(userId)}, null, null, null);
@@ -152,7 +152,7 @@ public class DBHandler extends SQLiteOpenHelper {
     }
 
     // Method to update user settings
-    public void updateUserSettings(int userId, String username, String address, String city, String state, String country, String profileImageUri) {
+    public void updateUserSettings(int userId, String username, String address, String city, String state, String country, byte[] profileImage) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(USERNAME_COL, username);
@@ -160,7 +160,7 @@ public class DBHandler extends SQLiteOpenHelper {
         values.put(CITY_COL, city);
         values.put(STATE_COL, state);
         values.put(COUNTRY_COL, country);
-        values.put(PROFILE_IMAGE_URI_COL, profileImageUri);
+        values.put(PROFILE_IMAGE_COL, profileImage);
 
         db.update(USER_SETTINGS_TABLE_NAME, values, USER_ID_COL + "=?", new String[]{String.valueOf(userId)});
         db.close();
