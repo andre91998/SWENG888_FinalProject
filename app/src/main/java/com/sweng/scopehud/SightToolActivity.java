@@ -153,9 +153,9 @@ public class SightToolActivity extends NavigationActivity {
             etZeroDistance.setText(editTextYardage.getText().toString());
             String windDirection = windDir.getText().toString(); // Get the text from windDir
             String strippedValue = windDirection.replace("DIR:", "").trim(); // Remove "DIR:" and trim spaces
-            etZeroWindage.setText(strippedValue  + " degrees");
-            etZeroElevation.setText(angle_value.getText().toString()+" degrees");
-            etZeroDate.setText(LocalDate.now().toString());
+            etZeroWindage.setText(strippedValue);
+            etZeroElevation.setText(angle_value.getText().toString());
+            etZeroDate.setText((new Date()).toString());
             // Handle Save and Cancel buttons
             Button btnCancel = dialogView.findViewById(R.id.btn_cancel);
             Button btnSave = dialogView.findViewById(R.id.btn_save);

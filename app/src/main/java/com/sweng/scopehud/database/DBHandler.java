@@ -15,7 +15,7 @@ public class DBHandler extends SQLiteOpenHelper {
 
     // Database constants
     private static final String DB_NAME = "scopeDB";
-    private static final int DB_VERSION = 2;
+    private static final int DB_VERSION = 3;
 
     // Table and column names for Scopes
     private static final String SCOPE_TABLE_NAME = "scopes";
@@ -30,8 +30,8 @@ public class DBHandler extends SQLiteOpenHelper {
     private static final String DATE_COL = "zerodate";
     private static final String LOCATION_LAT_COL = "locationLatitude";
     private static final String LOCATION_LONG_COL = "locationLongitude";
-    private static final String TOWN = "town";
-    private static final String STATE = "state";
+    private static final String TOWN_COL = "town";
+    private static final String STATE_COL = "state";
 
     // Table and column names for User Settings
     private static final String USER_SETTINGS_TABLE_NAME = "user_settings";
@@ -39,7 +39,7 @@ public class DBHandler extends SQLiteOpenHelper {
     private static final String USERNAME_COL = "username";
     private static final String ADDRESS_COL = "address";
     private static final String CITY_COL = "city";
-    private static final String STATE_COL = "state";
+    //private static final String STATE_COL = "state";
     private static final String COUNTRY_COL = "country";
     private static final String PROFILE_IMAGE_URI_COL = "profile_image_uri";
     private static final String PROFILE_IMAGE_COL = "profile_image";
@@ -63,8 +63,8 @@ public class DBHandler extends SQLiteOpenHelper {
                 + DATE_COL + " INTEGER," //DATE IS STORED IN UNIX TIME (seconds since  1970-01-01 00:00:00 UTC)
                 + LOCATION_LAT_COL + " REAL,"
                 + LOCATION_LONG_COL + " REAL,"
-                + TOWN + " TEXT, "
-                + STATE + " TEXT )";
+                + TOWN_COL + " TEXT, "
+                + STATE_COL + " TEXT )";
         db.execSQL(createScopesTable);
 
         // Create User Settings table
@@ -98,8 +98,8 @@ public class DBHandler extends SQLiteOpenHelper {
         values.put(DATE_COL, zeroDate.getTime());
         values.put(LOCATION_LAT_COL, location.getLatitude());
         values.put(LOCATION_LONG_COL, location.getLongitude());
-        values.put(TOWN, town);
-        values.put(STATE, state);
+        values.put(TOWN_COL, town);
+        values.put(STATE_COL, state);
 
 
         db.insert(SCOPE_TABLE_NAME, null, values);
@@ -109,10 +109,12 @@ public class DBHandler extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        if (oldVersion < 4) {
+            db.execSQL("ALTER TABLE " + SCOPE_TABLE_NAME + " ADD COLUMN " + TOWN_COL + " TEXT");
+            db.execSQL("ALTER TABLE " + SCOPE_TABLE_NAME + " ADD COLUMN " + STATE_COL + " TEXT");
+        }
         if (oldVersion < 3) {
             db.execSQL("ALTER TABLE " + USER_SETTINGS_TABLE_NAME + " ADD COLUMN" + PROFILE_IMAGE_COL + " BLOB");
-            db.execSQL("ALTER TABLE " + SCOPE_TABLE_NAME + " ADD COLUMN " + LOCATION_LAT_COL + " REAL");
-            db.execSQL("ALTER TABLE " + SCOPE_TABLE_NAME + " ADD COLUMN " + LOCATION_LONG_COL + " REAL");
         }
         if (oldVersion < 2) {
             db.execSQL("ALTER TABLE " + SCOPE_TABLE_NAME + " ADD COLUMN " + LOCATION_LAT_COL + " REAL");
@@ -196,8 +198,8 @@ public class DBHandler extends SQLiteOpenHelper {
                                 new Date(cursor.getLong(cursor.getColumnIndexOrThrow(DATE_COL))),
                                 location
                         ),
-                        cursor.getString(cursor.getColumnIndexOrThrow(TOWN)),
-                        cursor.getString(cursor.getColumnIndexOrThrow(STATE))
+                        cursor.getString(cursor.getColumnIndexOrThrow(TOWN_COL)),
+                        cursor.getString(cursor.getColumnIndexOrThrow(STATE_COL))
 
                 );
                 scopeList.add(scope);
