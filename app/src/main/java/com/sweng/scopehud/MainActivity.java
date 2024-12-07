@@ -19,6 +19,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Switch;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -39,6 +40,7 @@ import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
+import com.google.android.material.slider.Slider;
 import com.google.android.material.snackbar.Snackbar;
 import com.sweng.scopehud.database.DBHandler;
 import com.sweng.scopehud.util.Scope;
@@ -80,7 +82,11 @@ public class MainActivity extends NavigationActivity {
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
         setupDrawer(toolbar, drawer, navigationView, currentUser);
-        FloatingActionButton fab = findViewById(R.id.add_scope);
+        FloatingActionButton fabAddScope = findViewById(R.id.add_scope);
+        FloatingActionButton fabMapPin = findViewById(R.id.fab_map);
+        // Reference the Toggle Button and Slider
+        Switch toggleSlider = findViewById(R.id.toggle_slider);
+        Slider distanceSlider = findViewById(R.id.distance_slider);
         // Initialize the database handler
         dbHandler = new DBHandler(this);
         /*
@@ -185,10 +191,23 @@ public class MainActivity extends NavigationActivity {
             }
         };
 
+        // Set a listener for the toggle button
+        toggleSlider.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            // Enable or disable the slider based on the toggle button state
+            distanceSlider.setEnabled(isChecked);
+        });
+
+        // Set a listener for the slider value changes
+        distanceSlider.addOnChangeListener((slider, value, fromUser) -> {
+            // Handle slider value changes
+            int distance = (int) value; // Cast to int since the stepSize is 1
+            Toast.makeText(this, "Distance: " + distance + " miles", Toast.LENGTH_SHORT).show();
+        });
         // Attach the ItemTouchHelper to the RecyclerView
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleCallback);
         itemTouchHelper.attachToRecyclerView(mScopeListView);
-        fab.setOnClickListener(v -> {
+        // FAB for Adding a scope
+        fabAddScope.setOnClickListener(v -> {
             //get location
             getCurrentLocation();
             // Inflate the custom layout for the dialog
@@ -271,12 +290,16 @@ public class MainActivity extends NavigationActivity {
                 dialog.dismiss();
             });
         });
-        Spinner locationSpinner = findViewById(R.id.location_spinner);
+        // FAB fpr google maps
+        fabMapPin.setOnClickListener(v ->{
+            Toast.makeText(MainActivity.this, "Pin Map FAB", Toast.LENGTH_SHORT).show();
+        });
+        //Spinner locationSpinner = findViewById(R.id.location_spinner);
         List<String> uniqueLocations = getUniqueLocations(mScopeList);
 
-        setupLocationSpinner(locationSpinner, uniqueLocations);
+        //setupLocationSpinner(locationSpinner, uniqueLocations);
 
-        locationSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        /*locationSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String selectedLocation = (String) parent.getItemAtPosition(position);
@@ -296,7 +319,7 @@ public class MainActivity extends NavigationActivity {
                 // Optional: Show all scopes if nothing is selected
                 updateRecyclerView(mScopeList);
             }
-        });
+        });*/
         // Set up the RecyclerView
         //setupRecyclerView(); uncomment this once db stuff is working
     }
