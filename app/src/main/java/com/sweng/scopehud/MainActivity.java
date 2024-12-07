@@ -310,7 +310,8 @@ public class MainActivity extends NavigationActivity {
             Intent mapIntent = new Intent(Intent.ACTION_VIEW, uri);
             mapIntent.setPackage("com.google.android.apps.maps");
             if (mapIntent.resolveActivity(getPackageManager()) != null) {
-                startActivity(mapIntent);
+                Intent mapActivity = new Intent(getApplicationContext(), MapWithMarkersActivity.class);
+                startActivity(mapActivity);
             } else {
                 Toast.makeText(this, "Google Maps is not installed", Toast.LENGTH_SHORT).show();
             }

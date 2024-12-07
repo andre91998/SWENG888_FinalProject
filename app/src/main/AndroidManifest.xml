@@ -103,6 +103,17 @@
             android:label="@string/title_activity_maps"
             android:theme="@style/Theme.ScopeHUD.NoActionBar" />
 
+        <activity
+            android:name=".MapWithMarkersActivity"
+            android:label="@string/title_activity_maps"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
     </application>
 
 </manifest>
