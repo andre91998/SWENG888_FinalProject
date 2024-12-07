@@ -300,6 +300,7 @@ public class MainActivity extends NavigationActivity {
         // Set up the RecyclerView
         setupRecyclerView();
     }
+
     private List<String> getUniqueLocations(List<Scope> scopeList) {
         Set<String> uniqueLocations = new HashSet<>();
         for (Scope scope : scopeList) {
@@ -327,6 +328,13 @@ public class MainActivity extends NavigationActivity {
     private void updateRecyclerView(List<Scope> filteredScopes) {
         adapter.updateData(filteredScopes); // Create an `updateData` method in your adapter to refresh the list.
     }
+
+    @Override
+    public void onResume(){
+        super.onResume();
+        setupRecyclerView();
+    }
+
     /**
      * Sets up the RecyclerView to display a list of scopes from the database.
      */

@@ -6,6 +6,7 @@ import android.Manifest;
 import android.app.AlertDialog;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
+import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -34,6 +35,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseUser;
+import com.sweng.scopehud.database.DBHandler;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -42,6 +44,8 @@ import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.time.Instant;
+import java.util.Date;
 
 /*
  * Updated SightToolActivity
@@ -59,6 +63,9 @@ public class SightToolActivity extends NavigationActivity {
     private TextView upDown, leftRight, windDir; // TextViews for sight tool
     private FusedLocationProviderClient fusedLocationClient;
     private RequestQueue requestQueue;
+    private DBHandler dbHandler;
+    private double latitude, longitude;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -88,6 +95,9 @@ public class SightToolActivity extends NavigationActivity {
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
         requestQueue = Volley.newRequestQueue(this);
 
+        //Intialize DBHandler
+        dbHandler = new DBHandler(this);
+
         getCurrentLocationWeather(); // Fetch weather data based on current location
         // Plus button increments the yardage value
         btnPlus.setOnClickListener(v -> {
@@ -113,6 +123,7 @@ public class SightToolActivity extends NavigationActivity {
             upDown.setText(invertValue(upDownValue));
             leftRight.setText(invertValue(leftRightValue));
         });
+
         fab.setOnClickListener(v -> {
             // Inflate the custom layout for the dialog
             View dialogView = getLayoutInflater().inflate(R.layout.dialog_add_scope, null);
@@ -130,9 +141,13 @@ public class SightToolActivity extends NavigationActivity {
             EditText etMaxMag = dialogView.findViewById(R.id.et_max_magnification);
             Spinner variableMagnificationSpinner = dialogView.findViewById(R.id.spinner_variable_magnification);
             EditText etZeroDistance = dialogView.findViewById(R.id.et_zero_distance);
+            etZeroDistance.setText(editTextYardage.getText());
             EditText etZeroWindage = dialogView.findViewById(R.id.et_zero_windage);
+            etZeroWindage.setText(editTextLeftright.getText());
             EditText etZeroElevation = dialogView.findViewById(R.id.et_zero_elevation);
+            etZeroElevation.setText(editTextUpdown.getText());
             EditText etZeroDate = dialogView.findViewById(R.id.et_zero_date);
+            etZeroDate.setText((new Date()).toString());
 
             // Populate the EditText fields with existing data
             etZeroDistance.setText(editTextYardage.getText().toString());
@@ -186,7 +201,9 @@ public class SightToolActivity extends NavigationActivity {
                 */
 
                 // Save the values to the database or perform desired action
-                //saveScopeToDatabase(name, brand, maxMag, varMag, zeroDistance, zeroWindage, zeroElevation, zeroDate);
+                saveScopeToDatabase(name, brand, Float.parseFloat(maxMag), Boolean.parseBoolean(varMag),
+                        Integer.parseInt(zeroDistance), Float.parseFloat(zeroWindage),
+                        Float.parseFloat(zeroElevation), Date.parse(zeroDate));
 
                 // Dismiss the dialog
                 dialog.dismiss();
@@ -329,9 +346,10 @@ public class SightToolActivity extends NavigationActivity {
         // Add the request to the Volley request queue
         requestQueue.add(jsonObjectRequest);
     }
-        /**
-         * Method to invert a numeric string value (e.g., turn "1" into "-1").
-         */
+
+    /**
+     * Method to invert a numeric string value (e.g., turn "1" into "-1").
+     */
     private String invertValue(String value) {
         try {
             int intValue = Integer.parseInt(value);
@@ -339,5 +357,15 @@ public class SightToolActivity extends NavigationActivity {
         } catch (NumberFormatException e) {
             return "0"; // Default to 0 if there's an invalid input
         }
+    }
+
+    /**
+     *
+     */
+    private void saveScopeToDatabase(String name, String brand, float maxMag, boolean varMag,
+                                     int zeroDistance, float zeroWindage, float zeroElevation,
+                                     long zeroDate) {
+        dbHandler.addNewScope(name, brand, maxMag, varMag, zeroDistance, zeroWindage, zeroElevation,
+                new Date(zeroDate), new Location(""));
     }
 }
