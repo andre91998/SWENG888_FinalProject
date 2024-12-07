@@ -366,6 +366,6 @@ public class SightToolActivity extends NavigationActivity {
                                      int zeroDistance, float zeroWindage, float zeroElevation,
                                      long zeroDate) {
         dbHandler.addNewScope(name, brand, maxMag, varMag, zeroDistance, zeroWindage, zeroElevation,
-                new Date(zeroDate), new Location(""));
+                new Date(zeroDate), new Location(""), "", "");
     }
 }
