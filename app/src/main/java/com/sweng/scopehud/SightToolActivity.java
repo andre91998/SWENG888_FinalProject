@@ -309,6 +309,7 @@ public class SightToolActivity extends NavigationActivity {
                 if (location != null) {
                     latitude = location.getLatitude();
                     longitude = location.getLongitude();
+                    Log.d(TAG, "coord: " + latitude + ", " +longitude);
                     getWeatherDataByLocation(latitude, longitude);  // Fetch weather based on location
                 } else {
                     Toast.makeText(SightToolActivity.this, "Unable to get current location", Toast.LENGTH_SHORT).show();
@@ -342,7 +343,6 @@ public class SightToolActivity extends NavigationActivity {
                 },
                 error -> {
                     Log.e(TAG, "Error fetching weather data: " + error.getMessage());
-                    Toast.makeText(SightToolActivity.this, "Error fetching weather data", Toast.LENGTH_SHORT).show();
                 });
 
         // Add the request to the Volley request queue

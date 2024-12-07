@@ -2,6 +2,7 @@ package com.sweng.scopehud;
 import android.Manifest;
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Paint;
 
@@ -11,6 +12,7 @@ import android.graphics.drawable.Drawable;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -61,6 +63,7 @@ import java.util.stream.Collectors;
 
 public class MainActivity extends NavigationActivity {
 
+    private static final String TAG = "ScopeListActivity";
     private static final double EARTH_RADIUS = 6371; // Earth's radius in kilometers
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
     private RecyclerView mScopeListView;
@@ -77,6 +80,8 @@ public class MainActivity extends NavigationActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+        getCurrentLocation();
         setContentView(R.layout.activity_main);
 
         // Set up the toolbar
@@ -101,7 +106,6 @@ public class MainActivity extends NavigationActivity {
         */
         mScopeListView = findViewById(R.id.scopeListView);
         mScopeListView.setLayoutManager(new LinearLayoutManager(this));
-        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
         requestQueue = Volley.newRequestQueue(this);
         mScopeList = new ArrayList<>();
 
@@ -300,7 +304,18 @@ public class MainActivity extends NavigationActivity {
         });
         // FAB fpr google maps
         fabMapPin.setOnClickListener(v ->{
-            Toast.makeText(MainActivity.this, "Pin Map FAB", Toast.LENGTH_SHORT).show();
+            // Launch Google Maps intent with "shooting ranges near me" query
+            Uri uri = Uri.parse(String.format(Locale.ENGLISH, "geo:%f,%f", latitude, longitude));
+            Log.d(TAG, uri.toString());
+            Intent mapIntent = new Intent(Intent.ACTION_VIEW, uri);
+            mapIntent.setPackage("com.google.android.apps.maps");
+            if (mapIntent.resolveActivity(getPackageManager()) != null) {
+                startActivity(mapIntent);
+            } else {
+                Toast.makeText(this, "Google Maps is not installed", Toast.LENGTH_SHORT).show();
+            }
+            // Close MapsActivity after attempting to launch the intent
+            finish();
         });
 
         // Set up the RecyclerView
@@ -357,8 +372,7 @@ public class MainActivity extends NavigationActivity {
                 if (location != null) {
                     latitude = location.getLatitude();
                     longitude = location.getLongitude();
-                    //convert to state and town
-                    getTownAndState(latitude,longitude);
+                    Log.d(TAG, "coord: " + latitude + ", " +longitude);
                 } else {
                     Toast.makeText(MainActivity.this, "Unable to get current location", Toast.LENGTH_SHORT).show();
                 }
