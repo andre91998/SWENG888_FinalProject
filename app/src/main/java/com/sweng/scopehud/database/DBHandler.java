@@ -30,6 +30,8 @@ public class DBHandler extends SQLiteOpenHelper {
     private static final String DATE_COL = "zerodate";
     private static final String LOCATION_LAT_COL = "locationLatitude";
     private static final String LOCATION_LONG_COL = "locationLongitude";
+    private static final String TOWN = "town";
+    private static final String STATE = "state";
 
     // Table and column names for User Settings
     private static final String USER_SETTINGS_TABLE_NAME = "user_settings";
@@ -59,7 +61,9 @@ public class DBHandler extends SQLiteOpenHelper {
                 + ELEVATION_COL + " REAL,"
                 + DATE_COL + " INTEGER," //DATE IS STORED IN UNIX TIME (seconds since  1970-01-01 00:00:00 UTC)
                 + LOCATION_LAT_COL + " REAL,"
-                + LOCATION_LONG_COL + " REAL)";
+                + LOCATION_LONG_COL + " REAL,"
+                + TOWN + " TEXT, "
+                + STATE + " TEXT )";
         db.execSQL(createScopesTable);
 
         // Create User Settings table
@@ -77,7 +81,7 @@ public class DBHandler extends SQLiteOpenHelper {
     // this method is use to add new product table entry
     public void addNewScope(String scopeName, String scopeBrand, float scopeMaxMagnification,
                             boolean scopeHasVariableMagnification, int zeroDistance,
-                            float zeroWindage, float zeroElevation, Date zeroDate, Location location) {
+                            float zeroWindage, float zeroElevation, Date zeroDate, Location location, String town, String state) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -93,6 +97,9 @@ public class DBHandler extends SQLiteOpenHelper {
         values.put(DATE_COL, zeroDate.getTime());
         values.put(LOCATION_LAT_COL, location.getLatitude());
         values.put(LOCATION_LONG_COL, location.getLongitude());
+        values.put(TOWN, town);
+        values.put(STATE, state);
+
 
         db.insert(SCOPE_TABLE_NAME, null, values);
 
@@ -182,7 +189,10 @@ public class DBHandler extends SQLiteOpenHelper {
                                 cursor.getFloat(cursor.getColumnIndexOrThrow(ELEVATION_COL)),
                                 new Date(cursor.getLong(cursor.getColumnIndexOrThrow(DATE_COL))),
                                 location
-                        )
+                        ),
+                        cursor.getString(cursor.getColumnIndexOrThrow(TOWN)),
+                        cursor.getString(cursor.getColumnIndexOrThrow(STATE))
+
                 );
                 scopeList.add(scope);
             } while (cursor.moveToNext());

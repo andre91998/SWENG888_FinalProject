@@ -12,6 +12,15 @@
         android:background="@color/dark_gray">
 
         <!-- Name Field -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="Scope Name"
+            android:textColor="@color/input_field_background"
+            android:paddingLeft="5dp"
+            android:textSize="16dp"
+            android:textStyle="bold"
+            android:layout_marginTop="5dp"/>
         <EditText
             android:id="@+id/et_name"
             android:layout_width="match_parent"
@@ -26,6 +35,15 @@
             android:textColorHint="@color/input_field_background"/>
 
         <!-- Brand Field -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="Brand"
+            android:textColor="@color/input_field_background"
+            android:paddingLeft="5dp"
+            android:textSize="16dp"
+            android:textStyle="bold"
+            android:layout_marginTop="5dp"/>
         <EditText
             android:id="@+id/et_brand"
             android:layout_width="match_parent"
@@ -40,6 +58,15 @@
             android:textColorHint="@color/input_field_background"/>
 
         <!-- Max Magnification Field -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="Max Magnification"
+            android:textColor="@color/input_field_background"
+            android:paddingLeft="5dp"
+            android:textSize="16dp"
+            android:textStyle="bold"
+            android:layout_marginTop="5dp"/>
         <EditText
             android:id="@+id/et_max_magnification"
             android:layout_width="match_parent"
@@ -55,21 +82,35 @@
             android:textColorHint="@color/input_field_background"/>
 
         <!-- Variable Magnification Field -->
-        <EditText
-            android:id="@+id/et_variable_magnification"
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="Variable Magnification"
+            android:textColor="@color/input_field_background"
+            android:paddingLeft="5dp"
+            android:textSize="16dp"
+            android:textStyle="bold"
+            android:layout_marginTop="5dp"/>
+        <Spinner
+            android:id="@+id/spinner_variable_magnification"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Variable Magnification"
-            android:inputType="text"
-            android:paddingStart="12dp"
-            android:paddingEnd="12dp"
             android:layout_margin="5dp"
-            tools:ignore="Autofill,VisualLintTextFieldSize"
+            android:padding="8dp"
             android:background="@drawable/edit_text_border"
-            android:textColor="@color/input_field_background"
-            android:textColorHint="@color/input_field_background"/>
+            android:popupBackground="@color/white"
+            android:spinnerMode="dropdown" />
 
         <!-- Zero Distance Field -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="Zero Distance"
+            android:textColor="@color/input_field_background"
+            android:paddingLeft="5dp"
+            android:textSize="16dp"
+            android:textStyle="bold"
+            android:layout_marginTop="5dp"/>
         <EditText
             android:id="@+id/et_zero_distance"
             android:layout_width="match_parent"
@@ -85,6 +126,15 @@
             android:textColorHint="@color/input_field_background"/>
 
         <!-- Zero Windage Field -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="Windage"
+            android:textColor="@color/input_field_background"
+            android:paddingLeft="5dp"
+            android:textSize="16dp"
+            android:textStyle="bold"
+            android:layout_marginTop="5dp"/>
         <EditText
             android:id="@+id/et_zero_windage"
             android:layout_width="match_parent"
@@ -100,6 +150,15 @@
             android:textColorHint="@color/input_field_background"/>
 
         <!-- Zero Elevation Field -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="Elevation"
+            android:textColor="@color/input_field_background"
+            android:paddingLeft="5dp"
+            android:textSize="16dp"
+            android:textStyle="bold"
+            android:layout_marginTop="5dp"/>
         <EditText
             android:id="@+id/et_zero_elevation"
             android:layout_width="match_parent"
@@ -115,6 +174,15 @@
             android:textColorHint="@color/input_field_background"/>
 
         <!-- Zero Date Field -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="Date"
+            android:textColor="@color/input_field_background"
+            android:layout_marginLeft="5dp"
+            android:textSize="16dp"
+            android:textStyle="bold"
+            android:layout_marginTop="5dp"/>
         <EditText
             android:id="@+id/et_zero_date"
             android:layout_width="match_parent"

@@ -38,6 +38,19 @@ public class ScopeZero implements Parcelable {
     public Date getDate() {
         return date;
     }
+    public void setDistance(int distance) {
+        this.distance = distance;
+    }
+
+    public void setWindage(float windage) {
+        this.windage = windage;
+    }
+    public void setElevation(float elevation) {
+        this.elevation = elevation;
+    }
+    public void setDate(Date date) {
+        this.date = date;
+    }
 
     public ScopeZero(int distance, float windage, float elevation, Date date, Location location) {
         this.distance = distance;

@@ -7,7 +7,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -16,6 +20,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.sweng.scopehud.R;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class ScopeRecyclerViewAdapter extends RecyclerView.Adapter<ScopeRecyclerViewAdapter.MyViewHolder> {
@@ -50,27 +58,74 @@ public class ScopeRecyclerViewAdapter extends RecyclerView.Adapter<ScopeRecycler
         });
     }
     private void showScopeInfoDialog(Context context, Scope scope) {
-        // Create a dialog
+        // Inflate the custom layout for the dialog
+        View dialogView = LayoutInflater.from(context).inflate(R.layout.dialog_add_scope, null);
+
+        // Create the AlertDialog
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setView(dialogView);
 
-        // Set dialog title
-        builder.setTitle(scope.getName());
+        // Get references to the dialog's input fields
+        EditText etName = dialogView.findViewById(R.id.et_name);
+        EditText etBrand = dialogView.findViewById(R.id.et_brand);
+        EditText etMaxMag = dialogView.findViewById(R.id.et_max_magnification);
+        Spinner spinnerVarMag = dialogView.findViewById(R.id.spinner_variable_magnification);
+        EditText etZeroDistance = dialogView.findViewById(R.id.et_zero_distance);
+        EditText etZeroWindage = dialogView.findViewById(R.id.et_zero_windage);
+        EditText etZeroElevation = dialogView.findViewById(R.id.et_zero_elevation);
+        EditText etZeroDate = dialogView.findViewById(R.id.et_zero_date);
 
-        // Set dialog message (additional stats)
-        String message = "Brand: " + scope.getBrand() +
-                "\nMax Magnification: " + scope.getMaxMagnification() +
-                "\nVariable Magnification: " + (scope.isVariableMagnification() ? "Yes" : "No") +
-                "\nZero Distance: " + scope.getScopeZero().getDistance() +
-                "\nWindage: " + scope.getScopeZero().getWindage() +
-                "\nElevation: " + scope.getScopeZero().getElevation() +
-                "\nZeroed On: " + scope.getScopeZero().getDate().toString();
-        builder.setMessage(message);
+        // Populate fields with existing scope data
+        etName.setText(scope.getName());
+        etBrand.setText(scope.getBrand());
+        etMaxMag.setText(String.valueOf(scope.getMaxMagnification()));
+        etZeroDistance.setText(String.valueOf(scope.getScopeZero().getDistance()));
+        etZeroWindage.setText(String.valueOf(scope.getScopeZero().getWindage()));
+        etZeroElevation.setText(String.valueOf(scope.getScopeZero().getElevation()));
+        etZeroDate.setText(scope.getScopeZero().getDate().toString());
 
-        // Add an "OK" button to close the dialog
-        builder.setPositiveButton("OK", (dialog, which) -> dialog.dismiss());
+        // Setup Spinner for variable magnification
+        List<String> options = Arrays.asList("Yes", "No");
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(context, android.R.layout.simple_spinner_item, options);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerVarMag.setAdapter(adapter);
+        spinnerVarMag.setSelection(scope.isVariableMagnification() ? 0 : 1);
 
-        // Create and show the dialog
-        builder.create().show();
+        // Handle Save and Cancel buttons
+        Button btnSave = dialogView.findViewById(R.id.btn_save);
+        Button btnCancel = dialogView.findViewById(R.id.btn_cancel);
+
+        AlertDialog dialog = builder.create();
+        btnCancel.setOnClickListener(v -> dialog.dismiss());
+        btnSave.setOnClickListener(v -> {
+            ScopeZero currentScopeZero = scope.getScopeZero();
+            // Update the scope object with new values
+            scope.setName(etName.getText().toString());
+            scope.setBrand(etBrand.getText().toString());
+            scope.setMaxMagnification(Float.parseFloat(etMaxMag.getText().toString()));
+            scope.setVariableMagnification(spinnerVarMag.getSelectedItem().toString().equals("Yes"));
+            currentScopeZero.setDistance((int) Float.parseFloat(etZeroDistance.getText().toString()));
+            currentScopeZero.setWindage(Float.parseFloat(etZeroWindage.getText().toString()));
+            currentScopeZero.setElevation(Float.parseFloat(etZeroElevation.getText().toString()));
+
+            // Handle the date parsing (add validation as needed)
+            try {
+                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                currentScopeZero.setDate(dateFormat.parse(etZeroDate.getText().toString()));
+            } catch (ParseException e) {
+                e.printStackTrace();
+                Toast.makeText(context, "Invalid date format. Use yyyy-MM-dd.", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            // Save the updated scope to the database or perform your action here
+            // updateScopeInDatabase(scope);
+
+            Toast.makeText(context, "Scope updated successfully", Toast.LENGTH_SHORT).show();
+            dialog.dismiss();
+        });
+
+        dialog.show();
     }
     @Override
     public int getItemCount() {
@@ -80,7 +135,10 @@ public class ScopeRecyclerViewAdapter extends RecyclerView.Adapter<ScopeRecycler
             return mScopeList.size();
         }
     }
-
+    public void updateData(List<Scope> newScopes) {
+        mScopeList = new ArrayList<>(newScopes);
+        notifyDataSetChanged();
+    }
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
         private TextView titleTextView;

@@ -9,8 +9,11 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.text.TextWatcher;
 import android.text.Editable;
@@ -35,6 +38,11 @@ import com.google.firebase.auth.FirebaseUser;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.time.LocalDate;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.List;
+
 /*
  * Updated SightToolActivity
  * - Plus and minus buttons work for the yardage as they should.
@@ -47,7 +55,7 @@ public class SightToolActivity extends NavigationActivity {
 
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
     private Button btnEnter; // Buttons for sight tool
-    private EditText editTextUpdown, editTextLeftright, editTextYardage; // Input fields for sight tool
+    private EditText editTextUpdown, editTextLeftright, editTextYardage,angle_value; // Input fields for sight tool
     private TextView upDown, leftRight, windDir; // TextViews for sight tool
     private FusedLocationProviderClient fusedLocationClient;
     private RequestQueue requestQueue;
@@ -76,6 +84,7 @@ public class SightToolActivity extends NavigationActivity {
         upDown = findViewById(R.id.up_down);
         leftRight = findViewById(R.id.left_right);
         windDir = findViewById(R.id.windDir);
+        angle_value = findViewById(R.id.angle_value);
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
         requestQueue = Volley.newRequestQueue(this);
 
@@ -119,16 +128,46 @@ public class SightToolActivity extends NavigationActivity {
             EditText etName = dialogView.findViewById(R.id.et_name);
             EditText etBrand = dialogView.findViewById(R.id.et_brand);
             EditText etMaxMag = dialogView.findViewById(R.id.et_max_magnification);
-            EditText etVarMag = dialogView.findViewById(R.id.et_variable_magnification);
+            Spinner variableMagnificationSpinner = dialogView.findViewById(R.id.spinner_variable_magnification);
             EditText etZeroDistance = dialogView.findViewById(R.id.et_zero_distance);
             EditText etZeroWindage = dialogView.findViewById(R.id.et_zero_windage);
             EditText etZeroElevation = dialogView.findViewById(R.id.et_zero_elevation);
             EditText etZeroDate = dialogView.findViewById(R.id.et_zero_date);
 
+            // Populate the EditText fields with existing data
+            etZeroDistance.setText(editTextYardage.getText().toString());
+            String windDirection = windDir.getText().toString(); // Get the text from windDir
+            String strippedValue = windDirection.replace("DIR:", "").trim(); // Remove "DIR:" and trim spaces
+            etZeroWindage.setText(strippedValue  + " degrees");
+            etZeroElevation.setText(angle_value.getText().toString()+" degrees");
+            etZeroDate.setText(LocalDate.now().toString());
             // Handle Save and Cancel buttons
             Button btnCancel = dialogView.findViewById(R.id.btn_cancel);
             Button btnSave = dialogView.findViewById(R.id.btn_save);
 
+            // Create the options and their corresponding values
+            List<String> options = Arrays.asList("Yes", "No");
+            ArrayAdapter<String> adapter = new ArrayAdapter<>(this, R.layout.spinner_item, options);
+            adapter.setDropDownViewResource(R.layout.spinner_item);
+
+            // Set the adapter to the Spinner
+            variableMagnificationSpinner.setAdapter(adapter);
+
+            // Handle selection
+            variableMagnificationSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                    String selectedOption = options.get(position);
+                    int value = selectedOption.equals("Yes") ? 1 : 0; // Convert "Yes" to 1 and "No" to 0
+                    // Do something with the value
+                    Log.d("SpinnerValue", "Selected: " + selectedOption + ", Value: " + value);
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {
+                    // Handle case when nothing is selected
+                }
+            });
             btnCancel.setOnClickListener(view -> dialog.dismiss());
 
             btnSave.setOnClickListener(view -> {
@@ -136,7 +175,7 @@ public class SightToolActivity extends NavigationActivity {
                 String name = etName.getText().toString();
                 String brand = etBrand.getText().toString();
                 String maxMag = etMaxMag.getText().toString();
-                String varMag = etVarMag.getText().toString();
+                String varMag = variableMagnificationSpinner.getSelectedItem().toString();
                 String zeroDistance = etZeroDistance.getText().toString();
                 String zeroWindage = etZeroWindage.getText().toString();
                 String zeroElevation = etZeroElevation.getText().toString();

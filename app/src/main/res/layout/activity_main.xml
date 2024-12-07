@@ -35,8 +35,49 @@
             android:textColor="@color/light_gray"
             tools:ignore="VisualLintBounds" />
 
-        <!-- Fragment Container -->
+<!--        <Spinner-->
+<!--            android:id="@+id/location_spinner"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_margin="5dp"-->
+<!--            android:padding="8dp"-->
+<!--            android:background="@drawable/edit_text_border"-->
+<!--            android:popupBackground="@color/white"-->
+<!--            android:spinnerMode="dropdown" />-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="16dp">
 
+            <!-- Toggle Button to Enable/Disable the Slider -->
+            <androidx.appcompat.widget.SwitchCompat
+                android:id="@+id/toggle_slider"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Enable Slider"
+                android:textColor="@color/input_field_background"
+                android:layout_marginEnd="16dp"
+                android:trackTint="@color/orange_hue"
+                android:thumbTint="@color/orange_hue" />
+
+            <!-- Slider for Distance Selection -->
+            <com.google.android.material.slider.Slider
+                android:id="@+id/distance_slider"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:valueFrom="1"
+                android:valueTo="50"
+                android:stepSize="1"
+                app:labelBehavior="floating"
+                android:enabled="false"
+                app:thumbColor="@color/white"
+                app:tickColor="@color/orange_hue"
+                app:trackColorActive="@color/orange_hue"
+                app:trackColorInactive="@color/white"/> <!-- Initially disabled -->
+        </LinearLayout>
+        <!-- Fragment Container -->
         <FrameLayout
             android:id="@+id/fragment_container"
             android:layout_width="match_parent"
@@ -49,6 +90,35 @@
                 android:layout_width="match_parent"
                 android:layout_height="515dp" />
         </FrameLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="100dp">
+                <!-- Floating Action Button to add scope -->
+                <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    android:id="@+id/fab_map"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="16dp"
+                    android:src="@drawable/ic_map_pin"
+                    app:backgroundTint="@color/orange_hue"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentStart="true"
+                    app:elevation="6dp"
+                    app:pressedTranslationZ="12dp" />
+                <!-- Floating Action Button to add scope -->
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/add_scope"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|end"
+                android:layout_margin="16dp"
+                android:src="@drawable/ic_add_scope"
+                app:backgroundTint="@color/orange_hue"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentEnd="true"
+                app:elevation="6dp"
+                app:pressedTranslationZ="12dp" />
+        </RelativeLayout>
 
     </LinearLayout>
 
