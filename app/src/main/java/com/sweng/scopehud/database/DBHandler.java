@@ -199,8 +199,8 @@ public class DBHandler extends SQLiteOpenHelper {
                                 new Date(cursor.getLong(cursor.getColumnIndexOrThrow(DATE_COL))),
                                 location
                         ),
-                        cursor.getString(cursor.getColumnIndexOrThrow(TOWN_COL)),
-                        cursor.getString(cursor.getColumnIndexOrThrow(STATE_COL))
+                        cursor.getDouble(cursor.getColumnIndexOrThrow(LOCATION_LAT_COL)),
+                        cursor.getDouble(cursor.getColumnIndexOrThrow(LOCATION_LONG_COL))
 
                 );
                 scopeList.add(scope);

@@ -54,8 +54,11 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 public class MainActivity extends NavigationActivity {
+
+    private static final double EARTH_RADIUS = 6371; // Earth's radius in kilometers
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
     private RecyclerView mScopeListView;
     private DBHandler dbHandler;
@@ -319,15 +322,9 @@ public class MainActivity extends NavigationActivity {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item); // Default dropdown style
         locationSpinner.setAdapter(adapter);
     }
-    private List<Scope> filterScopesByLocation(String selectedLocation) {
-        List<Scope> filteredScopes = new ArrayList<>();
-        for (Scope scope : mScopeList) {
-            String location = scope.getTown() + ", " + scope.getState();
-            if (location.equals(selectedLocation)) {
-                filteredScopes.add(scope);
-            }
-        }
-        return filteredScopes;
+    private List<Scope> filterScopesByLocation(float radius) {
+        return mScopeList.parallelStream().filter(l -> calculateDistance(l.getLatitude(), l.getLongitude(),
+                latitude, longitude) <= radius).collect(Collectors.toList());
     }
     private void updateRecyclerView(List<Scope> filteredScopes) {
         adapter.updateData(filteredScopes); // Create an `updateData` method in your adapter to refresh the list.
@@ -406,12 +403,27 @@ public class MainActivity extends NavigationActivity {
     }
 
     /**
-     *
+     * Method for saving a new scope to the scope table
      */
     private void saveScopeToDatabase(String name, String brand, float maxMag, boolean varMag,
                                      int zeroDistance, float zeroWindage, float zeroElevation,
                                      long zeroDate, double latitude, double longitude) {
         dbHandler.addNewScope(name, brand, maxMag, varMag, zeroDistance, zeroWindage, zeroElevation,
                 new Date(zeroDate), latitude, longitude, "", "");
+    }
+
+    double haversine(double val) {
+        return Math.pow(Math.sin(val / 2), 2);
+    }
+
+    double calculateDistance(double startLat, double startLong, double endLat, double endLong) {
+        double dLat = Math.toRadians(endLat - startLat);
+        double dLong = Math.toRadians(endLong - startLong);
+        startLat = Math.toRadians(startLat);
+        endLat = Math.toRadians(endLat);
+
+        double a = haversine(dLat) + Math.cos(startLat) * Math.cos(endLat) * haversine(dLong);
+        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        return EARTH_RADIUS * c;
     }
 }

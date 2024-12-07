@@ -16,6 +16,7 @@ public class Scope implements Parcelable {
     private float maxMagnification; //maximum magnification of scope (1 for non magnified scopes)
     private boolean variableMagnification; //whether the scope has variable magnification
     private ScopeZero scopeZero; //last scope zero data
+    private double latitude, longitude;
     private String town;
     private String state;
 
@@ -42,6 +43,8 @@ public class Scope implements Parcelable {
         return state;
     }
     public int getId() {return id;}
+    public double getLatitude() {return latitude;}
+    public double getLongitude() {return longitude;}
     //setters
     public void setName(String name) {
         this.name = name;
@@ -65,15 +68,15 @@ public class Scope implements Parcelable {
         this.state = Scope.this.state;
     }
     public Scope(int id, String name, String brand, float maxMagnification,
-                 boolean variableMagnification, ScopeZero scopeZero, String town, String state ) {
+                 boolean variableMagnification, ScopeZero scopeZero, double latitude, double longitude) {
         this.id = id;
         this.name = name;
         this.brand = brand;
         this.maxMagnification = maxMagnification;
         this.variableMagnification = variableMagnification;
         this.scopeZero = scopeZero;
-        this.town = town;
-        this.state = state;
+        this.latitude = latitude;
+        this.longitude = longitude;
     }
 
     protected Scope(Parcel in) {
@@ -83,8 +86,8 @@ public class Scope implements Parcelable {
         maxMagnification = in.readFloat();
         variableMagnification = in.readByte() != 0;
         scopeZero = in.readParcelable(ScopeZero.class.getClassLoader());
-        town = in.readString();
-        state = in.readString();
+        latitude = in.readDouble();
+        longitude = in.readDouble();
     }
 
     public static final Creator<Scope> CREATOR = new Creator<Scope>() {
@@ -113,8 +116,8 @@ public class Scope implements Parcelable {
         parcel.writeFloat(maxMagnification);
         parcel.writeByte((byte) (variableMagnification ? 1 : 0));
         parcel.writeParcelable(scopeZero, i);
-        parcel.writeString(town);
-        parcel.writeString(state);
+        parcel.writeDouble(latitude);
+        parcel.writeDouble(longitude);
     }
 
     @NonNull
@@ -125,6 +128,6 @@ public class Scope implements Parcelable {
                 + (variableMagnification ? "yes" : "no") + "\nZero Distance: " +
                 scopeZero.getDistance() + "\nSet Windage: " + scopeZero.getWindage() +
                 "\nSet Elevation: " + scopeZero.getElevation() + "\nZeroed on: " + scopeZero.getDate().toString()
-                + "\n Town: " + town + "\n State: "+ state;
+                + "\n Latitude: " + latitude + "\n Longitude: "+ longitude;
     }
 }
