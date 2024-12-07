@@ -65,6 +65,7 @@ public class MainActivity extends NavigationActivity {
     private String town;
     private String state;
     private ScopeRecyclerViewAdapter adapter;
+    private double latitude, longitude;
 
 
     @Override
@@ -93,10 +94,10 @@ public class MainActivity extends NavigationActivity {
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
         requestQueue = Volley.newRequestQueue(this);
         mScopeList = new ArrayList<>();
-        mScopeList.add(new Scope(1, "RAZOR HD GEN III", "Vortex Optics", 18.0f, true,
-                new ScopeZero(100, 0.1f, 0.2f, new Date(), new Location("")),"State College","PA"));
-        mScopeList.add(new Scope(2, "STRIKE EAGLE", "Vortex Optics", 24.0f, true,
-                new ScopeZero(200, 0.0f, 0.1f, new Date(), new Location("")),"Davidsville","PA"));
+//        mScopeList.add(new Scope(1, "RAZOR HD GEN III", "Vortex Optics", 18.0f, true,
+//                new ScopeZero(100, 0.1f, 0.2f, new Date(), new Location("")),"State College","PA"));
+//        mScopeList.add(new Scope(2, "STRIKE EAGLE", "Vortex Optics", 24.0f, true,
+//                new ScopeZero(200, 0.0f, 0.1f, new Date(), new Location("")),"Davidsville","PA"));
 
         //ScopeRecyclerViewAdapter adapter = new ScopeRecyclerViewAdapter(scopeList)
         adapter = new ScopeRecyclerViewAdapter(mScopeList); // Initialize adapter with mScopeList
@@ -267,7 +268,7 @@ public class MainActivity extends NavigationActivity {
                 // Save the values to the database or perform desired action
                 saveScopeToDatabase(name, brand, Float.parseFloat(maxMag), Boolean.parseBoolean(varMag),
                         Integer.parseInt(zeroDistance), Float.parseFloat(zeroWindage),
-                        Float.parseFloat(zeroElevation), Date.parse(zeroDate));
+                        Float.parseFloat(zeroElevation), Date.parse(zeroDate), latitude, longitude);
                 // Dismiss the dialog
                 dialog.dismiss();
                 //update the list view
@@ -363,8 +364,8 @@ public class MainActivity extends NavigationActivity {
             // Get the last known location
             fusedLocationClient.getLastLocation().addOnSuccessListener(this, location -> {
                 if (location != null) {
-                    double latitude = location.getLatitude();
-                    double longitude = location.getLongitude();
+                    latitude = location.getLatitude();
+                    longitude = location.getLongitude();
                     //convert to state and town
                     getTownAndState(latitude,longitude);
                 } else {
@@ -409,8 +410,8 @@ public class MainActivity extends NavigationActivity {
      */
     private void saveScopeToDatabase(String name, String brand, float maxMag, boolean varMag,
                                      int zeroDistance, float zeroWindage, float zeroElevation,
-                                     long zeroDate) {
+                                     long zeroDate, double latitude, double longitude) {
         dbHandler.addNewScope(name, brand, maxMag, varMag, zeroDistance, zeroWindage, zeroElevation,
-                new Date(zeroDate), new Location(""), "", "");
+                new Date(zeroDate), latitude, longitude, "", "");
     }
 }

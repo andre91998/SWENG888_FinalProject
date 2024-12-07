@@ -82,7 +82,8 @@ public class DBHandler extends SQLiteOpenHelper {
     // this method is use to add new product table entry
     public void addNewScope(String scopeName, String scopeBrand, float scopeMaxMagnification,
                             boolean scopeHasVariableMagnification, int zeroDistance,
-                            float zeroWindage, float zeroElevation, Date zeroDate, Location location, String town, String state) {
+                            float zeroWindage, float zeroElevation, Date zeroDate, double latitude,
+                            double longitude, String town, String state) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -96,8 +97,8 @@ public class DBHandler extends SQLiteOpenHelper {
         values.put(WINDAGE_COL, zeroWindage);
         values.put(ELEVATION_COL, zeroElevation);
         values.put(DATE_COL, zeroDate.getTime());
-        values.put(LOCATION_LAT_COL, location.getLatitude());
-        values.put(LOCATION_LONG_COL, location.getLongitude());
+        values.put(LOCATION_LAT_COL, latitude);
+        values.put(LOCATION_LONG_COL, longitude);
         values.put(TOWN_COL, town);
         values.put(STATE_COL, state);
 

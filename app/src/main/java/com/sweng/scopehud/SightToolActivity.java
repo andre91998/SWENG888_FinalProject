@@ -201,9 +201,11 @@ public class SightToolActivity extends NavigationActivity {
                 */
 
                 // Save the values to the database or perform desired action
+                Log.d(TAG, "Saving new scope with bool: " + varMag);
+                Log.d(TAG, "Saving new scope with Location:  " + latitude + " | " + longitude);
                 saveScopeToDatabase(name, brand, Float.parseFloat(maxMag), Boolean.parseBoolean(varMag),
                         Integer.parseInt(zeroDistance), Float.parseFloat(zeroWindage),
-                        Float.parseFloat(zeroElevation), Date.parse(zeroDate));
+                        Float.parseFloat(zeroElevation), Date.parse(zeroDate), latitude, longitude);
 
                 // Dismiss the dialog
                 dialog.dismiss();
@@ -305,8 +307,8 @@ public class SightToolActivity extends NavigationActivity {
             // Get the last known location
             fusedLocationClient.getLastLocation().addOnSuccessListener(this, location -> {
                 if (location != null) {
-                    double latitude = location.getLatitude();
-                    double longitude = location.getLongitude();
+                    latitude = location.getLatitude();
+                    longitude = location.getLongitude();
                     getWeatherDataByLocation(latitude, longitude);  // Fetch weather based on location
                 } else {
                     Toast.makeText(SightToolActivity.this, "Unable to get current location", Toast.LENGTH_SHORT).show();
@@ -364,8 +366,8 @@ public class SightToolActivity extends NavigationActivity {
      */
     private void saveScopeToDatabase(String name, String brand, float maxMag, boolean varMag,
                                      int zeroDistance, float zeroWindage, float zeroElevation,
-                                     long zeroDate) {
+                                     long zeroDate, double latitude, double longitude) {
         dbHandler.addNewScope(name, brand, maxMag, varMag, zeroDistance, zeroWindage, zeroElevation,
-                new Date(zeroDate), new Location(""), "", "");
+                new Date(zeroDate), latitude, longitude, "", "");
     }
 }
