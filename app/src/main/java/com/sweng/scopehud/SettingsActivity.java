@@ -83,13 +83,12 @@ public class SettingsActivity extends NavigationActivity {
                     AssetFileDescriptor fileDescriptor = getApplicationContext().getContentResolver()
                             .openAssetFileDescriptor(profileImageUri , "r");
                     long fileSize = fileDescriptor.getLength();
-                    byte[] image = new byte[(int)fileSize];
-                    getContentResolver().openInputStream(data.getData()).read(image);
-                    profileImageView.setImageBitmap(BitmapFactory.decodeByteArray(image, 0, image.length));
+                    profileImage = new byte[(int)fileSize];
+                    //getContentResolver().openInputStream(data.getData()).read(profileImage);
+                    profileImageView.setImageBitmap(BitmapFactory.decodeByteArray(profileImage,
+                            0, profileImage.length));
                 } catch (FileNotFoundException e) {
                     Log.e(TAG, "Failed to Load Profile Image");
-                } catch (IOException e2) {
-                    Log.e(TAG, "Failed to read the Profile Image");
                 }
             }
 
@@ -106,11 +105,9 @@ public class SettingsActivity extends NavigationActivity {
             stateEditText.setText(cursor.getString(cursor.getColumnIndexOrThrow("state")));
             countryEditText.setText(cursor.getString(cursor.getColumnIndexOrThrow("country")));
 
-            String imageUriString = cursor.getString(cursor.getColumnIndexOrThrow("profile_image_uri"));
-            if (imageUriString != null) {
-                profileImageUri = Uri.parse(imageUriString);
-                profileImageView.setImageURI(profileImageUri);
-            }
+            profileImage = cursor.getBlob(cursor.getColumnIndexOrThrow("profile_image"));
+            profileImageView.setImageBitmap(BitmapFactory.decodeByteArray(profileImage,
+                    0, profileImage.length));
 
             cursor.close();
         } else {

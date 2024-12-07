@@ -41,6 +41,7 @@ public class DBHandler extends SQLiteOpenHelper {
     private static final String CITY_COL = "city";
     private static final String STATE_COL = "state";
     private static final String COUNTRY_COL = "country";
+    private static final String PROFILE_IMAGE_URI_COL = "profile_image_uri";
     private static final String PROFILE_IMAGE_COL = "profile_image";
 
     public DBHandler(Context context) {
@@ -108,6 +109,9 @@ public class DBHandler extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        if (oldVersion < 3) {
+            db.execSQL("ALTER TABLE " + USER_SETTINGS_TABLE_NAME + " ADD COLUMN" + PROFILE_IMAGE_COL + " BLOB");
+        }
         if (oldVersion < 2) {
             db.execSQL("ALTER TABLE " + SCOPE_TABLE_NAME + " ADD COLUMN " + LOCATION_LAT_COL + " REAL");
             db.execSQL("ALTER TABLE " + SCOPE_TABLE_NAME + " ADD COLUMN " + LOCATION_LONG_COL + " REAL");
