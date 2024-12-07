@@ -216,4 +216,11 @@ public class DBHandler extends SQLiteOpenHelper {
         db.delete(USER_SETTINGS_TABLE_NAME, USER_ID_COL + "=?", new String[]{String.valueOf(userId)});
         db.close();
     }
+
+    //Method for removing a scope from the DB
+    public void deleteScope(int scopeId) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete(SCOPE_TABLE_NAME, ID_COL + "=?", new String[]{String.valueOf(scopeId)});
+        db.close();
+    }
 }

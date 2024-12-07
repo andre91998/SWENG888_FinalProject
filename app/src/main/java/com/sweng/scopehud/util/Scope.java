@@ -41,6 +41,7 @@ public class Scope implements Parcelable {
     public String getState(){
         return state;
     }
+    public int getId() {return id;}
     //setters
     public void setName(String name) {
         this.name = name;

@@ -129,7 +129,7 @@ public class MainActivity extends NavigationActivity {
                         }).show();
 
                 // delete from the database
-                // dbHandler.deleteScope(removedScope.getId());
+                dbHandler.deleteScope(removedScope.getId());
             }
 
             @Override
@@ -265,10 +265,13 @@ public class MainActivity extends NavigationActivity {
                  */
 
                 // Save the values to the database or perform desired action
-                //saveScopeToDatabase(name, brand, maxMag, varMag, zeroDistance, zeroWindage, zeroElevation, zeroDate);
-
+                saveScopeToDatabase(name, brand, Float.parseFloat(maxMag), Boolean.parseBoolean(varMag),
+                        Integer.parseInt(zeroDistance), Float.parseFloat(zeroWindage),
+                        Float.parseFloat(zeroElevation), Date.parse(zeroDate));
                 // Dismiss the dialog
                 dialog.dismiss();
+                //update the list view
+                setupRecyclerView();
             });
         });
         Spinner locationSpinner = findViewById(R.id.location_spinner);
@@ -399,5 +402,15 @@ public class MainActivity extends NavigationActivity {
             // Proceed with the normal back button behavior
             super.onBackPressed();
         }
+    }
+
+    /**
+     *
+     */
+    private void saveScopeToDatabase(String name, String brand, float maxMag, boolean varMag,
+                                     int zeroDistance, float zeroWindage, float zeroElevation,
+                                     long zeroDate) {
+        dbHandler.addNewScope(name, brand, maxMag, varMag, zeroDistance, zeroWindage, zeroElevation,
+                new Date(zeroDate), new Location(""), "", "");
     }
 }
