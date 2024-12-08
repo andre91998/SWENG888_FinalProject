@@ -351,6 +351,12 @@ public class MainActivity extends NavigationActivity {
     private void setupRecyclerView() {
         // Query the database for all scopes and populate the list
         mScopeList = dbHandler.queryAllScopes();
+        mScopeList.add(new Scope(2, "STRIKE EAGLE", "Vortex Optics", 24.0f, true,
+                new ScopeZero(200, 0.0f, 0.1f, new Date(), new Location("")),
+                latitude+5, longitude));
+        mScopeList.add(new Scope(2, "STRIKE EAGLE", "Vortex Optics", 24.0f, true,
+                new ScopeZero(200, 0.0f, 0.1f, new Date(), new Location("")),
+                latitude-5, longitude-1));
 
         // Check if the list is empty and display a message if needed
         if (mScopeList == null || mScopeList.isEmpty()) {
