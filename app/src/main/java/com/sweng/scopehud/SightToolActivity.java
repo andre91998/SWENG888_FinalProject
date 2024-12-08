@@ -203,10 +203,15 @@ public class SightToolActivity extends NavigationActivity {
                 // Save the values to the database or perform desired action
                 Log.d(TAG, "Saving new scope with bool: " + varMag);
                 Log.d(TAG, "Saving new scope with Location:  " + latitude + " | " + longitude);
-                saveScopeToDatabase(name, brand, Float.parseFloat(maxMag), Boolean.parseBoolean(varMag),
-                        Integer.parseInt(zeroDistance), Float.parseFloat(zeroWindage),
-                        Float.parseFloat(zeroElevation), Date.parse(zeroDate), latitude, longitude);
-
+                try {
+                    saveScopeToDatabase(name, brand, Float.parseFloat(maxMag), Boolean.parseBoolean(varMag),
+                            Integer.parseInt(zeroDistance), Float.parseFloat(zeroWindage),
+                            Float.parseFloat(zeroElevation), Date.parse(zeroDate), latitude, longitude);
+                } catch (Exception e) {
+                    Toast.makeText(SightToolActivity.this, "Failed to Save Scope Data: "
+                            + e.getMessage(), Toast.LENGTH_SHORT).show();
+                    Log.e(TAG, "Failed to save Scope");
+                }
                 // Dismiss the dialog
                 dialog.dismiss();
             });
