@@ -76,7 +76,7 @@ public class MainActivity extends NavigationActivity {
     private ScopeRecyclerViewAdapter adapter;
     private double latitude, longitude;
 
-    private int distanceFilter;
+    private int distanceFilter = Integer.MAX_VALUE;
 
 
     @Override
@@ -211,6 +211,7 @@ public class MainActivity extends NavigationActivity {
                 Toast.makeText(this, "Distance: " + distanceFilter + " miles", Toast.LENGTH_SHORT).show();
                 updateRecyclerView(filterScopesByLocation(distanceFilter));
             } else {
+                distanceFilter = Integer.MAX_VALUE;
                 updateRecyclerView(mScopeList);
             }
         });
@@ -351,12 +352,6 @@ public class MainActivity extends NavigationActivity {
     private void setupRecyclerView() {
         // Query the database for all scopes and populate the list
         mScopeList = dbHandler.queryAllScopes();
-        mScopeList.add(new Scope(2, "STRIKE EAGLE", "Vortex Optics", 24.0f, true,
-                new ScopeZero(200, 0.0f, 0.1f, new Date(), new Location("")),
-                latitude+5, longitude));
-        mScopeList.add(new Scope(2, "STRIKE EAGLE", "Vortex Optics", 24.0f, true,
-                new ScopeZero(200, 0.0f, 0.1f, new Date(), new Location("")),
-                latitude-5, longitude-1));
 
         // Check if the list is empty and display a message if needed
         if (mScopeList == null || mScopeList.isEmpty()) {

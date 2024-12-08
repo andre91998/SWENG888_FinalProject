@@ -3,6 +3,7 @@ package com.sweng.scopehud;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
+import android.util.Log;
 
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
@@ -25,6 +26,7 @@ import java.util.ArrayList;
 
 public class MapWithMarkersActivity extends FragmentActivity implements OnMapReadyCallback {
 
+    private static final String TAG = "MarkerMap";
     private GoogleMap mMap;
     private ActivityMapWithMarkersBinding binding;
     private Toolbar toolbar;
@@ -45,8 +47,6 @@ public class MapWithMarkersActivity extends FragmentActivity implements OnMapRea
         mapFragment.getMapAsync(this);
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
-    
-        scopeArrayList = getIntent().getParcelableArrayListExtra("scopes");
     }
 
     /**
@@ -78,6 +78,7 @@ public class MapWithMarkersActivity extends FragmentActivity implements OnMapRea
                     @Override
                     public void onSuccess(Location location) {
                         // Got last known location. In some rare situations this can be null.
+                        scopeArrayList = getIntent().getParcelableArrayListExtra("scopes");
                         setLocationMarker(location);
                     }
                 });
@@ -98,6 +99,7 @@ public class MapWithMarkersActivity extends FragmentActivity implements OnMapRea
                                 .addOnSuccessListener(this, new OnSuccessListener<Location>() {
                                     @Override
                                     public void onSuccess(Location location) {
+                                        scopeArrayList = getIntent().getParcelableArrayListExtra("scopes");
                                         setLocationMarker(location);
                                     }
                                 });
@@ -116,14 +118,17 @@ public class MapWithMarkersActivity extends FragmentActivity implements OnMapRea
         if (location != null) {
             // Logic to handle location object
 
+            Log.d(TAG, "number of markers: " + scopeArrayList.size());
             for (int i = 0; i < scopeArrayList.size(); i++) {
+                Log.d(TAG, "index: " + i + " | coordinates: " + scopeArrayList.get(i).getLatitude()
+                        + "/" + scopeArrayList.get(i).getLongitude());
                 mMap.addMarker((new MarkerOptions().position(new LatLng(scopeArrayList.get(i).getLatitude(),
-                        scopeArrayList.get(i).getLongitude()))));
+                        scopeArrayList.get(i).getLongitude())).title(scopeArrayList.get(i).getName()).visible(true)));
             }
             LatLng currentLocation = new LatLng(location.getLatitude(),
                     location.getLongitude());
             Marker marker = mMap.addMarker((new MarkerOptions().position(currentLocation)
-                    .title("You are Here!")).contentDescription("Your current Location"));
+                    .title("You are Here!")).contentDescription("Your current Location").visible(true));
             mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLocation, 11.0f));
             if (marker != null && marker.isVisible()) {
                 marker.showInfoWindow();
