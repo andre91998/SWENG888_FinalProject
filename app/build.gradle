@@ -1,17 +1,18 @@
 plugins {
     alias(libs.plugins.android.application)
     id("com.google.gms.google-services")
-    id 'com.google.android.libraries.mapsplatform.secrets-gradle-plugin' version '2.0.1'
+    id 'com.google.android.libraries.mapsplatform.secrets-gradle-plugin'
+
 }
 
 android {
     namespace 'com.sweng.scopehud'
-    compileSdk 35
+    compileSdk 34
 
     defaultConfig {
         applicationId "com.sweng.scopehud"
         minSdk 26
-        targetSdk 33
+        targetSdk 34
         versionCode 1
         versionName "1.0"
 
@@ -31,12 +32,7 @@ android {
     buildFeatures {
         buildConfig true
         viewBinding true
-    }
-
-    buildscript {
-        dependencies {
-            classpath "com.google.android.libraries.mapsplatform.secrets-gradle-plugin:secrets-gradle-plugin:2.0.1"
-        }
+        dataBinding true
     }
 }
 
@@ -46,7 +42,7 @@ dependencies {
     implementation 'com.google.android.libraries.places:places:3.3.0' // Use the latest version available
 
     // Google Play Services Location
-    implementation 'com.google.android.gms:play-services-location:21.0.1'
+    implementation 'com.google.android.gms:play-services-maps:19.0.0'
 
     // Google Places API
     implementation libs.places
@@ -68,6 +64,7 @@ dependencies {
     implementation libs.navigation.fragment
     implementation libs.navigation.ui
     implementation libs.volley
+    implementation libs.ui.graphics.android
     testImplementation libs.junit
     androidTestImplementation libs.ext.junit
     androidTestImplementation libs.espresso.core

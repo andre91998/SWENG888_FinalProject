@@ -6,11 +6,15 @@ import android.Manifest;
 import android.app.AlertDialog;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
+import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.text.TextWatcher;
 import android.text.Editable;
@@ -31,9 +35,17 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseUser;
+import com.sweng.scopehud.database.DBHandler;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.time.LocalDate;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.List;
+import java.time.Instant;
+import java.util.Date;
 
 /*
  * Updated SightToolActivity
@@ -47,10 +59,13 @@ public class SightToolActivity extends NavigationActivity {
 
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
     private Button btnEnter; // Buttons for sight tool
-    private EditText editTextUpdown, editTextLeftright, editTextYardage; // Input fields for sight tool
+    private EditText editTextUpdown, editTextLeftright, editTextYardage,angle_value; // Input fields for sight tool
     private TextView upDown, leftRight, windDir; // TextViews for sight tool
     private FusedLocationProviderClient fusedLocationClient;
     private RequestQueue requestQueue;
+    private DBHandler dbHandler;
+    private double latitude, longitude;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -76,8 +91,12 @@ public class SightToolActivity extends NavigationActivity {
         upDown = findViewById(R.id.up_down);
         leftRight = findViewById(R.id.left_right);
         windDir = findViewById(R.id.windDir);
+        angle_value = findViewById(R.id.angle_value);
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
         requestQueue = Volley.newRequestQueue(this);
+
+        //Intialize DBHandler
+        dbHandler = new DBHandler(this);
 
         getCurrentLocationWeather(); // Fetch weather data based on current location
         // Plus button increments the yardage value
@@ -104,6 +123,7 @@ public class SightToolActivity extends NavigationActivity {
             upDown.setText(invertValue(upDownValue));
             leftRight.setText(invertValue(leftRightValue));
         });
+
         fab.setOnClickListener(v -> {
             // Inflate the custom layout for the dialog
             View dialogView = getLayoutInflater().inflate(R.layout.dialog_add_scope, null);
@@ -119,16 +139,50 @@ public class SightToolActivity extends NavigationActivity {
             EditText etName = dialogView.findViewById(R.id.et_name);
             EditText etBrand = dialogView.findViewById(R.id.et_brand);
             EditText etMaxMag = dialogView.findViewById(R.id.et_max_magnification);
-            EditText etVarMag = dialogView.findViewById(R.id.et_variable_magnification);
+            Spinner variableMagnificationSpinner = dialogView.findViewById(R.id.spinner_variable_magnification);
             EditText etZeroDistance = dialogView.findViewById(R.id.et_zero_distance);
+            etZeroDistance.setText(editTextYardage.getText());
             EditText etZeroWindage = dialogView.findViewById(R.id.et_zero_windage);
+            etZeroWindage.setText(editTextLeftright.getText());
             EditText etZeroElevation = dialogView.findViewById(R.id.et_zero_elevation);
+            etZeroElevation.setText(editTextUpdown.getText());
             EditText etZeroDate = dialogView.findViewById(R.id.et_zero_date);
+            etZeroDate.setText((new Date()).toString());
 
+            // Populate the EditText fields with existing data
+            etZeroDistance.setText(editTextYardage.getText().toString());
+            String windDirection = windDir.getText().toString(); // Get the text from windDir
+            String strippedValue = windDirection.replace("DIR:", "").trim(); // Remove "DIR:" and trim spaces
+            etZeroWindage.setText(strippedValue);
+            etZeroElevation.setText(angle_value.getText().toString());
+            etZeroDate.setText((new Date()).toString());
             // Handle Save and Cancel buttons
             Button btnCancel = dialogView.findViewById(R.id.btn_cancel);
             Button btnSave = dialogView.findViewById(R.id.btn_save);
 
+            // Create the options and their corresponding values
+            List<String> options = Arrays.asList("Yes", "No");
+            ArrayAdapter<String> adapter = new ArrayAdapter<>(this, R.layout.spinner_item, options);
+            adapter.setDropDownViewResource(R.layout.spinner_item);
+
+            // Set the adapter to the Spinner
+            variableMagnificationSpinner.setAdapter(adapter);
+
+            // Handle selection
+            variableMagnificationSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                    String selectedOption = options.get(position);
+                    int value = selectedOption.equals("Yes") ? 1 : 0; // Convert "Yes" to 1 and "No" to 0
+                    // Do something with the value
+                    Log.d("SpinnerValue", "Selected: " + selectedOption + ", Value: " + value);
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {
+                    // Handle case when nothing is selected
+                }
+            });
             btnCancel.setOnClickListener(view -> dialog.dismiss());
 
             btnSave.setOnClickListener(view -> {
@@ -136,7 +190,7 @@ public class SightToolActivity extends NavigationActivity {
                 String name = etName.getText().toString();
                 String brand = etBrand.getText().toString();
                 String maxMag = etMaxMag.getText().toString();
-                String varMag = etVarMag.getText().toString();
+                String varMag = variableMagnificationSpinner.getSelectedItem().toString();
                 String zeroDistance = etZeroDistance.getText().toString();
                 String zeroWindage = etZeroWindage.getText().toString();
                 String zeroElevation = etZeroElevation.getText().toString();
@@ -147,8 +201,18 @@ public class SightToolActivity extends NavigationActivity {
                 */
 
                 // Save the values to the database or perform desired action
-                //saveScopeToDatabase(name, brand, maxMag, varMag, zeroDistance, zeroWindage, zeroElevation, zeroDate);
-
+                Log.d(TAG, "Saving new scope with bool: " + varMag);
+                Log.d(TAG, "Saving new scope with Location:  " + latitude + " | " + longitude);
+                try {
+                    saveScopeToDatabase(name, brand, Float.parseFloat(maxMag), varMag.equals("Yes"),
+                            Integer.parseInt(zeroDistance), Float.parseFloat(zeroWindage),
+                            Float.parseFloat(zeroElevation), Date.parse(zeroDate), latitude, longitude);
+                    Toast.makeText(SightToolActivity.this, "Saved Successfully", Toast.LENGTH_SHORT).show();
+                } catch (Exception e) {
+                    Toast.makeText(SightToolActivity.this, "Failed to Save Scope Data: "
+                            + e.getMessage(), Toast.LENGTH_SHORT).show();
+                    Log.e(TAG, "Failed to save Scope");
+                }
                 // Dismiss the dialog
                 dialog.dismiss();
             });
@@ -249,8 +313,9 @@ public class SightToolActivity extends NavigationActivity {
             // Get the last known location
             fusedLocationClient.getLastLocation().addOnSuccessListener(this, location -> {
                 if (location != null) {
-                    double latitude = location.getLatitude();
-                    double longitude = location.getLongitude();
+                    latitude = location.getLatitude();
+                    longitude = location.getLongitude();
+                    Log.d(TAG, "coord: " + latitude + ", " +longitude);
                     getWeatherDataByLocation(latitude, longitude);  // Fetch weather based on location
                 } else {
                     Toast.makeText(SightToolActivity.this, "Unable to get current location", Toast.LENGTH_SHORT).show();
@@ -284,15 +349,15 @@ public class SightToolActivity extends NavigationActivity {
                 },
                 error -> {
                     Log.e(TAG, "Error fetching weather data: " + error.getMessage());
-                    Toast.makeText(SightToolActivity.this, "Error fetching weather data", Toast.LENGTH_SHORT).show();
                 });
 
         // Add the request to the Volley request queue
         requestQueue.add(jsonObjectRequest);
     }
-        /**
-         * Method to invert a numeric string value (e.g., turn "1" into "-1").
-         */
+
+    /**
+     * Method to invert a numeric string value (e.g., turn "1" into "-1").
+     */
     private String invertValue(String value) {
         try {
             int intValue = Integer.parseInt(value);
@@ -300,5 +365,15 @@ public class SightToolActivity extends NavigationActivity {
         } catch (NumberFormatException e) {
             return "0"; // Default to 0 if there's an invalid input
         }
+    }
+
+    /**
+     *
+     */
+    private void saveScopeToDatabase(String name, String brand, float maxMag, boolean varMag,
+                                     int zeroDistance, float zeroWindage, float zeroElevation,
+                                     long zeroDate, double latitude, double longitude) {
+        dbHandler.addNewScope(name, brand, maxMag, varMag, zeroDistance, zeroWindage, zeroElevation,
+                new Date(zeroDate), latitude, longitude, "", "");
     }
 }
