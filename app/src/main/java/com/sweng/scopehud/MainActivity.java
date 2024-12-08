@@ -132,14 +132,6 @@ public class MainActivity extends NavigationActivity {
                 mScopeList.remove(position);
                 adapter.notifyItemRemoved(position);
 
-                // Optionally show a Snackbar to undo the delete
-                Snackbar.make(mScopeListView, "Scope deleted", Snackbar.LENGTH_LONG)
-                        .setAction("UNDO", v -> {
-                            // Add the item back if undo is clicked
-                            mScopeList.add(position, removedScope);
-                            adapter.notifyItemInserted(position);
-                        }).show();
-
                 // delete from the database
                 dbHandler.deleteScope(removedScope.getId());
             }
@@ -306,7 +298,7 @@ public class MainActivity extends NavigationActivity {
 
                 // Save the values to the database or perform desired action
                 try {
-                    saveScopeToDatabase(name, brand, Float.parseFloat(maxMag), Boolean.parseBoolean(varMag),
+                    saveScopeToDatabase(name, brand, Float.parseFloat(maxMag), varMag.equals("Yes"),
                             Integer.parseInt(zeroDistance), Float.parseFloat(zeroWindage),
                             Float.parseFloat(zeroElevation), Date.parse(zeroDate), latitude, longitude);
                     Toast.makeText(MainActivity.this, "Saved Successfully", Toast.LENGTH_SHORT).show();
