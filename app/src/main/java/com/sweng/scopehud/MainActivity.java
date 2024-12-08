@@ -76,6 +76,8 @@ public class MainActivity extends NavigationActivity {
     private ScopeRecyclerViewAdapter adapter;
     private double latitude, longitude;
 
+    private int distanceFilter;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -205,9 +207,9 @@ public class MainActivity extends NavigationActivity {
         distanceSlider.addOnChangeListener((slider, value, fromUser) -> {
             // Handle slider value changes but only if slider is enabled
             if (distanceSlider.isActivated()) {
-                int distance = (int) value; // Cast to int since the stepSize is 1
-                Toast.makeText(this, "Distance: " + distance + " miles", Toast.LENGTH_SHORT).show();
-                updateRecyclerView(filterScopesByLocation(distance));
+                distanceFilter = (int) value; // Cast to int since the stepSize is 1
+                Toast.makeText(this, "Distance: " + distanceFilter + " miles", Toast.LENGTH_SHORT).show();
+                updateRecyclerView(filterScopesByLocation(distanceFilter));
             } else {
                 updateRecyclerView(mScopeList);
             }
@@ -305,13 +307,10 @@ public class MainActivity extends NavigationActivity {
         // FAB fpr google maps
         fabMapPin.setOnClickListener(v ->{
             // Launch Google Maps intent with "shooting ranges near me" query
-            Uri uri = Uri.parse(String.format(Locale.ENGLISH, "geo:%f,%f", latitude, longitude));
-            Log.d(TAG, uri.toString());
-            Intent mapIntent = new Intent(Intent.ACTION_VIEW, uri);
-            mapIntent.setPackage("com.google.android.apps.maps");
+            Intent mapIntent = new Intent(getApplicationContext(), MapWithMarkersActivity.class);
+            mapIntent.putExtra("scopes", filterScopesByLocation(distanceFilter));
             if (mapIntent.resolveActivity(getPackageManager()) != null) {
-                Intent mapActivity = new Intent(getApplicationContext(), MapWithMarkersActivity.class);
-                startActivity(mapActivity);
+                startActivity(mapIntent);
             } else {
                 Toast.makeText(this, "Google Maps is not installed", Toast.LENGTH_SHORT).show();
             }
@@ -332,9 +331,9 @@ public class MainActivity extends NavigationActivity {
         return new ArrayList<>(uniqueLocations);
     }
 
-    private List<Scope> filterScopesByLocation(float radius) {
+    private ArrayList<Scope> filterScopesByLocation(float radius) {
         return mScopeList.parallelStream().filter(l -> calculateDistance(l.getLatitude(), l.getLongitude(),
-                latitude, longitude) <= radius).collect(Collectors.toList());
+                latitude, longitude) <= radius).collect(Collectors.toCollection(ArrayList::new));
     }
     private void updateRecyclerView(List<Scope> filteredScopes) {
         adapter.updateData(filteredScopes); // Create an `updateData` method in your adapter to refresh the list.

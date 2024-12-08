@@ -19,6 +19,9 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.sweng.scopehud.databinding.ActivityMapWithMarkersBinding;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.sweng.scopehud.util.Scope;
+
+import java.util.ArrayList;
 
 public class MapWithMarkersActivity extends FragmentActivity implements OnMapReadyCallback {
 
@@ -26,6 +29,8 @@ public class MapWithMarkersActivity extends FragmentActivity implements OnMapRea
     private ActivityMapWithMarkersBinding binding;
     private Toolbar toolbar;
     private FusedLocationProviderClient fusedLocationClient;
+    
+    private ArrayList<Scope> scopeArrayList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +45,8 @@ public class MapWithMarkersActivity extends FragmentActivity implements OnMapRea
         mapFragment.getMapAsync(this);
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+    
+        scopeArrayList = getIntent().getParcelableArrayListExtra("scopes");
     }
 
     /**
@@ -108,6 +115,11 @@ public class MapWithMarkersActivity extends FragmentActivity implements OnMapRea
         // Got last known location. In some rare situations this can be null.
         if (location != null) {
             // Logic to handle location object
+
+            for (int i = 0; i < scopeArrayList.size(); i++) {
+                mMap.addMarker((new MarkerOptions().position(new LatLng(scopeArrayList.get(i).getLatitude(),
+                        scopeArrayList.get(i).getLongitude()))));
+            }
             LatLng currentLocation = new LatLng(location.getLatitude(),
                     location.getLongitude());
             Marker marker = mMap.addMarker((new MarkerOptions().position(currentLocation)
