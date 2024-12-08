@@ -135,8 +135,8 @@ public class ScopeRecyclerViewAdapter extends RecyclerView.Adapter<ScopeRecycler
             return mScopeList.size();
         }
     }
-    public void updateData(List<Scope> newScopes) {
-        mScopeList = new ArrayList<>(newScopes);
+    public void updateData(ArrayList<Scope> newScopes) {
+        mScopeList = newScopes;
         notifyDataSetChanged();
     }
     public class MyViewHolder extends RecyclerView.ViewHolder {

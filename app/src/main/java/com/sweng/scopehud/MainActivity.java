@@ -201,6 +201,15 @@ public class MainActivity extends NavigationActivity {
         toggleSlider.setOnCheckedChangeListener((buttonView, isChecked) -> {
             // Enable or disable the slider based on the toggle button state
             distanceSlider.setEnabled(isChecked);
+            distanceSlider.setActivated(isChecked);
+            if (!isChecked) {
+                distanceFilter = Integer.MAX_VALUE;
+                updateRecyclerView(new ArrayList<>(mScopeList));
+            } else {
+                distanceFilter = (int) distanceSlider.getValue();
+                Toast.makeText(this, "Distance: " + distanceFilter + " kilometers", Toast.LENGTH_SHORT).show();
+                updateRecyclerView(filterScopesByLocation(distanceFilter));
+            }
         });
 
         // Set a listener for the slider value changes
@@ -208,11 +217,11 @@ public class MainActivity extends NavigationActivity {
             // Handle slider value changes but only if slider is enabled
             if (distanceSlider.isActivated()) {
                 distanceFilter = (int) value; // Cast to int since the stepSize is 1
-                Toast.makeText(this, "Distance: " + distanceFilter + " miles", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Distance: " + distanceFilter + " kilometers", Toast.LENGTH_SHORT).show();
                 updateRecyclerView(filterScopesByLocation(distanceFilter));
             } else {
                 distanceFilter = Integer.MAX_VALUE;
-                updateRecyclerView(mScopeList);
+                updateRecyclerView(new ArrayList<>(mScopeList));
             }
         });
         // Attach the ItemTouchHelper to the RecyclerView
@@ -336,8 +345,11 @@ public class MainActivity extends NavigationActivity {
         return mScopeList.parallelStream().filter(l -> calculateDistance(l.getLatitude(), l.getLongitude(),
                 latitude, longitude) <= radius).collect(Collectors.toCollection(ArrayList::new));
     }
-    private void updateRecyclerView(List<Scope> filteredScopes) {
-        adapter.updateData(filteredScopes); // Create an `updateData` method in your adapter to refresh the list.
+    private void updateRecyclerView(ArrayList<Scope> filteredScopes) {
+        ScopeRecyclerViewAdapter mAdapter = new ScopeRecyclerViewAdapter(filteredScopes);
+        mScopeListView.setAdapter(mAdapter);
+        mScopeListView.setLayoutManager(new LinearLayoutManager(this));
+        //adapter.updateData(filteredScopes); // Create an `updateData` method in your adapter to refresh the list.
     }
 
     @Override
@@ -352,6 +364,12 @@ public class MainActivity extends NavigationActivity {
     private void setupRecyclerView() {
         // Query the database for all scopes and populate the list
         mScopeList = dbHandler.queryAllScopes();
+//        mScopeList.add(new Scope(2, "STRIKE EAGLE", "Vortex Optics", 24.0f, true,
+//                new ScopeZero(200, 0.0f, 0.1f, new Date(), new Location("")),
+//                -32.870453, 150.208755));
+//        mScopeList.add(new Scope(2, "STRIKE EAGLE", "Vortex Optics", 24.0f, true,
+//                new ScopeZero(200, 0.0f, 0.1f, new Date(), new Location("")),
+//                -33.870453, 151.208755));
 
         // Check if the list is empty and display a message if needed
         if (mScopeList == null || mScopeList.isEmpty()) {
@@ -380,25 +398,7 @@ public class MainActivity extends NavigationActivity {
             });
         }
     }
-    private void getTownAndState(double latitude, double longitude) {
-        Geocoder geocoder = new Geocoder(this, Locale.getDefault());
-        try {
-            List<Address> addresses = geocoder.getFromLocation(latitude, longitude, 1);
-            if (addresses != null && !addresses.isEmpty()) {
-                Address address = addresses.get(0);
-                town = address.getLocality(); // Town or city
-                state = address.getAdminArea(); // State
 
-                // Do something with the town and state
-                Toast.makeText(this, "Town: " + town + ", State: " + state, Toast.LENGTH_LONG).show();
-            } else {
-                Toast.makeText(this, "Unable to get address for the location", Toast.LENGTH_SHORT).show();
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-            Toast.makeText(this, "Error fetching address: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-        }
-    }
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
