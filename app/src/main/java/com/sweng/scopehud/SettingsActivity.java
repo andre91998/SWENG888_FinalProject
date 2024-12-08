@@ -84,10 +84,10 @@ public class SettingsActivity extends NavigationActivity {
                             .openAssetFileDescriptor(profileImageUri , "r");
                     long fileSize = fileDescriptor.getLength();
                     profileImage = new byte[(int)fileSize];
-                    //getContentResolver().openInputStream(data.getData()).read(profileImage);
+                    getContentResolver().openInputStream(data.getData()).read(profileImage);
                     profileImageView.setImageBitmap(BitmapFactory.decodeByteArray(profileImage,
                             0, profileImage.length));
-                } catch (FileNotFoundException e) {
+                } catch (Exception e) {
                     Log.e(TAG, "Failed to Load Profile Image");
                 }
             }
