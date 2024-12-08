@@ -309,6 +309,7 @@ public class MainActivity extends NavigationActivity {
                     saveScopeToDatabase(name, brand, Float.parseFloat(maxMag), Boolean.parseBoolean(varMag),
                             Integer.parseInt(zeroDistance), Float.parseFloat(zeroWindage),
                             Float.parseFloat(zeroElevation), Date.parse(zeroDate), latitude, longitude);
+                    Toast.makeText(MainActivity.this, "Saved Successfully", Toast.LENGTH_SHORT).show();
                 } catch (Exception e) {
                     Toast.makeText(MainActivity.this, "Failed to Save Scope Data: "
                             + e.getMessage(), Toast.LENGTH_SHORT).show();

@@ -207,6 +207,7 @@ public class SightToolActivity extends NavigationActivity {
                     saveScopeToDatabase(name, brand, Float.parseFloat(maxMag), Boolean.parseBoolean(varMag),
                             Integer.parseInt(zeroDistance), Float.parseFloat(zeroWindage),
                             Float.parseFloat(zeroElevation), Date.parse(zeroDate), latitude, longitude);
+                    Toast.makeText(SightToolActivity.this, "Saved Successfully", Toast.LENGTH_SHORT).show();
                 } catch (Exception e) {
                     Toast.makeText(SightToolActivity.this, "Failed to Save Scope Data: "
                             + e.getMessage(), Toast.LENGTH_SHORT).show();
