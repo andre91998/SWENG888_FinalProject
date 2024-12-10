@@ -1,6 +1,6 @@
 # SWENG888 - Final Project: Scope Zeroing App
 
-## Authors:
+## Repo Creators / Original Authors:
 
 - Andrew Young
 - Roberto Luna
@@ -60,11 +60,58 @@ Key system capabilities include:
 The Dialed-In Zeroing App is designed to help users manage and optimize their shooting activities by allowing them to zero their scopes, access weather conditions, locate shooting ranges, and maintain a record of their settings and adjustments. This guide provides step-by-step instructions for each functionality, complete with screenshots and descriptions.
 
 1. Login/Signup
+- Steps:
+  - Open the app. The splash screen will load briefly.
+  - If you have an account, enter your email and password on the login screen and tap Login.
+  - To create a new account, tap Sign Up and fill in your details (name, email, password).
+- Description:
+  - Secure authentication is handled by Firebase Authentication.
+
 2. Scope Management
+- Add a Scope:
+  - After logging in, you’ll land on the Scope List.
+  - Tap the floating Add Scope button on the dashboard.
+  - Fill in details such as scope name, brand, magnification, and zeroing settings.
+  - Tap Save to add the scope.
+  - Use the Navigation Drawer (accessible via the hamburger icon) to explore different sections.
+- Edit/Delete a Scope:
+  - Tap on the info icon of the scope you wish to see details of.
+  - Swipe right on a scope to delete it. This will modify the list and remove the scope.
+  - Apply the mileage filter to see what scopes you have sighted in between 1-50 miles of your current location
+- Description:
+  - The scope serves as the central hub, displaying saved scopes and navigation options.Manage scope data efficiently with easy-to-use forms and options.
+
 3. Weather Information
+- Steps:
+  - Navigate to the Weather section from the navigation drawer.
+  - Enter a city/ZIP code or use your current location for real-time weather data.
+- Description:
+  - Fetches weather data using the OpenWeather API for informed shooting plans
+
 4. Map with Markers
+- Steps:
+  - Open the Map section via the navigation drawer.
+  - View markers representing your location and nearby shooting ranges.
+  - Tap markers for additional details.
+- Description:
+  - Integrates Google Maps API for location-based functionalities.
+
 5. Profile Management
+- Steps:
+  - Access the Profile Settings from the navigation drawer.
+  - Update your username, address, or upload a profile picture.
+  - Save changes to reflect updates in your account.
+
+- Description:
+  - Ensures personalized and secure user data management.
+
 6. About Section
+- Steps:
+  - Navigate to the About section via the navigation drawer.
+  - View information about the app, developers, and licenses.
+- Description:
+  - Provides transparency and additional information for users.
+
 
 
 ## Contributing to ScopeHUD
