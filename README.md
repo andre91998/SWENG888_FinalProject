@@ -10,38 +10,80 @@
 
 - Java 17
 
-## Build Process:
+## Setup Instructions & Build Process:
+
+### Clone
+- With ssh setup properly, run 'git clone git@github.com:andre91998/SWENG888_FinalProject.git' locally
+
+### Environment Setup
+- Open the project in Android Studio will automatically run a gradle sync and setup it up for you
+- Follow the API Configuration section to configure your API KEYS
+
+### Building
 
     - gradlew assembleDebug
 
-## Functional Requirements expressed as User Stories (US)
+## Project Overview
 
-|**User Story ID**|	**User Story Description**|	**Acceptance Criteria**|
-|:-------------:|:-----------------------|:--------------------|
-|US-1|As a user, I want to be able to create an account in the application, so that I can securely access the features and functionalities of the app.	| **Given** that the user is on the application registration page, When the user provides valid login redentials and submits the form, Then the system should create a new account for the user and redirect them to the login page. |
-|US-2|As a user, I want to be able to login and log out of the application, so that I can securely access my data and ensure privacy.| **Given** that the user is on the login page, When the user provides valid login credentials and clicks the login button, Then the system should authenticate the user and redirect them to the home page. **Given** that the user is logged in, When the user clicks the logout button, Then the system should log the user out and redirect them to the login page.
-|US-3|As a user, I want to be able to view a list of items, so that I can choose which one to interact with.| **Given** that the user is on the home page, When the user clicks on the "List of Items" button, Then the system should display a list of items that the user can interact with.
-|US-4|As a user, I want to be able to add an item to a list, so that I can keep track of my interactions with it.|**Given** that the user is on the list of items page, When the user clicks on the "Add Item" button and provides valid details, Then the system should add the new item to the list.|
-|US-5|As a user, I want to be able to edit and delete an item from the list, so that I can update my interactions with it.| **Given** that the user is on the list of items page, When the user clicks on the "Edit" button next to an item and provides valid details, Then the system should update the item details in the list. **Given** that the user is on the list of items page, When the user clicks on the "Delete" button next to an item, Then the system should remove the item from the list.
-|US-6|As a user, I want to be able to view a map with markers representing the location of items in the list, so that I can see where they are located.|**Given** that the user is on the list of items page, When the user clicks on the "View on Map" button next to an item, Then the system should display a map with a marker representing the location of the selected item.|
-|US-7|As a user, I want to be able to filter the list based on location, so that I can see which items are nearby.|**Given** that the user is on the list of items page, When the user selects a location filter from the dropdown menu, Then the system should display only the items that are located within the selected area.|
+The Dialed-In Zeroing App is a comprehensive Android application focused on delivering key functionalities for tracking and managing scope zeroing settings. Its features span user authentication, scope management, real-time environmental data, and mapping capabilities. The app serves as a centralized platform that combines technical tools and intuitive design, catering to both novice and experienced shooters. 
 
-## Technical Requirements:
+Key system capabilities include:
+- Recording and saving detailed scope zeroing data such as windage, elevation, distance, and location.
+- Providing access to real-time weather information for shooting preparation.
+- Enabling users to locate nearby shooting ranges dynamically and view markers on Google Maps.
+- Allowing users to personalize their profiles and manage their saved data securely.
+- Delivering a seamless user interface with responsive design and adherence to Material Design principles.
 
-- [x] The application should be developed using Android Studio.
-- [ ] The application should have a responsive UI and be able to adapt to different screen sizes and orientations.
-- [x] The application should use Firebase Authentication to handle user login and registration.
-- [ ] The application should use a database to store the user data. Firebase Realtime Database or other databases such as SQLite or Room can be used.
-- [x] The application should use Shared Preferences to store user preferences and settings.
-- [ ] The application should incorporate the Google Maps API to display the location of items on a map.
-- [x] The application should use a RecyclerView to display the list of items.
+## API Configuration
 
-## Stretch Goals:
+### Firebase:
+- Authentication for user login, signup, and session management.
+- Firestore for user profile storage and dynamic scope list updates.
+- Firebase Storage for managing profile images.
+- Setup Process:
+  - 
 
-- [ ] Social Media Integration: Allow users to share content on social media platforms like Facebook or Twitter.
-- [ ] Push Notifications: Implement push notifications to notify users about new updates or events.
-- [ ] Search Functionality: Add a search bar to allow users to search for specific items or content within the app.
-- [ ] User Ratings and Reviews: Add the ability for users to rate and review items or content within the app.
-- [ ] Multi-language Support: Add support for multiple languages to make the app accessible to a wider audience.
-- [ ] Accessibility: Make the app accessible to users with disabilities by implementing features like voiceover support and high-contrast mode.
-- [ ] Machine Learning: Implement machine learning algorithms to personalize the user experience based on user behavior and preferences.
+### Google Maps API:
+- Display user locations and dynamically added markers for shooting ranges.
+- Setup Process:
+  - 
+
+### OpenWeather API:
+- Fetch real-time weather conditions based on user input or location.
+- Setup Process:
+  - 
+
+## App Architecture
+
+## Usage Guide
+
+The Dialed-In Zeroing App is designed to help users manage and optimize their shooting activities by allowing them to zero their scopes, access weather conditions, locate shooting ranges, and maintain a record of their settings and adjustments. This guide provides step-by-step instructions for each functionality, complete with screenshots and descriptions.
+
+1. Login/Signup
+2. Scope Management
+3. Weather Information
+4. Map with Markers
+5. Profile Management
+6. About Section
+
+
+## Contributing to ScopeHUD
+
+### Coments and Documentation
+- For documentation and comments, it is strongly encouraged to limit line length to 100 characters! Lines that are too long become difficult for users to read.
+
+### GitHub Usage
+/master - This is always a frozen snapshot of the current full release! Changes should generally not be added directly here, but could potentially include high-priority documentation fixes.
+
+/develop - This is where your PRs should target! This branch should always compile, and code submitted here should be at least partially functional.
+
+/feature/ - For devs working within the repository, larger in-progress features should be worked on in feature branches.
+
+
+### Versioning
+
+MAJOR.MINOR.PATCH
+
+MAJOR - This is currently 0! MINOR - If this value increments, this indicates breaking changes PATCH - This indicates new features and bugfixes
+
+Postfix - Preview builds look like -preview.2, we often ship multiple of these between PATCH releases. These often contain bugfixes, and will contain new features with potentially unstable APIs.
