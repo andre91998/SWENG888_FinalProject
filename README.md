@@ -41,17 +41,17 @@ Key system capabilities include:
 - Firestore for user profile storage and dynamic scope list updates.
 - Firebase Storage for managing profile images.
 - Setup Process:
-  - 
+  - The application should run fine with the default API key. If for some reason you must setup a new key, follow the process [here](https://firebase.google.com/docs/projects/api-keys)
 
 ### Google Maps API:
 - Display user locations and dynamically added markers for shooting ranges.
 - Setup Process:
-  - 
+  - - The application should run fine with the default API key. If for some reason you must setup a new key, follow the process [here](https://developers.google.com/maps/documentation/embed/get-api-key)
 
 ### OpenWeather API:
 - Fetch real-time weather conditions based on user input or location.
 - Setup Process:
-  - 
+  - The application should run fine with the default API key. If for some reason you must setup a new key, follow the process [here](https://openweathermap.org/appid)
 
 ## App Architecture
 
