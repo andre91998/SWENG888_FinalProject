@@ -6,7 +6,6 @@ import android.Manifest;
 import android.app.AlertDialog;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
-import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -34,20 +33,16 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
-import com.google.firebase.auth.FirebaseUser;
 import com.sweng.scopehud.database.DBHandler;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
-import java.time.Instant;
-import java.util.Date;
 
-/*
+/**
  * Updated SightToolActivity
  * - Plus and minus buttons work for the yardage as they should.
  * - The enter button now updates the TextViews to the opposite of the EditText values.
@@ -246,6 +241,7 @@ public class SightToolActivity extends NavigationActivity {
             public void afterTextChanged(Editable editable) {}
         });
     }
+
     public void  onDirectionClick(View v) {
             if (v.getId() == R.id.up_down) {
                 if (upDown.getText().toString().equals("D")) {
@@ -260,7 +256,8 @@ public class SightToolActivity extends NavigationActivity {
                     leftRight.setText("R");
                 }
             }
-        }
+    }
+
     public void onAdjustmentClick(View v) {
         // Get references to both TextViews
         TextView adjL = findViewById(R.id.adjL);
@@ -323,6 +320,10 @@ public class SightToolActivity extends NavigationActivity {
             });
         }
     }
+
+    /**
+     * Fetches the weather data based on the provided location
+     */
     private void getWeatherDataByLocation(double latitude, double longitude) {
         String apiKey = getString(R.string.open_weather_key);
         String url = "https://api.openweathermap.org/data/2.5/weather?lat=" + latitude + "&lon=" + longitude + "&appid=" + apiKey + "&units=metric";
@@ -368,7 +369,7 @@ public class SightToolActivity extends NavigationActivity {
     }
 
     /**
-     *
+     * Method to save a new scope to the scope table in the DB
      */
     private void saveScopeToDatabase(String name, String brand, float maxMag, boolean varMag,
                                      int zeroDistance, float zeroWindage, float zeroElevation,

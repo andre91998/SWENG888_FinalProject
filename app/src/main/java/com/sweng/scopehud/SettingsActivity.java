@@ -14,14 +14,9 @@ import android.widget.ImageView;
 import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
-import androidx.core.content.FileProvider;
 import androidx.drawerlayout.widget.DrawerLayout;
 import com.google.android.material.navigation.NavigationView;
 import com.sweng.scopehud.database.DBHandler;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.util.Objects;
 
 public class SettingsActivity extends NavigationActivity {
 
@@ -67,6 +62,9 @@ public class SettingsActivity extends NavigationActivity {
         setupDrawer(toolbar, drawer, navigationView, null);
     }
 
+    /**
+     * Triggers the file chooser to open
+     */
     private void openFileChooser() {
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
         intent.setType("image/*");
@@ -96,6 +94,9 @@ public class SettingsActivity extends NavigationActivity {
         }
     }
 
+    /**
+     * Loads saved User profile data
+     */
     private void loadUserProfile() {
         Cursor cursor = dbHandler.getUserSettings(1);
         if (cursor != null && cursor.moveToFirst()) {
@@ -115,6 +116,9 @@ public class SettingsActivity extends NavigationActivity {
         }
     }
 
+    /**
+     * Saves Updated User Profile values to DB
+     */
     private void updateUserProfile() {
         String username = usernameEditText.getText().toString().trim();
         String address = addressEditText.getText().toString().trim();
@@ -131,6 +135,9 @@ public class SettingsActivity extends NavigationActivity {
         }
     }
 
+    /**
+     * Deletes the user's account
+     */
     private void deleteAccount() {
         new AlertDialog.Builder(this)
                 .setTitle("Delete Account")
@@ -145,6 +152,9 @@ public class SettingsActivity extends NavigationActivity {
                 .show();
     }
 
+    /**
+     * Redirects the user to the login screen (for use after account deletion)
+     */
     private void redirectToLogin() {
         Intent intent = new Intent(SettingsActivity.this, LoginActivity.class);
         startActivity(intent);

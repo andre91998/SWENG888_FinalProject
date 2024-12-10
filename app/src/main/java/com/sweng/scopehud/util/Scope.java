@@ -1,12 +1,8 @@
 package com.sweng.scopehud.util;
 
-import android.location.Location;
 import android.os.Parcel;
 import android.os.Parcelable;
-
 import androidx.annotation.NonNull;
-
-import java.util.Date;
 
 //Scopes are stored in the database
 public class Scope implements Parcelable {
@@ -120,6 +116,10 @@ public class Scope implements Parcelable {
         parcel.writeDouble(longitude);
     }
 
+    /**
+     * Converts Scope Struct into a printable string
+     * @return scope as string
+     */
     @NonNull
     @Override
     public String toString() {

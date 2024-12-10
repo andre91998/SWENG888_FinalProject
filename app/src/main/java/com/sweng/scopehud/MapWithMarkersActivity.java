@@ -79,7 +79,7 @@ public class MapWithMarkersActivity extends FragmentActivity implements OnMapRea
                     public void onSuccess(Location location) {
                         // Got last known location. In some rare situations this can be null.
                         scopeArrayList = getIntent().getParcelableArrayListExtra("scopes");
-                        setLocationMarker(location);
+                        setLocationMarkers(location);
                     }
                 });
     }
@@ -100,7 +100,7 @@ public class MapWithMarkersActivity extends FragmentActivity implements OnMapRea
                                     @Override
                                     public void onSuccess(Location location) {
                                         scopeArrayList = getIntent().getParcelableArrayListExtra("scopes");
-                                        setLocationMarker(location);
+                                        setLocationMarkers(location);
                                     }
                                 });
                     }
@@ -113,7 +113,12 @@ public class MapWithMarkersActivity extends FragmentActivity implements OnMapRea
         }
     }
 
-    private void setLocationMarker(Location location) {
+    /**
+     * Provided the current location, set the current location marker as well as markers for all the
+     * scopes in the scope list view
+     * @param location
+     */
+    private void setLocationMarkers(Location location) {
         // Got last known location. In some rare situations this can be null.
         if (location != null) {
             // Logic to handle location object

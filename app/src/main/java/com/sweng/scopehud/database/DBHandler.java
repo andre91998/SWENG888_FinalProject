@@ -79,7 +79,21 @@ public class DBHandler extends SQLiteOpenHelper {
         db.execSQL(createUserSettingsTable);
     }
 
-    // this method is use to add new product table entry
+    /**
+     * This method is use to add new product table entry
+     * @param scopeName
+     * @param scopeBrand
+     * @param scopeMaxMagnification
+     * @param scopeHasVariableMagnification
+     * @param zeroDistance
+     * @param zeroWindage
+     * @param zeroElevation
+     * @param zeroDate
+     * @param latitude
+     * @param longitude
+     * @param town
+     * @param state
+     */
     public void addNewScope(String scopeName, String scopeBrand, float scopeMaxMagnification,
                             boolean scopeHasVariableMagnification, int zeroDistance,
                             float zeroWindage, float zeroElevation, Date zeroDate, double latitude,
@@ -108,6 +122,13 @@ public class DBHandler extends SQLiteOpenHelper {
         db.close();
     }
 
+    /**
+     * Guarantee that the tables are properly initialized with the write columns based on the current
+     * app version
+     * @param db
+     * @param oldVersion
+     * @param newVersion
+     */
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         if (oldVersion < 4) {
@@ -126,7 +147,16 @@ public class DBHandler extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    // Method to insert or update user settings
+    /**
+     * Method to insert or update user settings
+     * @param userId
+     * @param username
+     * @param address
+     * @param city
+     * @param state
+     * @param country
+     * @param profileImage
+     */
     public void upsertUserSettings(int userId, String username, String address, String city, String state, String country, byte[] profileImage) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -153,14 +183,26 @@ public class DBHandler extends SQLiteOpenHelper {
         db.close();
     }
 
-    // Method to get user settings
+    /**
+     * Method to get user settings
+     * @param userId
+     * @return
+     */
     public Cursor getUserSettings(int userId) {
         SQLiteDatabase db = this.getReadableDatabase();
         return db.query(USER_SETTINGS_TABLE_NAME, null, USER_ID_COL + "=?",
                 new String[]{String.valueOf(userId)}, null, null, null);
     }
 
-    // Method to update user settings
+    /**
+     Method to update user settings     * @param userId
+     * @param username
+     * @param address
+     * @param city
+     * @param state
+     * @param country
+     * @param profileImage
+     */
     public void updateUserSettings(int userId, String username, String address, String city, String state, String country, byte[] profileImage) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -175,7 +217,10 @@ public class DBHandler extends SQLiteOpenHelper {
         db.close();
     }
 
-    // Method to query all scopes from the database
+    /**
+     * Method to query all scopes from the database
+     * @return
+     */
     public ArrayList<Scope> queryAllScopes() {
         ArrayList<Scope> scopeList = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
@@ -211,14 +256,19 @@ public class DBHandler extends SQLiteOpenHelper {
         return scopeList;
     }
 
-    // Additional method for deleting user settings if needed
+    /**
+     Additional method for deleting user settings if needed     * @param userId
+     */
     public void deleteUserSettings(int userId) {
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete(USER_SETTINGS_TABLE_NAME, USER_ID_COL + "=?", new String[]{String.valueOf(userId)});
         db.close();
     }
 
-    //Method for removing a scope from the DB
+    /**
+     * Method for removing a scope from the DB
+     * @param scopeId
+     */
     public void deleteScope(int scopeId) {
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete(SCOPE_TABLE_NAME, ID_COL + "=?", new String[]{String.valueOf(scopeId)});

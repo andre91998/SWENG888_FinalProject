@@ -9,10 +9,6 @@ import android.graphics.Paint;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
-import android.location.Address;
-import android.location.Geocoder;
-import android.location.Location;
-import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -21,7 +17,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.Switch;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -35,9 +30,7 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.android.volley.Request;
 import com.android.volley.RequestQueue;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
@@ -48,17 +41,11 @@ import com.google.android.material.snackbar.Snackbar;
 import com.sweng.scopehud.database.DBHandler;
 import com.sweng.scopehud.util.Scope;
 import com.sweng.scopehud.util.ScopeRecyclerViewAdapter;
-import com.sweng.scopehud.util.ScopeZero;
 
-import java.io.IOException;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Locale;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 public class MainActivity extends NavigationActivity {
@@ -312,6 +299,7 @@ public class MainActivity extends NavigationActivity {
                 setupRecyclerView();
             });
         });
+
         // FAB fpr google maps
         fabMapPin.setOnClickListener(v ->{
             // Launch Google Maps intent with "shooting ranges near me" query
@@ -330,19 +318,20 @@ public class MainActivity extends NavigationActivity {
         setupRecyclerView();
     }
 
-    private List<String> getUniqueLocations(List<Scope> scopeList) {
-        Set<String> uniqueLocations = new HashSet<>();
-        for (Scope scope : scopeList) {
-            String location = scope.getTown() + ", " + scope.getState();
-            uniqueLocations.add(location);
-        }
-        return new ArrayList<>(uniqueLocations);
-    }
-
+    /**
+     * Method for filtering the scope list based on distance from current location
+     * @param radius within which we want to see the existing scopes
+     * @return filtered list of scopes
+     */
     private ArrayList<Scope> filterScopesByLocation(float radius) {
         return mScopeList.parallelStream().filter(l -> calculateDistance(l.getLatitude(), l.getLongitude(),
                 latitude, longitude) <= radius).collect(Collectors.toCollection(ArrayList::new));
     }
+
+    /**
+     * Method to update the Scope List view UI dynamically as the filter changes
+     * @param filteredScopes
+     */
     private void updateRecyclerView(ArrayList<Scope> filteredScopes) {
         ScopeRecyclerViewAdapter mAdapter = new ScopeRecyclerViewAdapter(filteredScopes);
         mScopeListView.setAdapter(mAdapter);
@@ -362,12 +351,6 @@ public class MainActivity extends NavigationActivity {
     private void setupRecyclerView() {
         // Query the database for all scopes and populate the list
         mScopeList = dbHandler.queryAllScopes();
-//        mScopeList.add(new Scope(2, "STRIKE EAGLE", "Vortex Optics", 24.0f, true,
-//                new ScopeZero(200, 0.0f, 0.1f, new Date(), new Location("")),
-//                -32.870453, 150.208755));
-//        mScopeList.add(new Scope(2, "STRIKE EAGLE", "Vortex Optics", 24.0f, true,
-//                new ScopeZero(200, 0.0f, 0.1f, new Date(), new Location("")),
-//                -33.870453, 151.208755));
 
         // Check if the list is empty and display a message if needed
         if (mScopeList == null || mScopeList.isEmpty()) {
@@ -380,6 +363,10 @@ public class MainActivity extends NavigationActivity {
             mScopeListView.setLayoutManager(new LinearLayoutManager(this));
         }
     }
+
+    /**
+     * Method to get and set current device coordinates
+     */
     private void getCurrentLocation() {
         if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_PERMISSION_REQUEST_CODE);
@@ -419,10 +406,23 @@ public class MainActivity extends NavigationActivity {
                 new Date(zeroDate), latitude, longitude, "", "");
     }
 
+    /**
+     * Haversine Formula method
+     * @param val
+     * @return formula output
+     */
     double haversine(double val) {
         return Math.pow(Math.sin(val / 2), 2);
     }
 
+    /**
+     * Method for calculating the distance between to global coordinates
+     * @param startLat
+     * @param startLong
+     * @param endLat
+     * @param endLong
+     * @return distance between the provided coordinates
+     */
     double calculateDistance(double startLat, double startLong, double endLat, double endLong) {
         double dLat = Math.toRadians(endLat - startLat);
         double dLong = Math.toRadians(endLong - startLong);

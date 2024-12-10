@@ -8,6 +8,7 @@ import androidx.annotation.NonNull;
 
 import java.util.Date;
 
+//Each Scope stored in the DB has a ScopeZero Object
 public class ScopeZero implements Parcelable {
     private int distance; // distance at which the scope was zeroed
     private float windage; // windage adjustment in MIL
