@@ -56,6 +56,7 @@ Key system capabilities include:
 ## App Architecture
 
 The source code is structured into well-defined packages, ensuring clarity and maintainability:
+```
 com.sweng.scopehud
 |__database
 |__ui
@@ -63,7 +64,7 @@ com.sweng.scopehud
 |    home
 |    slideshow
 |__util
-
+```
 - scopehud: 
   - Contains all activity classes (MainActivity, LoginActivity, SettingsActivity, etc.) responsible for UI and user interaction.
 - Util: 
